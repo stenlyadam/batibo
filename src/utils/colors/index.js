@@ -28,6 +28,7 @@ export const colors = {
     primary: listColors.grey1,
     secondary: listColors.grey2,
     tertiary: listColors.orange1,
+    quartenary: listColors.green4,
   },
   border: listColors.grey3,
 };
