@@ -4,10 +4,10 @@ import {IconArrowBack} from '../../../assets';
 import {fonts} from '../../../utils';
 import {Button} from '../../atoms';
 
-const PageTitle = ({title}) => {
+const PageTitle = ({title, onBack}) => {
   return (
     <View style={styles.container}>
-      <Button type="icon-only" icon={IconArrowBack} />
+      <Button type="icon-only" icon={IconArrowBack} onPress={onBack} />
       <View style={styles.titleContainer}>
         <Text style={styles.titleText}>{title}</Text>
       </View>

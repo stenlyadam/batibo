@@ -9,7 +9,7 @@ import {
 import {Button, CheckBox, Gap, Link, TextInput} from '../../components';
 import {colors, fonts} from '../../utils';
 
-const Login = () => {
+const Login = ({navigation}) => {
   return (
     <SafeAreaView style={styles.page}>
       <ImageBackground style={styles.headerContainer}>
@@ -29,12 +29,19 @@ const Login = () => {
             <Link label="Lupa Password?" />
           </View>
           <Gap height={50} />
-          <Button title="Sign In" />
+          <Button
+            title="Sign In"
+            onPress={() => navigation.replace('HomeScreen')}
+          />
         </View>
         <View style={styles.bottomContainer}>
           <Text>Belum punya Akun?</Text>
           <Gap width={8} />
-          <Link label="Sign Up" color={colors.primary} />
+          <Link
+            label="Sign Up"
+            color={colors.primary}
+            onPress={() => navigation.navigate('Register')}
+          />
         </View>
       </View>
     </SafeAreaView>

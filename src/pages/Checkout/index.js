@@ -4,10 +4,10 @@ import {DummyBrokoliHijau, DummyJerukBali} from '../../assets';
 import {Button, CartItem, PageTitle} from '../../components';
 import {colors} from '../../utils';
 
-const Checkout = () => {
+const Checkout = ({navigation}) => {
   return (
     <SafeAreaView style={styles.page}>
-      <PageTitle title="Checkout" />
+      <PageTitle title="Checkout" onBack={() => navigation.goBack()} />
       <View style={styles.pageContainer}>
         <ScrollView>
           <View>

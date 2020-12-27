@@ -10,7 +10,7 @@ import {
 import {Button, Gap, Link, TextInput} from '../../components';
 import {colors, fonts} from '../../utils';
 
-const Register = () => {
+const Register = ({navigation}) => {
   return (
     <SafeAreaView style={styles.page}>
       <ImageBackground style={styles.headerContainer}>
@@ -29,13 +29,20 @@ const Register = () => {
               secureTextEntry={true}
             />
             <Gap height={50} />
-            <Button title="Sign Up" />
+            <Button
+              title="Sign Up"
+              onPress={() => navigation.navigate('Login')}
+            />
           </ScrollView>
         </View>
         <View style={styles.bottomContainer}>
           <Text>Sudah punya Akun?</Text>
           <Gap width={8} />
-          <Link label="Sign In" color={colors.primary} />
+          <Link
+            label="Sign In"
+            color={colors.primary}
+            onPress={() => navigation.navigate('Login')}
+          />
         </View>
       </View>
     </SafeAreaView>

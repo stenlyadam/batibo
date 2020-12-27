@@ -4,10 +4,10 @@ import {DummyBrokoliHijau} from '../../assets';
 import {CartItem, CartSummary, PageTitle} from '../../components';
 import {colors} from '../../utils';
 
-const Cart = () => {
+const Cart = ({navigation}) => {
   return (
     <SafeAreaView style={styles.page}>
-      <PageTitle title="Keranjang" />
+      <PageTitle title="Keranjang" onBack={() => navigation.goBack()} />
       <View style={styles.cartContainer}>
         <View style={styles.cartItemContainer}>
           <CartItem
@@ -32,7 +32,10 @@ const Cart = () => {
             currentPrice="Rp. 10.000"
           />
         </View>
-        <CartSummary totalPrice="Rp. 145.000" />
+        <CartSummary
+          totalPrice="Rp. 145.000"
+          onPress={() => navigation.navigate('Checkout')}
+        />
       </View>
     </SafeAreaView>
   );

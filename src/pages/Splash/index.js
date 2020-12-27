@@ -1,11 +1,19 @@
 import React from 'react';
+import {useEffect} from 'react';
 import {Dimensions, Image, StyleSheet, View} from 'react-native';
 import {IMGLogoBatibo} from '../../assets';
 import {colors} from '../../utils';
 
 const {width} = Dimensions.get('window');
 
-const Splash = () => {
+const Splash = ({navigation}) => {
+  useEffect(() => {
+    setTimeout(() => {
+      navigation.replace('Login');
+    }, 2000);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <View style={styles.container}>
       <Image source={IMGLogoBatibo} style={styles.logo} />

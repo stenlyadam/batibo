@@ -4,7 +4,7 @@ import {DummyBrokoliHijau} from '../../assets';
 import {Gap, Product, SearchBox} from '../../components';
 import {colors, fonts} from '../../utils';
 
-const HomeScreen = () => {
+const HomeScreen = ({navigation}) => {
   return (
     <SafeAreaView style={styles.page}>
       <View style={styles.headerContainer}>
@@ -24,6 +24,7 @@ const HomeScreen = () => {
             sellPrice="10.000"
             productUnit="gr"
             discount="50%"
+            onBuy={() => navigation.navigate('Cart')}
           />
           <Product
             name="Brokoli Hijau"
