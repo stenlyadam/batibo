@@ -7,7 +7,11 @@ import {colors} from '../../utils';
 const Checkout = ({navigation}) => {
   return (
     <SafeAreaView style={styles.page}>
-      <PageTitle title="Checkout" onBack={() => navigation.goBack()} />
+      <PageTitle
+        title="Checkout"
+        backButton
+        onBack={() => navigation.goBack()}
+      />
       <View style={styles.pageContainer}>
         <ScrollView>
           <View>

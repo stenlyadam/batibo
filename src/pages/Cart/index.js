@@ -7,7 +7,11 @@ import {colors} from '../../utils';
 const Cart = ({navigation}) => {
   return (
     <SafeAreaView style={styles.page}>
-      <PageTitle title="Keranjang" onBack={() => navigation.goBack()} />
+      <PageTitle
+        title="Keranjang"
+        backButton
+        onBack={() => navigation.goBack()}
+      />
       <View style={styles.cartContainer}>
         <View style={styles.cartItemContainer}>
           <CartItem

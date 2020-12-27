@@ -1,12 +1,20 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import {Cart, Checkout, HomeScreen, Login, Register, Splash} from '../pages';
+import {
+  Cart,
+  Checkout,
+  HomeScreen,
+  Login,
+  Register,
+  Splash,
+  OrderSuccess,
+} from '../pages';
 
 const Stack = createStackNavigator();
 
 const Router = () => {
   return (
-    <Stack.Navigator initialRouteName="Splash">
+    <Stack.Navigator initialRouteName="OrderSuccess">
       <Stack.Screen
         name="Splash"
         component={Splash}
@@ -35,6 +43,11 @@ const Router = () => {
       <Stack.Screen
         name="HomeScreen"
         component={HomeScreen}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="OrderSuccess"
+        component={OrderSuccess}
         options={{headerShown: false}}
       />
     </Stack.Navigator>
