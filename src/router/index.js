@@ -8,13 +8,14 @@ import {
   Register,
   Splash,
   OrderSuccess,
+  Order,
 } from '../pages';
 
 const Stack = createStackNavigator();
 
 const Router = () => {
   return (
-    <Stack.Navigator initialRouteName="OrderSuccess">
+    <Stack.Navigator initialRouteName="Order">
       <Stack.Screen
         name="Splash"
         component={Splash}
@@ -48,6 +49,11 @@ const Router = () => {
       <Stack.Screen
         name="OrderSuccess"
         component={OrderSuccess}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Order"
+        component={Order}
         options={{headerShown: false}}
       />
     </Stack.Navigator>
