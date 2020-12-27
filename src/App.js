@@ -1,8 +1,8 @@
 import React from 'react';
-import {Login, Splash} from './pages';
+import {Login, Splash, Register} from './pages';
 
 const App = () => {
-  return <Login />;
+  return <Register />;
 };
 
 export default App;

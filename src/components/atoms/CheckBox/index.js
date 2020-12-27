@@ -1,7 +1,7 @@
+import Check from '@react-native-community/checkbox';
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import Check from '@react-native-community/checkbox';
-import {fonts} from '../../../utils';
+import {colors} from '../../../utils';
 
 const CheckBox = ({label, value, onValueChange}) => {
   return (
@@ -21,7 +21,6 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 13,
-    color: '#1C2024',
-    fontFamily: fonts.primary.normal,
+    color: colors.text.primary,
   },
 });

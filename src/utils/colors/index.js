@@ -4,6 +4,9 @@ const listColors = {
   green3: '#009B77',
   white: 'white',
   orange1: '#FF8C21',
+  grey1: '#1C2024',
+  grey2: '#303030',
+  grey3: '#D6CDCD',
 };
 
 export const colors = {
@@ -15,4 +18,9 @@ export const colors = {
       text: listColors.white,
     },
   },
+  text: {
+    primary: listColors.grey1,
+    secondary: listColors.grey2,
+  },
+  border: listColors.grey3,
 };

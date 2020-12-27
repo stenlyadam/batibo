@@ -2,46 +2,47 @@ import React from 'react';
 import {
   ImageBackground,
   SafeAreaView,
+  ScrollView,
   StyleSheet,
   Text,
   View,
 } from 'react-native';
-import {Button, CheckBox, Gap, Link, TextInput} from '../../components';
+import {Button, Gap, Link, TextInput} from '../../components';
 import {colors, fonts} from '../../utils';
 
-const Login = () => {
+const Register = () => {
   return (
     <SafeAreaView style={styles.page}>
       <ImageBackground style={styles.headerContainer}>
-        <Text style={styles.headerText}>Selamat Datang</Text>
+        <Text style={styles.headerText}>Buat Akun Batibo</Text>
       </ImageBackground>
       <View style={styles.formContainer}>
         <View>
-          <TextInput label="Email" placeholder="Masukan Email-mu" />
-          <Gap height={24} />
-          <TextInput
-            label="Password"
-            placeholder="Masukan Password-mu"
-            secureTextEntry={true}
-          />
-          <View style={styles.forgotPasswordWrapper}>
-            <CheckBox label="Ingat Saya" />
-            <Link label="Lupa Password?" />
-          </View>
-          <Gap height={50} />
-          <Button title="Sign In" />
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <TextInput label="Username" placeholder="Masukan Username" />
+            <Gap height={24} />
+            <TextInput label="Email" placeholder="Masukan Email-mu" />
+            <Gap height={24} />
+            <TextInput
+              label="Password"
+              placeholder="Masukan Password-mu"
+              secureTextEntry={true}
+            />
+            <Gap height={50} />
+            <Button title="Sign Up" />
+          </ScrollView>
         </View>
         <View style={styles.bottomContainer}>
-          <Text>Belum punya Akun?</Text>
+          <Text>Sudah punya Akun?</Text>
           <Gap width={8} />
-          <Link label="Sign Up" color={colors.primary} />
+          <Link label="Sign In" color={colors.primary} />
         </View>
       </View>
     </SafeAreaView>
   );
 };
 
-export default Login;
+export default Register;
 
 const styles = StyleSheet.create({
   page: {
@@ -65,12 +66,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 24,
     justifyContent: 'space-between',
     flex: 1,
-  },
-  forgotPasswordWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginTop: 12,
   },
   bottomContainer: {
     flexDirection: 'row',
