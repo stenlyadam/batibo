@@ -1,13 +1,14 @@
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {colors} from '../../../utils';
+import IconOnly from './IconOnly';
 
 const Button = ({title, type, onPress, icon, width, height, space, size}) => {
-  // if (type === 'icon-only') {
-  //   return (
-  //     <IconOnly icon={icon} onPress={onPress} width={width} height={height} />
-  //   );
-  // }
+  if (type === 'icon-only') {
+    return (
+      <IconOnly icon={icon} onPress={onPress} width={width} height={height} />
+    );
+  }
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={styles.container(space, height)}>
