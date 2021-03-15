@@ -11,13 +11,14 @@ import {
   Order,
   OnBoarding,
   Detail,
+  Payment,
 } from '../pages';
 
 const Stack = createStackNavigator();
 
 const Router = () => {
   return (
-    <Stack.Navigator initialRouteName="Homescreen">
+    <Stack.Navigator initialRouteName="Payment">
       <Stack.Screen
         name="Splash"
         component={Splash}
@@ -66,6 +67,11 @@ const Router = () => {
       <Stack.Screen
         name="Detail"
         component={Detail}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Payment"
+        component={Payment}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

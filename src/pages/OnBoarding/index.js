@@ -33,9 +33,9 @@ const OnBoarding = () => {
         </View>
         <View style={styles.actionContainer}>
           <View style={styles.dotsContainer}>
-            <View style={styles.longDots}></View>
-            <View style={styles.dots}></View>
-            <View style={styles.dots}></View>
+            <View style={styles.longDots} />
+            <View style={styles.dots} />
+            <View style={styles.dots} />
           </View>
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.button}>

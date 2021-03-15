@@ -9,6 +9,7 @@ const listColors = {
   grey2: '#303030',
   grey3: '#D6CDCD',
   grey4: '#C4C4C4',
+  grey5: '#202020',
   red1: '#FF3C21',
   black: 'black',
 };
@@ -31,6 +32,7 @@ export const colors = {
     secondary: listColors.grey2,
     tertiary: listColors.orange1,
     quartenary: listColors.green4,
+    grey: listColors.grey5,
   },
   border: listColors.grey3,
 };

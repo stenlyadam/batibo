@@ -8,6 +8,7 @@ import OrderSuccess from './OrderSuccess';
 import Order from './Order';
 import OnBoarding from './OnBoarding';
 import Detail from './Detail';
+import Payment from './Payment';
 
 export {
   Splash,
@@ -20,4 +21,5 @@ export {
   Order,
   OnBoarding,
   Detail,
+  Payment,
 };
