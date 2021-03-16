@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {IconArrowBack, IconMinus, IconPlus} from '../../../assets';
+import {IconArrowBack, IconMinus, IconPlus, IconCart} from '../../../assets';
 import {colors} from '../../../utils';
 
 const IconOnly = ({icon, onPress, width, height}) => {
@@ -19,8 +19,19 @@ const IconOnly = ({icon, onPress, width, height}) => {
         </View>
       );
     }
-    if (icon === 'arrow-back') {
-      return <IconArrowBack />;
+    if (icon === 'icon-arrow-back') {
+      return (
+        <View style={styles.iconContainer(width, height, colors.button.black)}>
+          <IconArrowBack />
+        </View>
+      );
+    }
+    if (icon === 'icon-cart') {
+      return (
+        <View style={styles.iconContainer(width, height, colors.button.black)}>
+          <IconCart />
+        </View>
+      );
     }
     return <IconArrowBack />;
   };

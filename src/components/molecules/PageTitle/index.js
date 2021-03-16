@@ -29,7 +29,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    marginLeft: -24,
   },
   titleText: {
     fontFamily: fonts.primary[600],

@@ -9,4 +9,9 @@ export const fonts = {
     900: 'Poppins-Black',
     normal: 'Poppins-Regular',
   },
+  nunito: {
+    normal: 'Nunito-Regular',
+    semibold: 'Nunito-SemiBold',
+    bold: 'Nunito-Bold',
+  },
 };

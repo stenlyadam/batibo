@@ -8,6 +8,8 @@ const listColors = {
   grey1: '#1C2024',
   grey2: '#303030',
   grey3: '#D6CDCD',
+  grey4: '#C4C4C4',
+  grey5: '#202020',
   red1: '#FF3C21',
   black: 'black',
 };
@@ -16,6 +18,7 @@ export const colors = {
   primary: listColors.green3,
   white: listColors.white,
   black: listColors.black,
+  grey: listColors.grey4,
   button: {
     primary: {
       backgroundColor: listColors.orange1,
@@ -29,6 +32,7 @@ export const colors = {
     secondary: listColors.grey2,
     tertiary: listColors.orange1,
     quartenary: listColors.green4,
+    grey: listColors.grey5,
   },
   border: listColors.grey3,
 };
