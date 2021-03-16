@@ -1,6 +1,12 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
-import {IconArrowBack, IconMinus, IconPlus, IconCart} from '../../../assets';
+import {
+  IconArrowBack,
+  IconMinus,
+  IconPlus,
+  IconCart,
+  IconDotsIcon,
+} from '../../../assets';
 import {colors} from '../../../utils';
 
 const IconOnly = ({icon, onPress, width, height}) => {
@@ -30,6 +36,13 @@ const IconOnly = ({icon, onPress, width, height}) => {
       return (
         <View style={styles.iconContainer(width, height, colors.button.black)}>
           <IconCart />
+        </View>
+      );
+    }
+    if (icon === 'icon-dots-option') {
+      return (
+        <View style={styles.iconContainer(width, height, colors.button.black)}>
+          <IconDotsIcon />
         </View>
       );
     }

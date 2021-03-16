@@ -12,6 +12,8 @@ const listColors = {
   grey5: '#202020',
   red1: '#FF3C21',
   black: 'black',
+  blue: '#0045A3',
+  red: '#ff1818',
 };
 
 export const colors = {
@@ -33,6 +35,8 @@ export const colors = {
     tertiary: listColors.orange1,
     quartenary: listColors.green4,
     grey: listColors.grey5,
+    blue: listColors.blue,
+    red: listColors.red,
   },
   border: listColors.grey3,
 };

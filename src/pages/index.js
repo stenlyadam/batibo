@@ -9,6 +9,7 @@ import Order from './Order';
 import OnBoarding from './OnBoarding';
 import Detail from './Detail';
 import Payment from './Payment';
+import Profile from './Profile';
 
 export {
   Splash,
@@ -22,4 +23,5 @@ export {
   OnBoarding,
   Detail,
   Payment,
+  Profile,
 };
