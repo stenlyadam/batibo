@@ -10,6 +10,8 @@ export const fonts = {
     normal: 'Poppins-Regular',
   },
   nunito: {
-    normal: 'Nunito',
+    normal: 'Nunito-Regular',
+    semibold: 'Nunito-SemiBold',
+    bold: 'Nunito-Bold',
   },
 };
