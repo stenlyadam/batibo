@@ -6,6 +6,7 @@ import {
   IconPlus,
   IconCart,
   IconDotsIcon,
+  IconCross,
 } from '../../../assets';
 import {colors} from '../../../utils';
 
@@ -43,6 +44,13 @@ const IconOnly = ({icon, onPress, width, height}) => {
       return (
         <View style={styles.iconContainer(width, height, colors.button.black)}>
           <IconDotsIcon />
+        </View>
+      );
+    }
+    if (icon === 'icon-cross') {
+      return (
+        <View style={styles.iconContainer(width, height, colors.button.black)}>
+          <IconCross />
         </View>
       );
     }

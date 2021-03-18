@@ -13,13 +13,14 @@ import {
   Detail,
   Payment,
   Profile,
+  EditProfile,
 } from '../pages';
 
 const Stack = createStackNavigator();
 
 const Router = () => {
   return (
-    <Stack.Navigator initialRouteName="Profile">
+    <Stack.Navigator initialRouteName="EditProfile">
       <Stack.Screen
         name="Splash"
         component={Splash}
@@ -78,6 +79,11 @@ const Router = () => {
       <Stack.Screen
         name="Profile"
         component={Profile}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="EditProfile"
+        component={EditProfile}
         options={{headerShown: false}}
       />
     </Stack.Navigator>
