@@ -41,6 +41,9 @@ const Router = () => {
         options={{
           tabBarLabel: 'Beranda',
           tabBarIcon: ({color, size}) => <IconHome color={color} size={size} />,
+          tabBarOptions: {
+            activeTintColor: 'blue',
+          },
         }}
       />
       <Page.Screen
@@ -74,38 +77,6 @@ const Router = () => {
     </Page.Navigator>
   );
 };
-
-// const Router = () => {
-//   return (
-//     <Tab.Navigator
-//       screenOptions={({route}) => ({
-//         tabBarIcon: ({focused, color, size}) => {
-//           let iconName;
-
-//           if (route.name === 'Home') {
-//             iconName = focused
-//               ? '../assets/icons/ic-cart.svg'
-//               : 'ios-information-circle-outline';
-//           } else if (route.name === 'Keranjang') {
-//             iconName = focused ? 'IconCart' : 'ios-list';
-//           } else if (route.name === 'Settings') {
-//             iconName = focused ? 'ios-list-box' : 'ios-list';
-//           }
-
-//           return <IconHome name={iconName} size={size} color={color} />;
-//         },
-//       })}
-//       tabBarOptions={{
-//         activeTintColor: 'tomato',
-//         inactiveTintColor: 'gray',
-//       }}>
-// <Tab.Screen name="Home" component={HomeScreen} />
-// <Tab.Screen name="Keranjang" component={Cart} />
-// <Tab.Screen name="Order Saya" component={Payment} />
-// <Tab.Screen name="Profil" component={Profile} />
-//     </Tab.Navigator>
-//   );
-// };
 
 // const Stack = createStackNavigator();
 
