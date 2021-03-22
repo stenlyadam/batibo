@@ -9,6 +9,9 @@ import IconAddress from './ic-address.svg';
 import IconProtection from './ic-protection.svg';
 import IconHelp from './ic-help.svg';
 import IconArrowRight from './ic-arrow-right.svg';
+import IconHome from './ic-home.svg';
+import IconReceipt from './ic-receipt.svg';
+import IconProfile from './ic-profile.svg';
 
 export {
   IconSearch,
@@ -22,4 +25,7 @@ export {
   IconProtection,
   IconHelp,
   IconArrowRight,
+  IconHome,
+  IconReceipt,
+  IconProfile,
 };
