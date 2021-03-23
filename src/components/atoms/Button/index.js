@@ -21,7 +21,7 @@ const Button = ({title, type, onPress, icon, width, height, space, size}) => {
 export default Button;
 
 const styles = StyleSheet.create({
-  container: (space, height) => ({
+  container: (space, height, radius) => ({
     backgroundColor: colors.button.primary.backgroundColor,
     paddingHorizontal: space,
     paddingVertical: height ? height : 14,

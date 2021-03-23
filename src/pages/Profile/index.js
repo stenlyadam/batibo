@@ -32,7 +32,11 @@ const Profile = ({navigation}) => {
           <Text style={styles.emailText}>amir@gmail.com</Text>
         </View>
         <View style={styles.optionContainer}>
-          <Button type="icon-only" icon="icon-dots-option" />
+          <Button
+            type="icon-only"
+            icon="icon-dots-option"
+            onPress={() => navigation.navigate('EditProfile')}
+          />
         </View>
       </View>
       <View style={styles.profileMenuContainer}>

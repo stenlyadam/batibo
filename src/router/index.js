@@ -23,7 +23,7 @@ import {colors, fonts} from '../utils';
 
 const Page = createBottomTabNavigator();
 
-const Router = () => {
+const Tab = () => {
   return (
     <Page.Navigator
       tabBarOptions={{
@@ -41,9 +41,6 @@ const Router = () => {
         options={{
           tabBarLabel: 'Beranda',
           tabBarIcon: ({color, size}) => <IconHome color={color} size={size} />,
-          tabBarOptions: {
-            activeTintColor: 'blue',
-          },
         }}
       />
       <Page.Screen
@@ -78,78 +75,78 @@ const Router = () => {
   );
 };
 
-// const Stack = createStackNavigator();
+const Stack = createStackNavigator();
 
-// const Router = () => {
-//   return (
-//     <Stack.Navigator initialRouteName="Payment">
-//       <Stack.Screen
-//         name="Splash"
-//         component={Splash}
-//         options={{headerShown: false}}
-//       />
-//       <Stack.Screen
-//         name="Login"
-//         component={Login}
-//         options={{headerShown: false}}
-//       />
-//       <Stack.Screen
-//         name="Register"
-//         component={Register}
-//         options={{headerShown: false}}
-//       />
-//       <Stack.Screen
-//         name="Cart"
-//         component={Cart}
-//         options={{headerShown: false}}
-//       />
-//       <Stack.Screen
-//         name="Checkout"
-//         component={Checkout}
-//         options={{headerShown: false}}
-//       />
-//       <Stack.Screen
-//         name="HomeScreen"
-//         component={HomeScreen}
-//         options={{headerShown: false}}
-//       />
-//       <Stack.Screen
-//         name="OrderSuccess"
-//         component={OrderSuccess}
-//         options={{headerShown: false}}
-//       />
-//       <Stack.Screen
-//         name="Order"
-//         component={Order}
-//         options={{headerShown: false}}
-//       />
-//       <Stack.Screen
-//         name="OnBoarding"
-//         component={OnBoarding}
-//         options={{headerShown: false}}
-//       />
-//       <Stack.Screen
-//         name="Detail"
-//         component={Detail}
-//         options={{headerShown: false}}
-//       />
-//       <Stack.Screen
-//         name="Payment"
-//         component={Payment}
-//         options={{headerShown: false}}
-//       />
-//       <Stack.Screen
-//         name="Profile"
-//         component={Profile}
-//         options={{headerShown: false}}
-//       />
-//       <Stack.Screen
-//         name="EditProfile"
-//         component={EditProfile}
-//         options={{headerShown: false}}
-//       />
-//     </Stack.Navigator>
-//   );
-// };
+const Router = () => {
+  return (
+    <Stack.Navigator initialRouteName="Tab">
+      <Stack.Screen
+        name="Splash"
+        component={Splash}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Login"
+        component={Login}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Register"
+        component={Register}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Cart"
+        component={Cart}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Checkout"
+        component={Checkout}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="HomeScreen"
+        component={Tab}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="OrderSuccess"
+        component={OrderSuccess}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Order"
+        component={Order}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="OnBoarding"
+        component={OnBoarding}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Detail"
+        component={Detail}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Payment"
+        component={Payment}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Profile"
+        component={Profile}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="EditProfile"
+        component={EditProfile}
+        options={{headerShown: false}}
+      />
+    </Stack.Navigator>
+  );
+};
 
 export default Router;

@@ -9,7 +9,7 @@ import {
 } from '../../../assets';
 import {colors} from '../../../utils';
 
-const IconOnly = ({icon, onPress, width, height}) => {
+const IconOnly = ({icon, onPress, width, height, color = colors.grey}) => {
   const Icon = () => {
     if (icon === 'icon-minus') {
       return (
@@ -35,7 +35,7 @@ const IconOnly = ({icon, onPress, width, height}) => {
     if (icon === 'icon-cart') {
       return (
         <View style={styles.iconContainer(width, height, colors.button.black)}>
-          <IconCart />
+          <IconCart color={color} />
         </View>
       );
     }

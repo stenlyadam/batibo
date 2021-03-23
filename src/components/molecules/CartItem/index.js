@@ -1,11 +1,20 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
 import {colors} from '../../../utils';
 import Counter from '../Counter';
+import CheckBox from '@react-native-community/checkbox';
 
 const CartItem = ({image, name, weight, originalPrice, currentPrice, id}) => {
+  const [toggleCheckBox, setToggleCheckBox] = useState(false);
   return (
     <View style={styles.container}>
+      <CheckBox
+        tintColors={{true: colors.button.green, false: colors.button.green}}
+        disabled={false}
+        value={toggleCheckBox}
+        onValueChange={(newValue) => setToggleCheckBox(newValue)}
+      />
+
       <View style={styles.productImageContainer}>
         <Image source={image} style={styles.productImage} />
       </View>

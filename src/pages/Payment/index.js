@@ -148,6 +148,13 @@ const Payment = ({navigation}) => {
           />
         </Tab.Navigator>
       </View>
+      <View style={styles.bottomWrapper}>
+        <View style={styles.nextContainer}>
+          <View style={styles.next}>
+            <Button title="Selanjutnya" />
+          </View>
+        </View>
+      </View>
     </SafeAreaView>
   );
 };
@@ -341,5 +348,20 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: colors.text.grey,
     marginBottom: 8,
+  },
+
+  bottomWrapper: {
+    flex: 1,
+    justifyContent: 'flex-end',
+  },
+  nextContainer: {
+    borderColor: colors.grey,
+    borderWidth: 1,
+    height: 76,
+    width: Dimensions.get('window').width,
+    justifyContent: 'center',
+  },
+  next: {
+    marginHorizontal: 24,
   },
 });

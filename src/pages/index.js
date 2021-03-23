@@ -10,6 +10,7 @@ import OnBoarding from './OnBoarding';
 import Detail from './Detail';
 import Payment from './Payment';
 import Profile from './Profile';
+import EditProfile from './EditProfile';
 
 export {
   Splash,
@@ -24,4 +25,5 @@ export {
   Detail,
   Payment,
   Profile,
+  EditProfile,
 };

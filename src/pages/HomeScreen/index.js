@@ -12,27 +12,6 @@ import {Gap, Product, SearchBox, Carousel} from '../../components';
 import {colors, fonts} from '../../utils';
 // import Swiper from 'react-native-swiper';
 
-// const Carousel = () => {
-//   return (
-//     <Swiper
-//       style={styles.carouselWrapper}
-//       height={132}
-//       containerStyle={{marginTop: 32}}
-//       dotStyle={{backgroundColor: colors.white, opacity: 0.5}}
-//       activeDotStyle={{backgroundColor: colors.white}}>
-//       <View style={styles.slide1}>
-//         <Image source={IMGCarousel} style={styles.carouselPicture} />
-//       </View>
-//       <View style={styles.slide1}>
-//         <Image source={IMGCarousel} style={styles.carouselPicture} />
-//       </View>
-//       <View style={styles.slide1}>
-//         <Image source={IMGCarousel} style={styles.carouselPicture} />
-//       </View>
-//     </Swiper>
-//   );
-// };
-
 const HomeScreen = ({navigation}) => {
   return (
     <SafeAreaView style={styles.page}>
@@ -40,8 +19,12 @@ const HomeScreen = ({navigation}) => {
         <Text style={styles.welcomeText}>Halo John Doe</Text>
         <Text style={styles.welcomeText}>Pilih Sayuran-mu disini</Text>
         <Gap height={16} />
-        <SearchBox label="Cari yang kamu butuhkan" />
-        <Carousel />
+        <SearchBox
+          label="Cari yang kamu butuhkan"
+          style={styles.searchBoxContainer}
+        />
+        <Gap height={32} />
+        <Carousel style={styles.carousel} />
       </View>
       <Text style={styles.titleText}>Sedang Diskon</Text>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -55,6 +38,7 @@ const HomeScreen = ({navigation}) => {
             productUnit="gr"
             discount="50%"
             onBuy={() => navigation.navigate('Cart')}
+            onDetail={() => navigation.navigate('Detail')}
           />
           <Product
             name="Brokoli Hijau"
@@ -117,7 +101,7 @@ const styles = StyleSheet.create({
   headerContainer: {
     width: '100%',
     height: 375,
-    backgroundColor: colors.primary,
+    backgroundColor: colors.button.green,
     paddingHorizontal: 24,
     paddingTop: 33,
   },
@@ -139,4 +123,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
+  // carousel: {
+  //   marginTop: 32,
+  // },
 });

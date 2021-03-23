@@ -1,3 +1,4 @@
+import {NavigationContainer} from '@react-navigation/native';
 import React from 'react';
 import {
   StyleSheet,
@@ -8,10 +9,12 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {Button, Gap} from '../../../components';
+import {useNavigation} from '@react-navigation/native';
 
 const {width} = Dimensions.get('window');
 
 const Product = ({
+  navigation,
   name,
   image,
   category,
