@@ -21,11 +21,11 @@ import {IconHome, IconCart, IconReceipt, IconProfile} from '../assets';
 import {Button} from '../components';
 import {colors, fonts} from '../utils';
 
-const Page = createBottomTabNavigator();
+const Tab = createBottomTabNavigator();
 
-const Tab = () => {
+const BottomNavigator = () => {
   return (
-    <Page.Navigator
+    <Tab.Navigator
       tabBarOptions={{
         activeTintColor: colors.text.tertiary,
         labelStyle: {
@@ -33,26 +33,28 @@ const Tab = () => {
           fontSize: 12,
           marginTop: 6,
         },
-        tabStyle: {paddingTop: 15},
+        tabStyle: {
+          paddingTop: 15,
+        },
       }}>
-      <Page.Screen
-        name="Home"
+      <Tab.Screen
+        name="HomeScreen"
         component={HomeScreen}
         options={{
           tabBarLabel: 'Beranda',
           tabBarIcon: ({color, size}) => <IconHome color={color} size={size} />,
         }}
       />
-      <Page.Screen
-        name="Keranjang"
+      <Tab.Screen
+        name="Cart"
         component={Cart}
         options={{
           tabBarLabel: 'Keranjang',
           tabBarIcon: ({color, size}) => <IconCart color={color} size={size} />,
         }}
       />
-      <Page.Screen
-        name="Order Saya"
+      <Tab.Screen
+        name="Payment"
         component={Payment}
         options={{
           tabBarLabel: 'Order Saya',
@@ -61,8 +63,8 @@ const Tab = () => {
           ),
         }}
       />
-      <Page.Screen
-        name="Profil"
+      <Tab.Screen
+        name="Profile"
         component={Profile}
         options={{
           tabBarLabel: 'Profil',
@@ -71,7 +73,7 @@ const Tab = () => {
           ),
         }}
       />
-    </Page.Navigator>
+    </Tab.Navigator>
   );
 };
 
@@ -79,7 +81,7 @@ const Stack = createStackNavigator();
 
 const Router = () => {
   return (
-    <Stack.Navigator initialRouteName="Tab">
+    <Stack.Navigator initialRouteName="BottomNavigator">
       <Stack.Screen
         name="Splash"
         component={Splash}
@@ -107,7 +109,7 @@ const Router = () => {
       />
       <Stack.Screen
         name="HomeScreen"
-        component={Tab}
+        component={BottomNavigator}
         options={{headerShown: false}}
       />
       <Stack.Screen
@@ -135,11 +137,11 @@ const Router = () => {
         component={Payment}
         options={{headerShown: false}}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="Profile"
         component={Profile}
         options={{headerShown: false}}
-      />
+      /> */}
       <Stack.Screen
         name="EditProfile"
         component={EditProfile}

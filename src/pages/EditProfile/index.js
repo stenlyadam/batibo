@@ -23,6 +23,7 @@ const EditProfile = ({navigation}) => {
             type="icon-only"
             icon="icon-arrow-back"
             style={styles.backButton}
+            onPress={() => navigation.navigate('Profile')}
           />
         </View>
         <View style={styles.titleTextContainer}>
