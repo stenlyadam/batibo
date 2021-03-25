@@ -32,7 +32,12 @@ const Checkout = ({navigation}) => {
             </View>
             <Text style={styles.subTitle}>Pilih Jam Antar</Text>
             <View style={styles.timeContainer}>
-              <Button space={110} height={12} title="07.00 - 08.00" />
+              <Button
+                space={110}
+                height={12}
+                color="yellow"
+                title="07.00 - 08.00"
+              />
               <Button space={110} height={12} title="08.00 - 09.00" />
             </View>
           </View>
@@ -105,6 +110,8 @@ const styles = StyleSheet.create({
   },
   timeContainer: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: 240,
   },
 
   page: {
@@ -164,4 +171,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   paymentButton: {marginHorizontal: 24, marginBottom: 16},
+  // button: {
+  //   backgroundColor: 'red',
+  // },
 });

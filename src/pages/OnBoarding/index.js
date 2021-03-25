@@ -42,7 +42,7 @@ const OnBoarding = ({navigation}) => {
           colors={['#D0F5B2', '#24AD65']}
           style={styles.linearGradient}>
           <View style={styles.lewatiContainer}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('Login')}>
               <Text style={styles.textLewati}>Lewati</Text>
             </TouchableOpacity>
           </View>
@@ -67,7 +67,7 @@ const OnBoarding = ({navigation}) => {
           colors={['#D0F5B2', '#24AD65']}
           style={styles.linearGradient}>
           <View style={styles.lewatiContainer}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('Login')}>
               <Text style={styles.textLewati}>Lewati</Text>
             </TouchableOpacity>
           </View>
