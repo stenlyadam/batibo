@@ -1,10 +1,10 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {SafeAreaView, StyleSheet, View, Text, Dimensions} from 'react-native';
 import {DummyBrokoliHijau} from '../../assets';
-import {CartItem, CartSummary, PageTitle} from '../../components';
+import {CartItem, CartSummary, PageTitle, CheckBox} from '../../components';
 import {colors, fonts} from '../../utils';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import CheckBox from '@react-native-community/checkbox';
+
 import {ScrollView} from 'react-native-gesture-handler';
 
 const Dikirim = () => {
@@ -22,21 +22,12 @@ const Dibatalkan = () => {
   );
 };
 const Pesanan = ({navigation}) => {
-  const [toggleCheckBox, setToggleCheckBox] = useState(false);
   return (
     <View style={styles.pesananContainer}>
       <ScrollView style={styles.cartContainer}>
         <View style={styles.cartItemContainer}>
           <View style={styles.checkBoxContainer}>
-            <CheckBox
-              tintColors={{
-                true: colors.button.green,
-                false: colors.button.green,
-              }}
-              disabled={false}
-              value={toggleCheckBox}
-              onValueChange={(newValue) => setToggleCheckBox(newValue)}
-            />
+            <CheckBox />
             <Text style={styles.checkBoxText}>Pilih Semua</Text>
           </View>
           <CartItem
@@ -125,7 +116,6 @@ const Cart = ({navigation}) => {
 export default Cart;
 
 const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
   page: {

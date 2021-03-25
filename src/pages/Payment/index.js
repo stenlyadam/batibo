@@ -1,14 +1,5 @@
 import React, {useState} from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  SafeAreaView,
-  Image,
-  Dimensions,
-  TouchableOpacity,
-} from 'react-native';
-import {IMGOrderSuccess} from '../../assets';
+import {StyleSheet, Text, View, SafeAreaView, Dimensions} from 'react-native';
 import {Button, Gap, PageTitle} from '../../components';
 import {colors, fonts} from '../../utils';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';

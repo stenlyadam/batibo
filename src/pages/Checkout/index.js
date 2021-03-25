@@ -1,12 +1,10 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {SafeAreaView, StyleSheet, Text, View, ScrollView} from 'react-native';
 import {DummyBrokoliHijau, DummyJerukBali} from '../../assets';
-import {Button, CartItem, PageTitle} from '../../components';
+import {Button, CartItem, PageTitle, CheckBox} from '../../components';
 import {colors, fonts} from '../../utils';
-import CheckBox from '@react-native-community/checkbox';
 
 const Checkout = ({navigation}) => {
-  const [toggleCheckBox, setToggleCheckBox] = useState(false);
   return (
     <SafeAreaView style={styles.page}>
       <PageTitle
@@ -14,36 +12,31 @@ const Checkout = ({navigation}) => {
         backButton
         onBack={() => navigation.goBack()}
       />
-      <View style={styles.deliveryContainer}>
-        <Text style={styles.deliver}>Pengiriman</Text>
-        <Text style={styles.subTitle}>Alamat Pengiriman</Text>
-        <View style={styles.dropdownContainer}>
-          <Text style={styles.paymentSummaryCategory}>Pilih Alamat</Text>
-          <Button type="icon-only" icon="icon-arrow-right" />
-        </View>
-        <Text style={styles.subTitle}>Tanggal Kirim</Text>
-        <View>
-          <View style={styles.dateContainer}>
-            <CheckBox
-              tintColors={{
-                true: colors.button.green,
-                false: colors.button.green,
-              }}
-              disabled={false}
-              value={toggleCheckBox}
-              onValueChange={(newValue) => setToggleCheckBox(newValue)}
-            />
-            <Text style={styles.paymentSummaryCategory}>Senin, 1 Mei 2020</Text>
+      <ScrollView>
+        <View style={styles.pageContainer}>
+          <View style={styles.deliveryContainer}>
+            <Text style={styles.deliver}>Pengiriman</Text>
+            <Text style={styles.subTitle}>Alamat Pengiriman</Text>
+            <View style={styles.dropdownContainer}>
+              <Text style={styles.paymentSummaryCategory}>Pilih Alamat</Text>
+              <Button type="icon-only" icon="icon-arrow-right" />
+            </View>
+            <Text style={styles.subTitle}>Tanggal Kirim</Text>
+            <View>
+              <View style={styles.dateContainer}>
+                <CheckBox />
+                <Text style={styles.paymentSummaryCategory}>
+                  Senin, 1 Mei 2020
+                </Text>
+              </View>
+            </View>
+            <Text style={styles.subTitle}>Pilih Jam Antar</Text>
+            <View style={styles.timeContainer}>
+              <Button space={110} height={12} title="07.00 - 08.00" />
+              <Button space={110} height={12} title="08.00 - 09.00" />
+            </View>
           </View>
-        </View>
-        <Text style={styles.subTitle}>Pilih Jam Antar</Text>
-        <View style={styles.timeContainer}>
-          <Button space={20} height={12} title="07.00 - 08.00" />
-          <Button space={20} height={12} title="07.00 - 08.00" />
-        </View>
-      </View>
-      <View style={styles.pageContainer}>
-        <ScrollView>
+
           <View>
             <View style={styles.deliverContainer}>
               <Text style={styles.deliver}>Pesanan</Text>
@@ -80,10 +73,11 @@ const Checkout = ({navigation}) => {
               </View>
             </View>
           </View>
-        </ScrollView>
-        <View style={styles.paymentButton}>
-          <Button title="Pesan Sekarang" />
         </View>
+      </ScrollView>
+
+      <View style={styles.paymentButton}>
+        <Button title="Pesan Sekarang" />
       </View>
     </SafeAreaView>
   );
@@ -97,7 +91,7 @@ const styles = StyleSheet.create({
     paddingBottom: 24,
   },
   dropdownContainer: {
-    backgroundColor: colors.border,
+    backgroundColor: colors.lightGrey,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',

@@ -9,9 +9,8 @@ const {width} = Dimensions.get('window');
 const Splash = ({navigation}) => {
   useEffect(() => {
     setTimeout(() => {
-      navigation.replace('Login');
+      navigation.replace('OnBoarding');
     }, 2000);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

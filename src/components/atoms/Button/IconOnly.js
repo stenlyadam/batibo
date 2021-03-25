@@ -8,6 +8,10 @@ import {
   IconDotsIcon,
   IconCross,
   IconArrowRight,
+  IconCoupon,
+  IconAddress,
+  IconProtection,
+  IconHelp,
 } from '../../../assets';
 import {colors} from '../../../utils';
 
@@ -59,6 +63,34 @@ const IconOnly = ({icon, onPress, width, height, color = colors.grey}) => {
       return (
         <View style={styles.iconContainer(width, height, colors.button.black)}>
           <IconArrowRight />
+        </View>
+      );
+    }
+    if (icon === 'icon-coupon') {
+      return (
+        <View style={styles.iconContainer(width, height, colors.button.black)}>
+          <IconCoupon />
+        </View>
+      );
+    }
+    if (icon === 'icon-address') {
+      return (
+        <View style={styles.iconContainer(width, height, colors.button.black)}>
+          <IconAddress />
+        </View>
+      );
+    }
+    if (icon === 'icon-protection') {
+      return (
+        <View style={styles.iconContainer(width, height, colors.button.black)}>
+          <IconProtection />
+        </View>
+      );
+    }
+    if (icon === 'icon-help') {
+      return (
+        <View style={styles.iconContainer(width, height, colors.button.black)}>
+          <IconHelp />
         </View>
       );
     }

@@ -1,18 +1,8 @@
 import React from 'react';
-import {useEffect} from 'react';
-import {
-  Dimensions,
-  Image,
-  StyleSheet,
-  View,
-  Text,
-  ImageBackground,
-  BackHandler,
-} from 'react-native';
+import {StyleSheet, View, Text, ImageBackground} from 'react-native';
 import {IMGWortel} from '../../assets';
 import {Button} from '../../components';
 import {colors, fonts} from '../../utils';
-import LinearGradient from 'react-native-linear-gradient';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 
 const Detail = ({navigation}) => {

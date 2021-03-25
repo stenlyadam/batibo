@@ -4,5 +4,14 @@ import CartItem from './CartItem';
 import CartSummary from './CartSummary';
 import Counter from './Counter';
 import Carousel from './Carousel';
+import ProfileMenu from './ProfileMenu';
 
-export {Product, PageTitle, CartItem, Counter, CartSummary, Carousel};
+export {
+  Product,
+  PageTitle,
+  CartItem,
+  Counter,
+  CartSummary,
+  Carousel,
+  ProfileMenu,
+};

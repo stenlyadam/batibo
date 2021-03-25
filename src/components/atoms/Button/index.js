@@ -23,7 +23,7 @@ export default Button;
 const styles = StyleSheet.create({
   container: (space, height, radius) => ({
     backgroundColor: colors.button.primary.backgroundColor,
-    paddingHorizontal: space,
+    width: space,
     paddingVertical: height ? height : 14,
     borderRadius: 10,
   }),

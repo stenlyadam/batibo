@@ -1,23 +1,9 @@
 import React from 'react';
-import {
-  Image,
-  ImageBackground,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
-import {Button, Gap, Link, TextInput} from '../../components';
+import {Image, StyleSheet, Text, View} from 'react-native';
+import {Button, ProfileMenu} from '../../components';
 import {colors, fonts} from '../../utils';
 import {IMGProfilePicture} from '../../assets/images';
-import {
-  IconCoupon,
-  IconAddress,
-  IconProtection,
-  IconHelp,
-  IconArrowRight,
-} from '../../assets/icons';
+import {IconArrowRight} from '../../assets/icons';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const Profile = ({navigation}) => {
@@ -40,44 +26,10 @@ const Profile = ({navigation}) => {
         </View>
       </View>
       <View style={styles.profileMenuContainer}>
-        <View style={styles.voucherContainer}>
-          <TouchableOpacity style={styles.voucherButtonContainer}>
-            <IconCoupon />
-            <Text style={styles.profileMenuTitleText}>Voucher Saya</Text>
-            <View style={styles.arrowRightContainer}>
-              <IconArrowRight />
-            </View>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.voucherContainer}>
-          <TouchableOpacity style={styles.voucherButtonContainer}>
-            <IconAddress />
-            <Text style={styles.profileMenuTitleText}>Alamat</Text>
-            <View style={styles.arrowRightContainer}>
-              <IconArrowRight />
-            </View>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.voucherContainer}>
-          <TouchableOpacity style={styles.voucherButtonContainer}>
-            <IconProtection />
-            <Text style={styles.profileMenuTitleText}>
-              Privasi dan Kebijakan
-            </Text>
-            <View style={styles.arrowRightContainer}>
-              <IconArrowRight />
-            </View>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.voucherContainer}>
-          <TouchableOpacity style={styles.voucherButtonContainer}>
-            <IconHelp />
-            <Text style={styles.profileMenuTitleText}>Bantuan</Text>
-            <View style={styles.arrowRightContainer}>
-              <IconArrowRight />
-            </View>
-          </TouchableOpacity>
-        </View>
+        <ProfileMenu title="Voucher Saya" icon="icon-coupon" />
+        <ProfileMenu title="Alamat" icon="icon-address" />
+        <ProfileMenu title="Privasi dan Kebijakan" icon="icon-protection" />
+        <ProfileMenu title="Bantuan" icon="icon-help" />
         <View>
           <TouchableOpacity style={styles.voucherButtonContainer}>
             <Text style={styles.keluarText}>Keluar</Text>

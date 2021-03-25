@@ -1,17 +1,9 @@
 import React from 'react';
-import {
-  Image,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import {SafeAreaView, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {DummyBrokoliHijau} from '../../assets';
 import {Gap, Product, SearchBox, Carousel} from '../../components';
 import Category from '../../components/molecules/Category';
 import {colors, fonts} from '../../utils';
-// import Swiper from 'react-native-swiper';
 
 const HomeScreen = ({navigation}) => {
   return (

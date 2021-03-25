@@ -1,18 +1,8 @@
 import React from 'react';
-import {useEffect} from 'react';
-import {
-  Dimensions,
-  Image,
-  StyleSheet,
-  View,
-  Text,
-  ImageBackground,
-} from 'react-native';
-import {IMGWortel, IMGProfilePicture, IconCross} from '../../assets';
+import {Image, StyleSheet, View, Text} from 'react-native';
+import {IMGProfilePicture} from '../../assets';
 import {Button} from '../../components';
 import {colors, fonts} from '../../utils';
-import LinearGradient from 'react-native-linear-gradient';
-import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 
 const EditProfile = ({navigation}) => {
   return (

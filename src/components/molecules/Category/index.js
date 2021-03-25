@@ -3,7 +3,6 @@ import {Image, StyleSheet, Text, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {IMGLainnya, IMGBuah, IMGRempah, IMGSayuran} from '../../../assets';
 import {colors, fonts} from '../../../utils';
-import {Button} from '../../atoms';
 
 const Category = ({title, onChange}) => {
   if (title === 'sayuran') {
