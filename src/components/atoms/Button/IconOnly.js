@@ -14,6 +14,7 @@ import {
   IconHelp,
   IconSettings,
   IconRemove,
+  IconArrowBottom,
 } from '../../../assets';
 import {colors} from '../../../utils';
 
@@ -107,6 +108,13 @@ const IconOnly = ({icon, onPress, width, height, color = colors.grey}) => {
       return (
         <View style={styles.iconContainer(width, height, colors.button.black)}>
           <IconRemove />
+        </View>
+      );
+    }
+    if (icon === 'icon-arrow-bottom') {
+      return (
+        <View style={styles.iconContainer(width, height, colors.button.black)}>
+          <IconArrowBottom />
         </View>
       );
     }

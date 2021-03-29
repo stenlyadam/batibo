@@ -1,10 +1,12 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {SafeAreaView, StyleSheet, Text, View, ScrollView} from 'react-native';
 import {DummyBrokoliHijau, DummyJerukBali} from '../../assets';
 import {Button, CartItem, PageTitle, CheckBox} from '../../components';
 import {colors, fonts} from '../../utils';
+import {Picker} from '@react-native-community/picker';
 
 const Checkout = ({navigation}) => {
+  const [selectedValue, setSelectedValue] = useState('Alamat Rumah');
   return (
     <SafeAreaView style={styles.page}>
       <PageTitle
@@ -17,10 +19,22 @@ const Checkout = ({navigation}) => {
           <View style={styles.deliveryContainer}>
             <Text style={styles.deliver}>Pengiriman</Text>
             <Text style={styles.subTitle}>Alamat Pengiriman</Text>
-            <View style={styles.dropdownContainer}>
-              <Text style={styles.paymentSummaryCategory}>Pilih Alamat</Text>
+            <View style={styles.pickerContainer}>
+              <Picker
+                selectedValue={selectedValue}
+                style={[styles.picker]}
+                onValueChange={(itemValue, itemIndex) =>
+                  setSelectedValue(itemValue)
+                }>
+                <Picker.Item label="Alamat Rumah" value="Alamat Rumah" />
+                <Picker.Item label="Kantor" value="Kantor" />
+              </Picker>
               <Button type="icon-only" icon="icon-arrow-right" />
             </View>
+            {/* <View style={styles.dropdownContainer}>
+              <Text style={styles.paymentSummaryCategory}>Pilih Alamat</Text>
+              <Button type="icon-only" icon="icon-arrow-right" />
+            </View> */}
           </View>
 
           <View>
@@ -63,7 +77,10 @@ const Checkout = ({navigation}) => {
       </ScrollView>
 
       <View style={styles.paymentButton}>
-        <Button title="Pesan Sekarang" />
+        <Button
+          title="Pesan Sekarang"
+          onPress={() => navigation.navigate('OrderSuccess')}
+        />
       </View>
     </SafeAreaView>
   );
@@ -152,7 +169,15 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   paymentButton: {marginHorizontal: 24, marginBottom: 16},
-  // button: {
-  //   backgroundColor: 'red',
-  // },
+  picker: {
+    height: 30,
+    width: 320,
+    backgroundColor: colors.lightGrey,
+  },
+  pickerContainer: {
+    backgroundColor: colors.lightGrey,
+    padding: 10,
+    borderRadius: 8,
+    flexDirection: 'row',
+  },
 });

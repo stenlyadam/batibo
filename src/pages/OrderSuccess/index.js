@@ -32,7 +32,10 @@ const OrderSuccess = ({navigation}) => {
           </View>
         </View>
         <View style={styles.buttonWrapper}>
-          <Button title="Lihat Orderan Saya" />
+          <Button
+            title="Lihat Orderan Saya"
+            onPress={() => navigation.navigate('Order')}
+          />
         </View>
       </View>
     </SafeAreaView>

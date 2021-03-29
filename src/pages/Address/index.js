@@ -31,8 +31,6 @@ const Address = ({navigation}) => {
             />
           </View>
           <Text style={styles.subTitle}>Alamat Rumah</Text>
-          <Text style={styles.subTitle}>Amir Mahfudi</Text>
-          <Text style={styles.text}>62 811 7812 0012</Text>
           <Text style={styles.text}>
             Airmadidi Atas, Kanaan Lingkungan IX, Kec. Airmadidi, Kabupaten
             Minahasa Utara, Sulawesi Utara

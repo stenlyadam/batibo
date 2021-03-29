@@ -15,6 +15,7 @@ import IconProfile from './ic-profile.svg';
 import IconCross from './ic-cross.svg';
 import IconSettings from './ic-settings.svg';
 import IconRemove from './ic-remove.svg';
+import IconArrowBottom from './ic-arrow-bottom.svg';
 
 export {
   IconSearch,
@@ -34,4 +35,5 @@ export {
   IconCross,
   IconSettings,
   IconRemove,
+  IconArrowBottom,
 };

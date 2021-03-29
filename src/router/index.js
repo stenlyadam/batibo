@@ -16,10 +16,9 @@ import {
   EditProfile,
   Address,
 } from '../pages';
-import {NavigationContainer} from '@react-navigation/native';
+import Page from '../pages/OnBoarding/Page';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {IconHome, IconCart, IconReceipt, IconProfile} from '../assets';
-import {Button} from '../components';
 import {colors, fonts} from '../utils';
 
 const Tab = createBottomTabNavigator();
@@ -55,8 +54,8 @@ const BottomNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="Payment"
-        component={Payment}
+        name="Order"
+        component={Order}
         options={{
           tabBarLabel: 'Order Saya',
           tabBarIcon: ({color, size}) => (
@@ -151,6 +150,11 @@ const Router = () => {
       <Stack.Screen
         name="Address"
         component={Address}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Page"
+        component={Page}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

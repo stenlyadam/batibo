@@ -12,6 +12,7 @@ import Payment from './Payment';
 import Profile from './Profile';
 import EditProfile from './EditProfile';
 import Address from './Address';
+import Page from './OnBoarding/Page';
 
 export {
   Splash,
@@ -28,4 +29,5 @@ export {
   Profile,
   EditProfile,
   Address,
+  Page,
 };
