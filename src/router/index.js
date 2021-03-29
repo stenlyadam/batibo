@@ -14,6 +14,7 @@ import {
   Payment,
   Profile,
   EditProfile,
+  Address,
 } from '../pages';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -145,6 +146,11 @@ const Router = () => {
       <Stack.Screen
         name="EditProfile"
         component={EditProfile}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Address"
+        component={Address}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

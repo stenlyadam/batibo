@@ -11,6 +11,7 @@ import Detail from './Detail';
 import Payment from './Payment';
 import Profile from './Profile';
 import EditProfile from './EditProfile';
+import Address from './Address';
 
 export {
   Splash,
@@ -26,4 +27,5 @@ export {
   Payment,
   Profile,
   EditProfile,
+  Address,
 };

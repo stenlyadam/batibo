@@ -5,10 +5,10 @@ import {colors, fonts} from '../../../utils';
 import {IconArrowRight} from '../../../assets';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
-const ProfileMenu = ({title, icon}) => {
+const ProfileMenu = ({title, icon, onClick}) => {
   return (
     <View style={styles.voucherContainer}>
-      <TouchableOpacity style={styles.voucherButtonContainer}>
+      <TouchableOpacity style={styles.voucherButtonContainer} onPress={onClick}>
         <Button type="icon-only" icon={icon} />
         <Text style={styles.profileMenuTitleText}>{title}</Text>
         <View style={styles.arrowRightContainer}>

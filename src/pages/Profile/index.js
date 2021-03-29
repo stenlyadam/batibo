@@ -20,14 +20,18 @@ const Profile = ({navigation}) => {
         <View style={styles.optionContainer}>
           <Button
             type="icon-only"
-            icon="icon-dots-option"
+            icon="icon-settings"
             onPress={() => navigation.navigate('EditProfile')}
           />
         </View>
       </View>
       <View style={styles.profileMenuContainer}>
         <ProfileMenu title="Voucher Saya" icon="icon-coupon" />
-        <ProfileMenu title="Alamat" icon="icon-address" />
+        <ProfileMenu
+          title="Alamat"
+          icon="icon-address"
+          onClick={() => navigation.navigate('Address')}
+        />
         <ProfileMenu title="Privasi dan Kebijakan" icon="icon-protection" />
         <ProfileMenu title="Bantuan" icon="icon-help" />
         <View>

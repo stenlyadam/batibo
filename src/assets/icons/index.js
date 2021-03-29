@@ -13,6 +13,8 @@ import IconHome from './ic-home.svg';
 import IconReceipt from './ic-receipt.svg';
 import IconProfile from './ic-profile.svg';
 import IconCross from './ic-cross.svg';
+import IconSettings from './ic-settings.svg';
+import IconRemove from './ic-remove.svg';
 
 export {
   IconSearch,
@@ -30,4 +32,6 @@ export {
   IconReceipt,
   IconProfile,
   IconCross,
+  IconSettings,
+  IconRemove,
 };

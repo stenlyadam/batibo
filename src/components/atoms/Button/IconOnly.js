@@ -12,6 +12,8 @@ import {
   IconAddress,
   IconProtection,
   IconHelp,
+  IconSettings,
+  IconRemove,
 } from '../../../assets';
 import {colors} from '../../../utils';
 
@@ -91,6 +93,20 @@ const IconOnly = ({icon, onPress, width, height, color = colors.grey}) => {
       return (
         <View style={styles.iconContainer(width, height, colors.button.black)}>
           <IconHelp />
+        </View>
+      );
+    }
+    if (icon === 'icon-settings') {
+      return (
+        <View style={styles.iconContainer(width, height, colors.button.black)}>
+          <IconSettings />
+        </View>
+      );
+    }
+    if (icon === 'icon-remove') {
+      return (
+        <View style={styles.iconContainer(width, height, colors.button.black)}>
+          <IconRemove />
         </View>
       );
     }

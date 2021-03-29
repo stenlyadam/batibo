@@ -3,7 +3,17 @@ import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {colors} from '../../../utils';
 import IconOnly from './IconOnly';
 
-const Button = ({title, type, onPress, icon, width, height, space, size}) => {
+const Button = ({
+  title,
+  type,
+  onPress,
+  icon,
+  width,
+  height,
+  space,
+  size,
+  color,
+}) => {
   if (type === 'icon-only') {
     return (
       <IconOnly icon={icon} onPress={onPress} width={width} height={height} />
@@ -11,7 +21,7 @@ const Button = ({title, type, onPress, icon, width, height, space, size}) => {
   }
   return (
     <TouchableOpacity onPress={onPress}>
-      <View style={styles.container(space, height)}>
+      <View style={styles.container(space, height, color)}>
         <Text style={styles.text(size)}>{title}</Text>
       </View>
     </TouchableOpacity>
@@ -21,8 +31,8 @@ const Button = ({title, type, onPress, icon, width, height, space, size}) => {
 export default Button;
 
 const styles = StyleSheet.create({
-  container: (space, height, radius) => ({
-    backgroundColor: colors.button.primary.backgroundColor,
+  container: (space, height, radius, color) => ({
+    backgroundColor: color ? color : colors.button.primary.backgroundColor,
     width: space,
     paddingVertical: height ? height : 14,
     borderRadius: 10,

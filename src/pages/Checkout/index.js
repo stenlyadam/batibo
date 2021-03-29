@@ -21,25 +21,6 @@ const Checkout = ({navigation}) => {
               <Text style={styles.paymentSummaryCategory}>Pilih Alamat</Text>
               <Button type="icon-only" icon="icon-arrow-right" />
             </View>
-            <Text style={styles.subTitle}>Tanggal Kirim</Text>
-            <View>
-              <View style={styles.dateContainer}>
-                <CheckBox />
-                <Text style={styles.paymentSummaryCategory}>
-                  Senin, 1 Mei 2020
-                </Text>
-              </View>
-            </View>
-            <Text style={styles.subTitle}>Pilih Jam Antar</Text>
-            <View style={styles.timeContainer}>
-              <Button
-                space={110}
-                height={12}
-                color="yellow"
-                title="07.00 - 08.00"
-              />
-              <Button space={110} height={12} title="08.00 - 09.00" />
-            </View>
           </View>
 
           <View>
