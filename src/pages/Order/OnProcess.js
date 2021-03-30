@@ -2,13 +2,19 @@ import React from 'react';
 import {StyleSheet, Text, View, Image} from 'react-native';
 import {Button} from '../../components';
 import {colors, fonts} from '../../utils';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import {DummyBrokoliHijau} from '../../assets';
+import OrderItem from './OrderItem';
 
 const OnProcess = ({navigation}) => {
   return (
-    <View style={styles.tabContainer}>
-      <TouchableOpacity
+    <ScrollView style={styles.tabContainer}>
+      <OrderItem
+        status="Pesanan Dikirim"
+        deliveryDate="18 Oktober 2020"
+        press={() => navigation.navigate('Payment')}
+      />
+      {/* <TouchableOpacity
         style={styles.orderContainer}
         onPress={() => navigation.navigate('Payment')}>
         <View style={styles.orderStatusContainer}>
@@ -44,8 +50,8 @@ const OnProcess = ({navigation}) => {
           <Text style={styles.subTitleText}>Total Pembayaran</Text>
           <Text style={styles.orderAmount}>Rp. 140.000</Text>
         </View>
-      </TouchableOpacity>
-    </View>
+      </TouchableOpacity> */}
+    </ScrollView>
   );
 };
 

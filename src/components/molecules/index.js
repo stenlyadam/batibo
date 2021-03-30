@@ -5,6 +5,7 @@ import CartSummary from './CartSummary';
 import Counter from './Counter';
 import Carousel from './Carousel';
 import ProfileMenu from './ProfileMenu';
+import OrderItem from '../../pages/Order/OrderItem';
 
 export {
   Product,
@@ -14,4 +15,5 @@ export {
   CartSummary,
   Carousel,
   ProfileMenu,
+  OrderItem,
 };

@@ -17,6 +17,7 @@ import {
   Address,
 } from '../pages';
 import Page from '../pages/OnBoarding/Page';
+import OrderItem from '../pages/Order/OrderItem';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {IconHome, IconCart, IconReceipt, IconProfile} from '../assets';
 import {colors, fonts} from '../utils';
@@ -155,6 +156,11 @@ const Router = () => {
       <Stack.Screen
         name="Page"
         component={Page}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="OrderItem"
+        component={OrderItem}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

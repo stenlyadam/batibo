@@ -3,7 +3,6 @@ import {SafeAreaView, StyleSheet, View} from 'react-native';
 import {PageTitle} from '../../components';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {colors, fonts} from '../../utils';
-
 import OnProcess from './OnProcess';
 import History from './History';
 
