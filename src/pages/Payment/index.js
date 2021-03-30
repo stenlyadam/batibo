@@ -1,9 +1,8 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {StyleSheet, Text, View, SafeAreaView, Dimensions} from 'react-native';
 import {Button, Gap, PageTitle} from '../../components';
 import {colors, fonts} from '../../utils';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import {FlatList} from 'react-native-gesture-handler';
 import OrderDetail from './OrderDetail';
 import DeliveryDetail from './DeliveryDetail';
 

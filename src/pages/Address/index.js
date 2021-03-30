@@ -1,8 +1,8 @@
 import React from 'react';
-import {Image, StyleSheet, View, Text} from 'react-native';
-import {IMGProfilePicture} from '../../assets';
+import {StyleSheet, View, Text} from 'react-native';
 import {Button} from '../../components';
 import {colors, fonts} from '../../utils';
+import AddressItem from './AddressItem';
 
 const Address = ({navigation}) => {
   return (
@@ -22,21 +22,14 @@ const Address = ({navigation}) => {
       </View>
 
       <View style={styles.addressListContainer}>
-        <View style={styles.addressContainer}>
-          <View style={styles.iconRemoveContainer}>
-            <Button
-              type="icon-only"
-              icon="icon-remove"
-              style={styles.iconRemove}
-            />
-          </View>
-          <Text style={styles.subTitle}>Alamat Rumah</Text>
-          <Text style={styles.text}>
-            Airmadidi Atas, Kanaan Lingkungan IX, Kec. Airmadidi, Kabupaten
-            Minahasa Utara, Sulawesi Utara
-          </Text>
-          <Button title="Ubah Alamat" />
-        </View>
+        <AddressItem
+          title="Alamat Rumah"
+          content="Airmadidi Atas, Kanaan Lingkungan IX, Kec. Airmadidi, Kabupaten Minahasa Utara, Sulawesi Utara"
+        />
+        <AddressItem
+          title="Alamat Rumah"
+          content="Airmadidi Atas, Kanaan Lingkungan IX, Kec. Airmadidi, Kabupaten Minahasa Utara, Sulawesi Utara"
+        />
       </View>
     </View>
   );
@@ -77,37 +70,9 @@ const styles = StyleSheet.create({
     fontSize: 22,
     opacity: 0.7,
   },
-
   addressListContainer: {
     flex: 1,
     marginHorizontal: 24,
     marginTop: 30,
-  },
-
-  addressContainer: {
-    height: 185,
-    backgroundColor: colors.white,
-    borderColor: colors.lightGrey,
-    borderWidth: 1,
-    borderRadius: 10,
-    elevation: 5,
-    padding: 14,
-  },
-  iconRemoveContainer: {
-    position: 'absolute',
-    right: 14,
-    top: 14,
-  },
-  text: {
-    fontFamily: fonts.nunito.normal,
-    fontSize: 12,
-    color: colors.text.secondary,
-    marginBottom: 5,
-  },
-  subTitle: {
-    fontFamily: fonts.nunito.semibold,
-    fontSize: 14,
-    color: colors.text.primary,
-    marginBottom: 5,
   },
 });
