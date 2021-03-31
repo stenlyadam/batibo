@@ -1,9 +1,7 @@
 import React from 'react';
-import {StyleSheet, Text, View, Image} from 'react-native';
-import {Button} from '../../components';
+import {StyleSheet} from 'react-native';
 import {colors, fonts} from '../../utils';
-import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
-import {DummyBrokoliHijau} from '../../assets';
+import {ScrollView} from 'react-native-gesture-handler';
 import OrderItem from './OrderItem';
 
 const OnProcess = ({navigation, status}) => {

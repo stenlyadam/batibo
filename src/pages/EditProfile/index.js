@@ -108,8 +108,6 @@ const styles = StyleSheet.create({
   },
   profilePictureContainer: {
     backgroundColor: colors.white,
-    // paddingHorizontal: 5,
-    // paddingVertical: 5,
     justifyContent: 'center',
     alignItems: 'center',
     width: 85,

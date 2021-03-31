@@ -3,7 +3,7 @@ import {StyleSheet, View, Text} from 'react-native';
 import {Button} from '../../components';
 import {colors, fonts} from '../../utils';
 
-const AddressItem = ({navigation, title, content}) => {
+const AddressItem = ({title, content}) => {
   return (
     <View style={styles.addressContainer}>
       <View style={styles.iconRemoveContainer}>

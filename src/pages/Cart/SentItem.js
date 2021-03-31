@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View, Text, Dimensions, Image} from 'react-native';
+import {StyleSheet, View, Text, Image} from 'react-native';
 import {DummyBrokoliHijau} from '../../assets';
 import {colors, fonts} from '../../utils';
 import {TouchableOpacity} from 'react-native-gesture-handler';

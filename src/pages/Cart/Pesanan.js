@@ -1,8 +1,8 @@
 import React from 'react';
-import {StyleSheet, View, Text, Dimensions} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {DummyBrokoliHijau} from '../../assets';
-import {CartItem, CartSummary, CheckBox} from '../../components';
-import {colors, fonts} from '../../utils';
+import {CartItem, CartSummary} from '../../components';
+import {colors} from '../../utils';
 import {ScrollView} from 'react-native-gesture-handler';
 
 const Pesanan = ({navigation}) => {

@@ -8,7 +8,7 @@ import Dikirim from './Dikirim';
 
 const CartTab = createMaterialTopTabNavigator();
 
-const Cart = ({navigation}) => {
+const Cart = () => {
   return (
     <SafeAreaView style={styles.page}>
       <View style={styles.pageTitle}>

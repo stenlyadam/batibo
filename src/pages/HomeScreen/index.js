@@ -13,7 +13,6 @@ const HomeScreen = ({navigation}) => {
         <Text style={styles.welcomeText}>Pilih Sayuran-mu disini</Text>
         <Gap height={5} />
         <SearchBox label="Cari yang kamu butuhkan" />
-        {/* <Gap height={32} /> */}
         <Carousel />
       </View>
       <View style={styles.categoryContainer}>

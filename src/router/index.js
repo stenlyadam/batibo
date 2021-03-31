@@ -138,11 +138,6 @@ const Router = () => {
         component={Payment}
         options={{headerShown: false}}
       />
-      {/* <Stack.Screen
-        name="Profile"
-        component={Profile}
-        options={{headerShown: false}}
-      /> */}
       <Stack.Screen
         name="EditProfile"
         component={EditProfile}

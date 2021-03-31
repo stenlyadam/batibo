@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {Button} from '../../atoms';
 
-const Counter = ({onChange}) => {
+const Counter = () => {
   const [count, setCount] = useState(0);
   const onPressMinus = () => {
     if (count > 0) {

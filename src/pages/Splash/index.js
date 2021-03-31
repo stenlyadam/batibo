@@ -11,7 +11,7 @@ const Splash = ({navigation}) => {
     setTimeout(() => {
       navigation.replace('OnBoarding');
     }, 2000);
-  }, []);
+  });
 
   return (
     <View style={styles.container}>
