@@ -6,6 +6,15 @@ import {
   IconPlus,
   IconCart,
   IconDotsIcon,
+  IconCross,
+  IconArrowRight,
+  IconCoupon,
+  IconAddress,
+  IconProtection,
+  IconHelp,
+  IconSettings,
+  IconRemove,
+  IconArrowBottom,
 } from '../../../assets';
 import {colors} from '../../../utils';
 
@@ -43,6 +52,69 @@ const IconOnly = ({icon, onPress, width, height, color = colors.grey}) => {
       return (
         <View style={styles.iconContainer(width, height, colors.button.black)}>
           <IconDotsIcon />
+        </View>
+      );
+    }
+    if (icon === 'icon-cross') {
+      return (
+        <View style={styles.iconContainer(width, height, colors.button.black)}>
+          <IconCross />
+        </View>
+      );
+    }
+    if (icon === 'icon-arrow-right') {
+      return (
+        <View style={styles.iconContainer(width, height, colors.button.black)}>
+          <IconArrowRight />
+        </View>
+      );
+    }
+    if (icon === 'icon-coupon') {
+      return (
+        <View style={styles.iconContainer(width, height, colors.button.black)}>
+          <IconCoupon />
+        </View>
+      );
+    }
+    if (icon === 'icon-address') {
+      return (
+        <View style={styles.iconContainer(width, height, colors.button.black)}>
+          <IconAddress />
+        </View>
+      );
+    }
+    if (icon === 'icon-protection') {
+      return (
+        <View style={styles.iconContainer(width, height, colors.button.black)}>
+          <IconProtection />
+        </View>
+      );
+    }
+    if (icon === 'icon-help') {
+      return (
+        <View style={styles.iconContainer(width, height, colors.button.black)}>
+          <IconHelp />
+        </View>
+      );
+    }
+    if (icon === 'icon-settings') {
+      return (
+        <View style={styles.iconContainer(width, height, colors.button.black)}>
+          <IconSettings />
+        </View>
+      );
+    }
+    if (icon === 'icon-remove') {
+      return (
+        <View style={styles.iconContainer(width, height, colors.button.black)}>
+          <IconRemove />
+        </View>
+      );
+    }
+    if (icon === 'icon-arrow-bottom') {
+      return (
+        <View style={styles.iconContainer(width, height, colors.button.black)}>
+          <IconArrowBottom />
         </View>
       );
     }

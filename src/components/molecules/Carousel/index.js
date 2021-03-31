@@ -8,9 +8,12 @@ const Carousel = () => {
   return (
     <Swiper
       style={styles.carouselWrapper}
-      height={132}
-      dotStyle={{backgroundColor: colors.white, opacity: 0.5}}
-      activeDotStyle={{backgroundColor: colors.white}}>
+      // showsPagination={false}
+      dotStyle={{
+        backgroundColor: colors.button.green,
+        opacity: 0.5,
+      }}
+      activeDotStyle={{backgroundColor: colors.button.green}}>
       <View style={styles.slide1}>
         <Image source={IMGCarousel} style={styles.carouselPicture} />
       </View>
@@ -27,9 +30,10 @@ const Carousel = () => {
 export default Carousel;
 
 const styles = StyleSheet.create({
+  carouselWrapper: {},
   slide1: {
+    paddingTop: 22,
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
   },
   carouselPicture: {

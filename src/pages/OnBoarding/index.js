@@ -1,134 +1,82 @@
 import React from 'react';
-import {useEffect} from 'react';
-import {Dimensions, Image, StyleSheet, View, Text} from 'react-native';
-import {IMGOnBoarding1} from '../../assets';
-import {colors} from '../../utils';
-import LinearGradient from 'react-native-linear-gradient';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {StyleSheet, View} from 'react-native';
+import {IMGOnBoarding1, IMGOnBoarding2, IMGOnBoarding3} from '../../assets';
+import {colors, fonts} from '../../utils';
+import Swiper from 'react-native-swiper';
+import Page from './Page';
 
-const OnBoarding = () => {
+const OnBoarding = ({navigation}) => {
+  const swiper = React.useRef(null);
+  const handleNext = () => {
+    if (swiper && swiper.current) {
+      swiper.current.scrollBy(1);
+    }
+  };
   return (
-    <View style={styles.container}>
-      <LinearGradient
-        colors={['#D0F5B2', '#24AD65']}
-        style={styles.linearGradient}>
-        <View style={styles.lewatiContainer}>
-          <TouchableOpacity>
-            <Text style={styles.textLewati}>Lewati</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.imageContainer}>
-          <Image source={IMGOnBoarding1} style={styles.image} />
-        </View>
-      </LinearGradient>
-      <View style={styles.bottomContainer}>
-        <View style={styles.titleContainer}>
-          <Text style={styles.title}>Bantu Petani dan Permudah Belanja-mu</Text>
-        </View>
-        <View style={styles.textContainer}>
-          <Text style={styles.text}>
-            Bantu petani dengan membeli langsung hasil panen dari mereka,
-            sehingga kamu dapat belanja dengan mudah, petani bahagia.
-          </Text>
-        </View>
-        <View style={styles.actionContainer}>
-          <View style={styles.dotsContainer}>
-            <View style={styles.longDots} />
-            <View style={styles.dots} />
-            <View style={styles.dots} />
-          </View>
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.button}>
-              <Text style={styles.buttonText}>Lanjut</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+    <Swiper
+      ref={swiper}
+      loop={false}
+      paginationStyle={{
+        marginLeft: 24,
+        marginBottom: 20,
+        width: 80,
+        justifyContent: 'space-between',
+      }}
+      dotStyle={{
+        width: 12,
+        height: 12,
+        backgroundColor: colors.grey,
+        borderRadius: 15,
+      }}
+      activeDotStyle={{
+        width: 25,
+        height: 12,
+        backgroundColor: colors.button.primary.backgroundColor,
+        borderRadius: 15,
+      }}>
+      <View style={styles.slide}>
+        <Page
+          title="Bantu Petani dan Permudah Belanja-mu"
+          text="Bantu petani dengan membeli langsung hasil panen dari mereka, sehingga
+          kamu dapat belanja dengan mudah, petani bahagia."
+          image={IMGOnBoarding1}
+          press={() => handleNext()}
+          lewati={() => navigation.navigate('Login')}
+        />
       </View>
-    </View>
+
+      <View style={styles.slide}>
+        <Page
+          title="Pilih Sayuran Sesuai Kebutuhan-mu!"
+          text="Cukup lewat HP kamu bisa memilih sayuran dan kebutuhan dapur
+          lainnya, jumlahnya bisa kamu sesuaikan dengan keterangan harga yang
+          tersedia juga."
+          image={IMGOnBoarding2}
+          press={() => handleNext()}
+          lewati={() => navigation.navigate('Login')}
+        />
+      </View>
+
+      <View style={styles.slide}>
+        <Page
+          title="Pesan Sayuran Mudah hanya #dirumahaja"
+          text="Tidak perlu repot untuk berbelanja kebutuhan dapur kamu, hanya
+          dengan dirumah aja kamu sudah bisa membeli sayur dan lainnya."
+          image={IMGOnBoarding3}
+          topButton=""
+          bottomButton="Selesai"
+          press={() => navigation.navigate('Login')}
+        />
+      </View>
+    </Swiper>
   );
 };
 
 export default OnBoarding;
 
 const styles = StyleSheet.create({
-  container: {
+  slide: {
     flex: 1,
-  },
-  linearGradient: {
-    height: 485,
-  },
-  imageContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  lewatiContainer: {
-    alignItems: 'flex-end',
-    marginRight: 28,
-    marginTop: 24,
-  },
-  textLewati: {
-    color: 'white',
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
-  bottomContainer: {
-    alignItems: 'center',
-  },
-  titleContainer: {
-    width: 327,
-    marginTop: 32,
-  },
-  title: {
-    color: colors.text.primary,
-    fontWeight: 'bold',
-    fontSize: 24,
-    letterSpacing: 1,
-  },
-  textContainer: {
-    width: 327,
-    marginTop: 16,
-  },
-  text: {
-    fontSize: 13,
-    letterSpacing: 1,
-    color: colors.text.secondary,
-  },
-  actionContainer: {
-    width: 327,
-    flexDirection: 'row',
-    marginTop: 30,
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  dotsContainer: {
-    flexDirection: 'row',
-    width: 79,
-    justifyContent: 'space-between',
-  },
-  longDots: {
-    height: 12,
-    width: 25,
-    borderRadius: 12,
-    backgroundColor: colors.button.primary.backgroundColor,
-  },
-  dots: {
-    height: 12,
-    width: 12,
-    borderRadius: 12,
-    backgroundColor: colors.grey,
-  },
-  buttonContainer: {
-    backgroundColor: colors.button.primary.backgroundColor,
-    borderRadius: 10,
-  },
-  button: {
-    height: 50,
-    width: 104,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  buttonText: {
-    color: colors.button.primary.text,
+    backgroundColor: colors.white,
   },
 });
