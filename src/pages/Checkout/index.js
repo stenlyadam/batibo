@@ -1,10 +1,12 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {SafeAreaView, StyleSheet, Text, View, ScrollView} from 'react-native';
 import {DummyBrokoliHijau, DummyJerukBali} from '../../assets';
-import {Button, CartItem, PageTitle} from '../../components';
-import {colors} from '../../utils';
+import {Button, CartItem, PageTitle, CheckBox} from '../../components';
+import {colors, fonts} from '../../utils';
+import {Picker} from '@react-native-community/picker';
 
 const Checkout = ({navigation}) => {
+  const [selectedValue, setSelectedValue] = useState('Alamat Rumah');
   return (
     <SafeAreaView style={styles.page}>
       <PageTitle
@@ -12,8 +14,29 @@ const Checkout = ({navigation}) => {
         backButton
         onBack={() => navigation.goBack()}
       />
-      <View style={styles.pageContainer}>
-        <ScrollView>
+      <ScrollView>
+        <View style={styles.pageContainer}>
+          <View style={styles.deliveryContainer}>
+            <Text style={styles.deliver}>Pengiriman</Text>
+            <Text style={styles.subTitle}>Alamat Pengiriman</Text>
+            <View style={styles.pickerContainer}>
+              <Picker
+                selectedValue={selectedValue}
+                style={[styles.picker]}
+                onValueChange={(itemValue, itemIndex) =>
+                  setSelectedValue(itemValue)
+                }>
+                <Picker.Item label="Alamat Rumah" value="Alamat Rumah" />
+                <Picker.Item label="Kantor" value="Kantor" />
+              </Picker>
+              <Button type="icon-only" icon="icon-arrow-right" />
+            </View>
+            {/* <View style={styles.dropdownContainer}>
+              <Text style={styles.paymentSummaryCategory}>Pilih Alamat</Text>
+              <Button type="icon-only" icon="icon-arrow-right" />
+            </View> */}
+          </View>
+
           <View>
             <View style={styles.deliverContainer}>
               <Text style={styles.deliver}>Pesanan</Text>
@@ -50,10 +73,14 @@ const Checkout = ({navigation}) => {
               </View>
             </View>
           </View>
-        </ScrollView>
-        <View style={styles.paymentButton}>
-          <Button title="Pesan Sekarang" />
         </View>
+      </ScrollView>
+
+      <View style={styles.paymentButton}>
+        <Button
+          title="Pesan Sekarang"
+          onPress={() => navigation.navigate('OrderSuccess')}
+        />
       </View>
     </SafeAreaView>
   );
@@ -62,6 +89,29 @@ const Checkout = ({navigation}) => {
 export default Checkout;
 
 const styles = StyleSheet.create({
+  deliveryContainer: {
+    paddingHorizontal: 24,
+    paddingBottom: 24,
+  },
+  dropdownContainer: {
+    backgroundColor: colors.lightGrey,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: 4,
+  },
+  dateContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  timeContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: 240,
+  },
+
   page: {
     flex: 1,
     backgroundColor: colors.white,
@@ -72,6 +122,7 @@ const styles = StyleSheet.create({
   },
   deliverContainer: {marginHorizontal: 24},
   deliver: {
+    fontFamily: fonts.nunito.semibold,
     marginTop: 16,
     marginBottom: 16,
     fontWeight: 'bold',
@@ -79,6 +130,7 @@ const styles = StyleSheet.create({
     color: colors.text.quartenary,
   },
   subTitle: {
+    fontFamily: fonts.nunito.semibold,
     marginVertical: 12,
     fontWeight: '600',
     fontSize: 16,
@@ -86,8 +138,17 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {flexDirection: 'row', justifyContent: 'flex-start'},
   paymentSummary: {flexDirection: 'row', justifyContent: 'space-between'},
-  paymentSummaryCategory: {fontSize: 16, opacity: 0.5},
-  priceSummary: {color: '#202020', fontWeight: 'bold', fontSize: 16},
+  paymentSummaryCategory: {
+    fontFamily: fonts.nunito.semibold,
+    fontSize: 16,
+    opacity: 0.5,
+  },
+  priceSummary: {
+    color: '#202020',
+    fontWeight: 'bold',
+    fontSize: 16,
+    fontFamily: fonts.nunito.semibold,
+  },
   totalPayment: {
     marginTop: 32,
     marginBottom: 12,
@@ -96,7 +157,27 @@ const styles = StyleSheet.create({
     borderTopColor: colors.border,
     borderTopWidth: 1,
   },
-  totalPaymentText: {fontSize: 16, opacity: 0.5},
-  totalPrice: {color: colors.text.tertiary, fontWeight: 'bold', fontSize: 16},
+  totalPaymentText: {
+    fontFamily: fonts.nunito.semibold,
+    fontSize: 16,
+    opacity: 0.5,
+  },
+  totalPrice: {
+    fontFamily: fonts.nunito.semibold,
+    color: colors.text.tertiary,
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
   paymentButton: {marginHorizontal: 24, marginBottom: 16},
+  picker: {
+    height: 30,
+    width: 320,
+    backgroundColor: colors.lightGrey,
+  },
+  pickerContainer: {
+    backgroundColor: colors.lightGrey,
+    padding: 10,
+    borderRadius: 8,
+    flexDirection: 'row',
+  },
 });

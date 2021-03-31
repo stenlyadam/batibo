@@ -1,20 +1,11 @@
 import React from 'react';
-import {useEffect} from 'react';
-import {
-  Dimensions,
-  Image,
-  StyleSheet,
-  View,
-  Text,
-  ImageBackground,
-} from 'react-native';
+import {StyleSheet, View, Text, ImageBackground} from 'react-native';
 import {IMGWortel} from '../../assets';
 import {Button} from '../../components';
 import {colors, fonts} from '../../utils';
-import LinearGradient from 'react-native-linear-gradient';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 
-const Detail = () => {
+const Detail = ({navigation}) => {
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
@@ -24,6 +15,7 @@ const Detail = () => {
               type="icon-only"
               icon="icon-arrow-back"
               style={styles.backButton}
+              onPress={() => navigation.navigate('HomeScreen')}
             />
           </View>
         </ImageBackground>
@@ -56,7 +48,7 @@ Wortel mengandung vitamin A yang baik untuk kesehatan mata. Mengkonsumsi wortel 
         <View style={styles.footer}>
           <View style={styles.centerContainer}>
             <View style={styles.cartButtonContainer}>
-              <Button type="icon-only" icon="icon-cart" />
+              <Button color="blue" type="icon-only" icon="icon-cart" />
             </View>
             <TouchableOpacity style={styles.beliButtonContainer}>
               <Text style={styles.textButton}>Beli Sekarang</Text>

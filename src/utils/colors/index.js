@@ -10,6 +10,7 @@ const listColors = {
   grey3: '#D6CDCD',
   grey4: '#C4C4C4',
   grey5: '#202020',
+  grey6: '#F2F2F2',
   red1: '#FF3C21',
   black: 'black',
   blue: '#0045A3',
@@ -21,6 +22,8 @@ export const colors = {
   white: listColors.white,
   black: listColors.black,
   grey: listColors.grey4,
+  border: listColors.grey3,
+  lightGrey: listColors.grey6,
   button: {
     primary: {
       backgroundColor: listColors.orange1,
@@ -38,5 +41,4 @@ export const colors = {
     blue: listColors.blue,
     red: listColors.red,
   },
-  border: listColors.grey3,
 };

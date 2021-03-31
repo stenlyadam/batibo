@@ -14,13 +14,75 @@ import {
   Payment,
   Profile,
   EditProfile,
+  Address,
 } from '../pages';
+import Page from '../pages/OnBoarding/Page';
+import OrderItem from '../pages/Order/OrderItem';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {IconHome, IconCart, IconReceipt, IconProfile} from '../assets';
+import {colors, fonts} from '../utils';
+
+const Tab = createBottomTabNavigator();
+
+const BottomNavigator = () => {
+  return (
+    <Tab.Navigator
+      tabBarOptions={{
+        activeTintColor: colors.text.tertiary,
+        labelStyle: {
+          fontFamily: fonts.primary.normal,
+          fontSize: 12,
+          marginTop: 6,
+        },
+        tabStyle: {
+          paddingTop: 15,
+        },
+      }}>
+      <Tab.Screen
+        name="HomeScreen"
+        component={HomeScreen}
+        options={{
+          tabBarLabel: 'Beranda',
+          tabBarIcon: ({color, size}) => <IconHome color={color} size={size} />,
+        }}
+      />
+      <Tab.Screen
+        name="Cart"
+        component={Cart}
+        options={{
+          tabBarLabel: 'Keranjang',
+          tabBarIcon: ({color, size}) => <IconCart color={color} size={size} />,
+        }}
+      />
+      <Tab.Screen
+        name="Order"
+        component={Order}
+        options={{
+          tabBarLabel: 'Order Saya',
+          tabBarIcon: ({color, size}) => (
+            <IconReceipt color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={Profile}
+        options={{
+          tabBarLabel: 'Profil',
+          tabBarIcon: ({color, size}) => (
+            <IconProfile color={color} size={size} />
+          ),
+        }}
+      />
+    </Tab.Navigator>
+  );
+};
 
 const Stack = createStackNavigator();
 
 const Router = () => {
   return (
-    <Stack.Navigator initialRouteName="EditProfile">
+    <Stack.Navigator initialRouteName="BottomNavigator">
       <Stack.Screen
         name="Splash"
         component={Splash}
@@ -48,7 +110,7 @@ const Router = () => {
       />
       <Stack.Screen
         name="HomeScreen"
-        component={HomeScreen}
+        component={BottomNavigator}
         options={{headerShown: false}}
       />
       <Stack.Screen
@@ -76,14 +138,29 @@ const Router = () => {
         component={Payment}
         options={{headerShown: false}}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="Profile"
         component={Profile}
         options={{headerShown: false}}
-      />
+      /> */}
       <Stack.Screen
         name="EditProfile"
         component={EditProfile}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Address"
+        component={Address}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Page"
+        component={Page}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="OrderItem"
+        component={OrderItem}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

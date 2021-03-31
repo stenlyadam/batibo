@@ -6,14 +6,15 @@ import {
   Text,
   View,
 } from 'react-native';
+import {IMGBackground} from '../../assets';
 import {Button, CheckBox, Gap, Link, TextInput} from '../../components';
 import {colors, fonts} from '../../utils';
 
 const Login = ({navigation}) => {
   return (
     <SafeAreaView style={styles.page}>
-      <ImageBackground style={styles.headerContainer}>
-        <Text style={styles.headerText}>Selamat Datang</Text>
+      <ImageBackground source={IMGBackground} style={styles.headerContainer}>
+        <Text style={styles.headerText}>Selamat Datang!</Text>
       </ImageBackground>
       <View style={styles.formContainer}>
         <View>
@@ -58,7 +59,7 @@ const styles = StyleSheet.create({
   headerContainer: {
     width: '100%',
     height: 166,
-    backgroundColor: colors.primary,
+    backgroundColor: colors.button.green,
     justifyContent: 'center',
   },
   headerText: {
@@ -66,6 +67,8 @@ const styles = StyleSheet.create({
     fontSize: 24,
     marginLeft: 24,
     color: colors.white,
+    textShadowOffset: {width: 2, height: 5},
+    textShadowRadius: 15,
   },
   formContainer: {
     marginTop: 40,

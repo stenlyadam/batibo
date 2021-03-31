@@ -1,7 +1,8 @@
 import React from 'react';
 import {SafeAreaView, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {DummyBrokoliHijau} from '../../assets';
-import {Gap, Product, SearchBox} from '../../components';
+import {Gap, Product, SearchBox, Carousel} from '../../components';
+import Category from '../../components/molecules/Category';
 import {colors, fonts} from '../../utils';
 
 const HomeScreen = ({navigation}) => {
@@ -10,8 +11,16 @@ const HomeScreen = ({navigation}) => {
       <View style={styles.headerContainer}>
         <Text style={styles.welcomeText}>Halo John Doe</Text>
         <Text style={styles.welcomeText}>Pilih Sayuran-mu disini</Text>
-        <Gap height={16} />
+        <Gap height={5} />
         <SearchBox label="Cari yang kamu butuhkan" />
+        {/* <Gap height={32} /> */}
+        <Carousel />
+      </View>
+      <View style={styles.categoryContainer}>
+        <Category title="sayuran" />
+        <Category title="buah" />
+        <Category title="rempah" />
+        <Category title="lainnya" />
       </View>
       <Text style={styles.titleText}>Sedang Diskon</Text>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -25,6 +34,7 @@ const HomeScreen = ({navigation}) => {
             productUnit="gr"
             discount="50%"
             onBuy={() => navigation.navigate('Cart')}
+            onDetail={() => navigation.navigate('Detail')}
           />
           <Product
             name="Brokoli Hijau"
@@ -34,6 +44,8 @@ const HomeScreen = ({navigation}) => {
             sellPrice="10.000"
             productUnit="gr"
             discount="50%"
+            onBuy={() => navigation.navigate('Cart')}
+            onDetail={() => navigation.navigate('Detail')}
           />
           <Product
             name="Brokoli Hijau"
@@ -43,6 +55,8 @@ const HomeScreen = ({navigation}) => {
             sellPrice="10.000"
             productUnit="gr"
             discount="50%"
+            onBuy={() => navigation.navigate('Cart')}
+            onDetail={() => navigation.navigate('Detail')}
           />
           <Product
             name="Brokoli Hijau"
@@ -52,6 +66,8 @@ const HomeScreen = ({navigation}) => {
             sellPrice="10.000"
             productUnit="gr"
             discount="50%"
+            onBuy={() => navigation.navigate('Cart')}
+            onDetail={() => navigation.navigate('Detail')}
           />
           <Product
             name="Brokoli Hijau"
@@ -61,6 +77,8 @@ const HomeScreen = ({navigation}) => {
             sellPrice="10.000"
             productUnit="gr"
             discount="50%"
+            onBuy={() => navigation.navigate('Cart')}
+            onDetail={() => navigation.navigate('Detail')}
           />
           <Product
             name="Brokoli Hijau"
@@ -70,6 +88,8 @@ const HomeScreen = ({navigation}) => {
             sellPrice="10.000"
             productUnit="gr"
             discount="50%"
+            onBuy={() => navigation.navigate('Cart')}
+            onDetail={() => navigation.navigate('Detail')}
           />
         </View>
       </ScrollView>
@@ -86,10 +106,10 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     width: '100%',
-    height: 200,
-    backgroundColor: colors.primary,
+    height: 305,
+    backgroundColor: colors.button.green,
     paddingHorizontal: 24,
-    paddingVertical: 33,
+    paddingTop: 25,
   },
   welcomeText: {
     fontSize: 14,
@@ -108,5 +128,11 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     alignItems: 'center',
     justifyContent: 'space-between',
+  },
+  categoryContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 24,
+    marginTop: 20,
   },
 });

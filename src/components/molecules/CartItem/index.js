@@ -1,11 +1,14 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
 import {colors} from '../../../utils';
+import {CheckBox} from '../../atoms';
 import Counter from '../Counter';
 
 const CartItem = ({image, name, weight, originalPrice, currentPrice, id}) => {
   return (
     <View style={styles.container}>
+      <CheckBox />
+
       <View style={styles.productImageContainer}>
         <Image source={image} style={styles.productImage} />
       </View>

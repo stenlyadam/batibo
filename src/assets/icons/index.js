@@ -9,7 +9,13 @@ import IconAddress from './ic-address.svg';
 import IconProtection from './ic-protection.svg';
 import IconHelp from './ic-help.svg';
 import IconArrowRight from './ic-arrow-right.svg';
+import IconHome from './ic-home.svg';
+import IconReceipt from './ic-receipt.svg';
+import IconProfile from './ic-profile.svg';
 import IconCross from './ic-cross.svg';
+import IconSettings from './ic-settings.svg';
+import IconRemove from './ic-remove.svg';
+import IconArrowBottom from './ic-arrow-bottom.svg';
 
 export {
   IconSearch,
@@ -23,5 +29,11 @@ export {
   IconProtection,
   IconHelp,
   IconArrowRight,
+  IconHome,
+  IconReceipt,
+  IconProfile,
   IconCross,
+  IconSettings,
+  IconRemove,
+  IconArrowBottom,
 };
