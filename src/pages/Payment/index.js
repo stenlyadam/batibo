@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, View, SafeAreaView, Dimensions} from 'react-native';
-import {Button, Gap, PageTitle} from '../../components';
+import {Button, PageTitle} from '../../components';
 import {colors, fonts} from '../../utils';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import OrderDetail from './OrderDetail';

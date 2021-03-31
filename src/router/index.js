@@ -163,11 +163,6 @@ const Router = () => {
         component={OrderItem}
         options={{headerShown: false}}
       />
-      <Stack.Screen
-        name="EditProfile"
-        component={EditProfile}
-        options={{headerShown: false}}
-      />
     </Stack.Navigator>
   );
 };

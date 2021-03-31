@@ -16,7 +16,6 @@ import IconCross from './ic-cross.svg';
 import IconSettings from './ic-settings.svg';
 import IconRemove from './ic-remove.svg';
 import IconArrowBottom from './ic-arrow-bottom.svg';
-import IconCross from './ic-cross.svg';
 
 export {
   IconSearch,
@@ -37,5 +36,4 @@ export {
   IconSettings,
   IconRemove,
   IconArrowBottom,
-  IconCross,
 };
