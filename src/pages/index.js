@@ -11,9 +11,11 @@ import Detail from './Detail';
 import Payment from './Payment';
 import Profile from './Profile';
 import EditProfile from './EditProfile';
+
 import Address from './Address';
 import Page from './OnBoarding/Page';
 import OrderItem from './Order/OrderItem';
+
 
 export {
   Splash,
@@ -32,4 +34,5 @@ export {
   Address,
   Page,
   OrderItem,
+
 };
