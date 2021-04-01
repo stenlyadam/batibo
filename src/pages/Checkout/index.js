@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {SafeAreaView, StyleSheet, Text, View, ScrollView} from 'react-native';
 import {DummyBrokoliHijau, DummyJerukBali} from '../../assets';
-import {Button, CartItem, PageTitle, CheckBox} from '../../components';
+import {Button, CartItem, PageTitle} from '../../components';
 import {colors, fonts} from '../../utils';
 import {Picker} from '@react-native-community/picker';
 
@@ -31,10 +31,6 @@ const Checkout = ({navigation}) => {
               </Picker>
               <Button type="icon-only" icon="icon-arrow-right" />
             </View>
-            {/* <View style={styles.dropdownContainer}>
-              <Text style={styles.paymentSummaryCategory}>Pilih Alamat</Text>
-              <Button type="icon-only" icon="icon-arrow-right" />
-            </View> */}
           </View>
 
           <View>
@@ -57,7 +53,6 @@ const Checkout = ({navigation}) => {
             </View>
             <View style={styles.deliverContainer}>
               <Text style={styles.deliver}>Pembayaran</Text>
-              {/* <Text style={styles.subTitle}>Metode Pembayaran</Text> */}
               <Text style={styles.subTitle}>Ringkasan Pembayaran</Text>
               <View style={styles.paymentSummary}>
                 <Text style={styles.paymentSummaryCategory}>Total Belanja</Text>

@@ -4,7 +4,7 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import {IMGLainnya, IMGBuah, IMGRempah, IMGSayuran} from '../../../assets';
 import {colors, fonts} from '../../../utils';
 
-const Category = ({title, onChange}) => {
+const Category = ({title}) => {
   if (title === 'sayuran') {
     return (
       <View style={styles.container}>

@@ -5,7 +5,7 @@ import {colors, fonts} from '../../utils';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {DummyBrokoliHijau} from '../../assets';
 
-const OrderItem = ({navigation, status, deliveryDate = '-', press}) => {
+const OrderItem = ({status, deliveryDate = '-', press}) => {
   return (
     <TouchableOpacity style={styles.orderContainer} onPress={press}>
       <View style={styles.orderStatusContainer}>

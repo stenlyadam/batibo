@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {IMGOnBoarding1, IMGOnBoarding2, IMGOnBoarding3} from '../../assets';
-import {colors, fonts} from '../../utils';
+import {colors} from '../../utils';
 import Swiper from 'react-native-swiper';
 import Page from './Page';
 
@@ -16,24 +16,9 @@ const OnBoarding = ({navigation}) => {
     <Swiper
       ref={swiper}
       loop={false}
-      paginationStyle={{
-        marginLeft: 24,
-        marginBottom: 20,
-        width: 80,
-        justifyContent: 'space-between',
-      }}
-      dotStyle={{
-        width: 12,
-        height: 12,
-        backgroundColor: colors.grey,
-        borderRadius: 15,
-      }}
-      activeDotStyle={{
-        width: 25,
-        height: 12,
-        backgroundColor: colors.button.primary.backgroundColor,
-        borderRadius: 15,
-      }}>
+      paginationStyle={styles.paginationStyle}
+      dotStyle={styles.dotStyle}
+      activeDotStyle={styles.activeDotStyle}>
       <View style={styles.slide}>
         <Page
           title="Bantu Petani dan Permudah Belanja-mu"
@@ -78,5 +63,23 @@ const styles = StyleSheet.create({
   slide: {
     flex: 1,
     backgroundColor: colors.white,
+  },
+  paginationStyle: {
+    marginLeft: 24,
+    marginBottom: 20,
+    width: 80,
+    justifyContent: 'space-between',
+  },
+  dotStyle: {
+    width: 12,
+    height: 12,
+    backgroundColor: colors.grey,
+    borderRadius: 15,
+  },
+  activeDotStyle: {
+    width: 25,
+    height: 12,
+    backgroundColor: colors.button.primary.backgroundColor,
+    borderRadius: 15,
   },
 });
