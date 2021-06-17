@@ -8,9 +8,36 @@ import {
 } from 'react-native';
 import {IMGBackground} from '../../assets';
 import {Button, CheckBox, Gap, Link, TextInput} from '../../components';
-import {colors, fonts} from '../../utils';
+import {colors, fonts, useForm} from '../../utils';
+import {firebase} from '../../config';
 
 const Login = ({navigation}) => {
+
+  const [form, setForm] = useForm({
+    username: '',
+    email: '',
+    password: '',
+  });
+
+  const onContinue = () =>{
+    console.log(form);
+
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(form.email, form.password)
+      .then(response => {
+        firebase
+          .database()
+          .ref(`users/${response.user.uid}/`)
+        setForm('reset');
+        navigation.replace('HomeScreen')
+      })
+      .catch(error => {
+        console.log(error.message);
+      });
+
+  }
+
   return (
     <SafeAreaView style={styles.page}>
       <ImageBackground source={IMGBackground} style={styles.headerContainer}>
@@ -18,11 +45,18 @@ const Login = ({navigation}) => {
       </ImageBackground>
       <View style={styles.formContainer}>
         <View>
-          <TextInput label="Email" placeholder="Masukan Email-mu" />
+          <TextInput 
+          label="Email" 
+          placeholder="Masukan Email-mu" 
+          value={form.email}
+          onChangeText={(value) => setForm('email', value)}
+          />
           <Gap height={24} />
           <TextInput
             label="Password"
             placeholder="Masukan Password-mu"
+            value={form.Registerpassword}
+            onChangeText={(value) => setForm('password', value)}
             secureTextEntry={true}
           />
           <View style={styles.forgotPasswordWrapper}>
@@ -32,7 +66,7 @@ const Login = ({navigation}) => {
           <Gap height={50} />
           <Button
             title="Sign In"
-            onPress={() => navigation.replace('HomeScreen')}
+            onPress={onContinue}
           />
         </View>
         <View style={styles.bottomContainer}>

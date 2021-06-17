@@ -18,7 +18,6 @@ const Register = ({navigation}) => {
 
   const [form, setForm] = useForm({
     username: '',
-    profession: '',
     email: '',
     password: '',
   });
@@ -34,7 +33,7 @@ const Register = ({navigation}) => {
       })
       .catch((error) => {
         const errorMessage = error.message;
-        console.log('error register: ', errorMesage);
+        console.log('error register: ', errorMessage);
       });
   };
 
