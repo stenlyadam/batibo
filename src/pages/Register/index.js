@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
   ImageBackground,
   SafeAreaView,
@@ -8,14 +8,10 @@ import {
   View,
 } from 'react-native';
 import {Button, Gap, Link, TextInput} from '../../components';
-import {colors, fonts, useForm} from '../../utils';
 import {firebase} from '../../config';
+import {colors, fonts, useForm} from '../../utils';
 
 const Register = ({navigation}) => {
-  // const [username, setUsername] = useState('');
-  // const [email, setEmail] = useState('');
-  // const [password, setPassword] = useState('');
-
   const [form, setForm] = useForm({
     username: '',
     email: '',
@@ -23,13 +19,13 @@ const Register = ({navigation}) => {
   });
 
   const onContinue = () => {
-    // console.log(username, email, password);
     console.log(form);
     firebase
       .auth()
       .createUserWithEmailAndPassword(form.email, form.password)
       .then((success) => {
         console.log('register success', success);
+        navigation.replace('Login');
       })
       .catch((error) => {
         const errorMessage = error.message;
