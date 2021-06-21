@@ -1,12 +1,27 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
 import {Button, ProfileMenu} from '../../components';
 import {colors, fonts} from '../../utils';
 import {IMGProfilePicture} from '../../assets/images';
 import {IconArrowRight} from '../../assets/icons';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-
+import {getData} from '../../utils';
 const Profile = ({navigation}) => {
+
+  const [form, setForm] = useState({
+    username: '',
+    email: '',
+    password: ''
+  });
+
+  useEffect(() => {
+    getData('user').then(response => {
+      const data = response;
+      console.log('profile data: ' + data);
+      setForm(data);
+    });
+  }, []);
+
   return (
     <View style={styles.container}>
       <View style={styles.profileHeaderContainer}>
@@ -14,8 +29,8 @@ const Profile = ({navigation}) => {
           <Image source={IMGProfilePicture} style={styles.profilePicture} />
         </View>
         <View style={styles.nameContainer}>
-          <Text style={styles.nameText}>Amir Mahfudi</Text>
-          <Text style={styles.emailText}>amir@gmail.com</Text>
+          <Text style={styles.nameText}>{form.username}</Text>
+          <Text style={styles.emailText}>{form.email}</Text>
         </View>
         <View style={styles.optionContainer}>
           <Button

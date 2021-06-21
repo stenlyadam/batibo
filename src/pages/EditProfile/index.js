@@ -1,10 +1,25 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Image, StyleSheet, View, Text} from 'react-native';
 import {IMGProfilePicture} from '../../assets';
 import {Button} from '../../components';
-import {colors, fonts} from '../../utils';
+import {colors, fonts, getData} from '../../utils';
 
 const EditProfile = ({navigation}) => {
+
+  const [form, setForm] = useState({
+    username: '',
+    email: '',
+    password: ''
+  });
+
+  useEffect(() => {
+    getData('user').then(response => {
+      const data = response;
+      console.log('profile data: ' + data);
+      setForm(data);
+    });
+  }, []);
+
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
@@ -40,7 +55,7 @@ const EditProfile = ({navigation}) => {
             <Text style={styles.contentTitle}>Nama</Text>
           </View>
           <View style={styles.contentValueContainer}>
-            <Text style={styles.contentValueName}>Amir Mahfudi</Text>
+            <Text style={styles.contentValueName}>{form.username}</Text>
           </View>
         </View>
 
@@ -49,7 +64,7 @@ const EditProfile = ({navigation}) => {
             <Text style={styles.contentTitle}>Email</Text>
           </View>
           <View style={styles.contentValueContainer}>
-            <Text style={styles.contentValue}>amir@gmail.com</Text>
+            <Text style={styles.contentValue}>{form.email}</Text>
           </View>
         </View>
 

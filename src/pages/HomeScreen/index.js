@@ -1,15 +1,30 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {SafeAreaView, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {DummyBrokoliHijau} from '../../assets';
 import {Gap, Product, SearchBox, Carousel} from '../../components';
 import Category from '../../components/molecules/Category';
-import {colors, fonts} from '../../utils';
+import {colors, fonts, getData} from '../../utils';
 
 const HomeScreen = ({navigation}) => {
+
+  const [form, setForm] = useState({
+    username: '',
+    email: '',
+    password: ''
+  });
+
+  useEffect(() => {
+    getData('user').then(response => {
+      const data = response;
+      console.log('profile data: ' + data);
+      setForm(data);
+    });
+  }, []);
+
   return (
     <SafeAreaView style={styles.page}>
       <View style={styles.headerContainer}>
-        <Text style={styles.welcomeText}>Halo John Doe</Text>
+        <Text style={styles.welcomeText}>Halo {form.username}</Text>
         <Text style={styles.welcomeText}>Pilih Sayuran-mu disini</Text>
         <Gap height={5} />
         <SearchBox label="Cari yang kamu butuhkan" />

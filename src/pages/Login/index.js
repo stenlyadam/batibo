@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import {IMGBackground} from '../../assets';
 import {Button, CheckBox, Gap, Link, TextInput} from '../../components';
-import {colors, fonts, useForm} from '../../utils';
+import {colors, fonts, useForm, storeData} from '../../utils';
 import {firebase} from '../../config';
 
 const Login = ({navigation}) => {
@@ -20,22 +20,26 @@ const Login = ({navigation}) => {
   });
 
   const onContinue = () =>{
-    console.log(form);
-
     firebase
       .auth()
       .signInWithEmailAndPassword(form.email, form.password)
       .then(response => {
+        console.log('response: ' + response.user.uid)
         firebase
           .database()
           .ref(`users/${response.user.uid}/`)
-        setForm('reset');
-        navigation.replace('HomeScreen')
+          .once('value')
+          .then(snapshot => {
+            console.log('snapshot success:' + JSON.stringify(snapshot.val()));
+            storeData('user', snapshot.val());
+            navigation.replace('HomeScreen');
+            
+          })
+          setForm('reset');
       })
       .catch(error => {
         console.log(error.message);
-      });
-
+      })
   }
 
   return (

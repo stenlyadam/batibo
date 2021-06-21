@@ -10,13 +10,14 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.15.5",
     "@react-native-community/checkbox": "^0.5.6",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-native-community/picker": "^1.8.1",
     "@react-navigation/bottom-tabs": "^5.11.2",
     "@react-navigation/material-top-tabs": "^5.3.10",
-    "@react-navigation/native": "^5.8.10",
-    "@react-navigation/stack": "^5.12.8",
+    "@react-navigation/native": "^5.9.4",
+    "@react-navigation/stack": "^5.14.5",
     "firebase": "^8.6.7",
     "react": "16.13.1",
     "react-native": "0.63.4",

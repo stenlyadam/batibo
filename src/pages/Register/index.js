@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import {Button, Gap, Link, TextInput} from '../../components';
 import {firebase} from '../../config';
-import {colors, fonts, useForm} from '../../utils';
+import {colors, fonts, useForm, storeData} from '../../utils';
 
 const Register = ({navigation}) => {
   const [form, setForm] = useForm({
@@ -24,6 +24,19 @@ const Register = ({navigation}) => {
       .auth()
       .createUserWithEmailAndPassword(form.email, form.password)
       .then((success) => {
+        setForm('reset');
+        const data = {
+          username: form.username,
+          email: form.email,
+          uid: success.user.uid,
+        };
+        firebase
+          .database()
+          .ref('users/' + success.user.uid + '/')
+          .set(data);
+        console.log('data: ', data);
+        storeData('users', data);
+
         console.log('register success', success);
         navigation.replace('Login');
       })
