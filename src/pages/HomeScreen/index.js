@@ -4,6 +4,7 @@ import {DummyBrokoliHijau} from '../../assets';
 import {Gap, Product, SearchBox, Carousel} from '../../components';
 import Category from '../../components/molecules/Category';
 import {colors, fonts, getData} from '../../utils';
+import {firebase} from '../../config';
 
 const HomeScreen = ({navigation}) => {
 
@@ -13,11 +14,27 @@ const HomeScreen = ({navigation}) => {
     password: ''
   });
 
+  const [listProduct, setListProduct] = useState([]);
+
   useEffect(() => {
     getData('user').then(response => {
       const data = response;
       console.log('profile data: ' + data);
       setForm(data);
+
+      firebase
+      .database()
+      .ref('products/')
+      .once('value')
+      .then(response => {
+        console.log('data: ', response.val());
+        if (response.val()) {
+          setListProduct(response.val());
+        }
+      })
+      .catch(error => {
+        showError(error.message);
+      });
     });
   }, []);
 
@@ -40,72 +57,23 @@ const HomeScreen = ({navigation}) => {
       <Text style={styles.titleText}>Sedang Diskon</Text>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.productContainer}>
-          <Product
-            name="Brokoli Hijau"
-            image={DummyBrokoliHijau}
-            category="Sayuran"
-            originalPrice="20.000"
-            sellPrice="10.000"
-            productUnit="gr"
-            discount="50%"
-            onBuy={() => navigation.navigate('Cart')}
-            onDetail={() => navigation.navigate('Detail')}
-          />
-          <Product
-            name="Brokoli Hijau"
-            image={DummyBrokoliHijau}
-            category="Sayuran"
-            originalPrice="20.000"
-            sellPrice="10.000"
-            productUnit="gr"
-            discount="50%"
-            onBuy={() => navigation.navigate('Cart')}
-            onDetail={() => navigation.navigate('Detail')}
-          />
-          <Product
-            name="Brokoli Hijau"
-            image={DummyBrokoliHijau}
-            category="Sayuran"
-            originalPrice="20.000"
-            sellPrice="10.000"
-            productUnit="gr"
-            discount="50%"
-            onBuy={() => navigation.navigate('Cart')}
-            onDetail={() => navigation.navigate('Detail')}
-          />
-          <Product
-            name="Brokoli Hijau"
-            image={DummyBrokoliHijau}
-            category="Sayuran"
-            originalPrice="20.000"
-            sellPrice="10.000"
-            productUnit="gr"
-            discount="50%"
-            onBuy={() => navigation.navigate('Cart')}
-            onDetail={() => navigation.navigate('Detail')}
-          />
-          <Product
-            name="Brokoli Hijau"
-            image={DummyBrokoliHijau}
-            category="Sayuran"
-            originalPrice="20.000"
-            sellPrice="10.000"
-            productUnit="gr"
-            discount="50%"
-            onBuy={() => navigation.navigate('Cart')}
-            onDetail={() => navigation.navigate('Detail')}
-          />
-          <Product
-            name="Brokoli Hijau"
-            image={DummyBrokoliHijau}
-            category="Sayuran"
-            originalPrice="20.000"
-            sellPrice="10.000"
-            productUnit="gr"
-            discount="50%"
-            onBuy={() => navigation.navigate('Cart')}
-            onDetail={() => navigation.navigate('Detail')}
-          />
+          {listProduct.map(item => {
+            console.log(item.image);
+            return (
+              
+              <Product
+              name={item.name}
+              image={item.image}
+              category={item.category}
+              Price={item.price}
+              productUnit={item.productUnit}
+              discount={item.discount}
+              onBuy={() => navigation.navigate('Cart')}
+              onDetail={() => navigation.navigate('Detail')}
+            /> 
+            
+            )
+          })}
         </View>
       </ScrollView>
     </SafeAreaView>

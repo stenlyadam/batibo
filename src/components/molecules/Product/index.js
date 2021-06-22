@@ -19,8 +19,7 @@ const Product = ({
   image,
   category,
   discount,
-  originalPrice,
-  sellPrice,
+  Price,
   productUnit,
   onBuy,
   onDetail,
@@ -29,18 +28,18 @@ const Product = ({
     <View style={styles.productContainer}>
       <View style={styles.imageContainer}>
         <View style={styles.discountContainer}>
-          <Text style={styles.discountText}>{discount}</Text>
+          <Text style={styles.discountText}>{discount}%</Text>
         </View>
         <TouchableOpacity onPress={onDetail}>
-          <Image style={styles.imageStyle} source={image} />
+          <Image style={styles.imageStyle} source={{uri: image}} />
         </TouchableOpacity>
       </View>
       <View style={styles.productDetails}>
         <Text style={styles.productName}>{name}</Text>
         <Text style={styles.category}>{category}</Text>
-        <Text style={styles.originalPriceStyle}>Rp{originalPrice}</Text>
+        <Text style={styles.originalPriceStyle}>Rp{Price}</Text>
         <View style={styles.productPrice}>
-          <Text style={styles.sellPrice}>Rp{sellPrice}</Text>
+          <Text style={styles.sellPrice}>Rp{Price*(discount/100)}</Text>
           <Text style={styles.productUnit}>/ {productUnit}</Text>
         </View>
         <Button title="Beli" size={14} height={8} onPress={onBuy} />
