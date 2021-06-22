@@ -76,7 +76,7 @@ const Register = ({navigation}) => {
               secureTextEntry={true}
             />
             <Gap height={50} />
-            <Button title="Sign Up" onPress={onContinue} />
+            <Button title="Sign Up" onPress={onContinue} borderRadius={10}/>
           </ScrollView>
         </View>
         <View style={styles.bottomContainer}>

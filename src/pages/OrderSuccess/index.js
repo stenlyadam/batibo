@@ -35,6 +35,7 @@ const OrderSuccess = ({navigation}) => {
           <Button
             title="Lihat Orderan Saya"
             onPress={() => navigation.navigate('Order')}
+            borderRadius={4}
           />
         </View>
       </View>

@@ -29,6 +29,10 @@ export const colors = {
       backgroundColor: listColors.orange1,
       text: listColors.white,
     },
+    secondary: {
+      backgroundColor: listColors.white,
+      text: listColors.orange1,
+    },
     red: listColors.red1,
     green: listColors.green4,
   },

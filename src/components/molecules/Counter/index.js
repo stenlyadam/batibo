@@ -19,6 +19,7 @@ const Counter = ({onChange}) => {
         width={24}
         height={24}
         onPress={onPressMinus}
+        borderRadius={4}
       />
       <Text style={styles.number}>{count}</Text>
       <Button
@@ -27,6 +28,7 @@ const Counter = ({onChange}) => {
         width={24}
         height={24}
         onPress={onPressPlus}
+        borderRadius={4}
       />
     </View>
   );

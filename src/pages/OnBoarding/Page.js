@@ -33,7 +33,7 @@ const Page = ({
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.text}>{text}</Text>
         <View style={styles.buttonContainer}>
-          <Button title={bottomButton} space={110} onPress={press} />
+          <Button title={bottomButton} space={110} onPress={press} borderRadius={10}/>
         </View>
       </View>
     </View>

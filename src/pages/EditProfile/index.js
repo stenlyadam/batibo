@@ -29,6 +29,7 @@ const EditProfile = ({navigation}) => {
             icon="icon-arrow-back"
             style={styles.backButton}
             onPress={() => navigation.navigate('Profile')}
+            borderRadius={4}
           />
         </View>
         <View style={styles.titleTextContainer}>
@@ -45,6 +46,7 @@ const EditProfile = ({navigation}) => {
             type="icon-only"
             icon="icon-cross"
             style={styles.backButton}
+            borderRadius={4}
           />
         </View>
       </View>

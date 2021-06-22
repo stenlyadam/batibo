@@ -59,7 +59,7 @@ const Payment = ({navigation}) => {
       <View style={styles.bottomWrapper}>
         <View style={styles.nextContainer}>
           <View style={styles.next}>
-            <Button title="Selanjutnya" />
+            <Button title="Selanjutnya" borderRadius={4}/>
           </View>
         </View>
       </View>

@@ -14,6 +14,7 @@ const Address = ({navigation}) => {
             icon="icon-arrow-back"
             style={styles.backButton}
             onPress={() => navigation.navigate('Profile')}
+            borderRadius={4}
           />
         </View>
         <View style={styles.titleTextContainer}>

@@ -1,10 +1,9 @@
-import React, {useState, useEffect} from 'react';
-import {SafeAreaView, ScrollView, StyleSheet, Text, View} from 'react-native';
-import {DummyBrokoliHijau} from '../../assets';
-import {Gap, Product, SearchBox, Carousel} from '../../components';
+import React, { useEffect, useState } from 'react';
+import { SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Carousel, Gap, Product, SearchBox, Button } from '../../components';
 import Category from '../../components/molecules/Category';
-import {colors, fonts, getData} from '../../utils';
-import {firebase} from '../../config';
+import { firebase } from '../../config';
+import { colors, fonts, getData } from '../../utils';
 
 const HomeScreen = ({navigation}) => {
 
@@ -40,6 +39,7 @@ const HomeScreen = ({navigation}) => {
 
   return (
     <SafeAreaView style={styles.page}>
+      <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.headerContainer}>
         <Text style={styles.welcomeText}>Halo {form.username}</Text>
         <Text style={styles.welcomeText}>Pilih Sayuran-mu disini</Text>
@@ -55,13 +55,14 @@ const HomeScreen = ({navigation}) => {
         <Category title="lainnya" />
       </View>
       <Text style={styles.titleText}>Sedang Diskon</Text>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      
         <View style={styles.productContainer}>
           {listProduct.map(item => {
             console.log(item.image);
             return (
               
               <Product
+              key={item.id}
               name={item.name}
               image={item.image}
               category={item.category}
@@ -71,9 +72,18 @@ const HomeScreen = ({navigation}) => {
               onBuy={() => navigation.navigate('Cart')}
               onDetail={() => navigation.navigate('Detail')}
             /> 
-            
             )
           })}
+        </View>
+        <View style = {styles.buttonExpand}>
+            <Button 
+            title="Lihat Semua" 
+            size={16} 
+            height={10} 
+            space={358} 
+            color={"secondary"}
+            borderRadius={4}
+            />
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -118,4 +128,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     marginTop: 20,
   },
+  buttonExpand: {
+    paddingHorizontal: 24,
+    paddingTop: 24,
+    paddingBottom: 38,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  }
 });

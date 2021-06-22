@@ -9,7 +9,7 @@ const ProfileMenu = ({title, icon, onClick}) => {
   return (
     <View style={styles.voucherContainer}>
       <TouchableOpacity style={styles.voucherButtonContainer} onPress={onClick}>
-        <Button type="icon-only" icon={icon} />
+        <Button type="icon-only" icon={icon} borderRadius={4}/>
         <Text style={styles.profileMenuTitleText}>{title}</Text>
         <View style={styles.arrowRightContainer}>
           <IconArrowRight />

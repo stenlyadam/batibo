@@ -16,6 +16,7 @@ const Detail = ({navigation}) => {
               icon="icon-arrow-back"
               style={styles.backButton}
               onPress={() => navigation.navigate('HomeScreen')}
+              borderRadius={4}
             />
           </View>
         </ImageBackground>
@@ -48,7 +49,7 @@ Wortel mengandung vitamin A yang baik untuk kesehatan mata. Mengkonsumsi wortel 
         <View style={styles.footer}>
           <View style={styles.centerContainer}>
             <View style={styles.cartButtonContainer}>
-              <Button color="blue" type="icon-only" icon="icon-cart" />
+              <Button color="blue" type="icon-only" icon="icon-cart" borderRadius={4}/>
             </View>
             <TouchableOpacity style={styles.beliButtonContainer}>
               <Text style={styles.textButton}>Beli Sekarang</Text>

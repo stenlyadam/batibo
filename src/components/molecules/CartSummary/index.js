@@ -13,7 +13,7 @@ const CartSummary = ({totalPrice, onPress}) => {
         </View>
       </View>
       <View style={styles.buttonContainer}>
-        <Button onPress={onPress} title="Check Out" />
+        <Button onPress={onPress} title="Check Out" borderRadius={4} />
       </View>
     </View>
   );

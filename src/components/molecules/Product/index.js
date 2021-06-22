@@ -39,11 +39,11 @@ const Product = ({
         <Text style={styles.category}>{category}</Text>
         <Text style={styles.originalPriceStyle}>Rp{Price}</Text>
         <View style={styles.productPrice}>
-          <Text style={styles.sellPrice}>Rp{Price*(discount/100)}</Text>
+          <Text style={styles.sellPrice}>Rp{Price - (Price*(discount/100))}</Text>
           <Text style={styles.productUnit}>/ {productUnit}</Text>
         </View>
-        <Button title="Beli" size={14} height={8} onPress={onBuy} />
-        <Gap height={16} />
+        <Button title="Beli" size={14} height={8} onPress={onBuy} borderRadius={4}/>
+        <Gap height={20} />
       </View>
     </View>
   );

@@ -8,7 +8,7 @@ const PageTitle = ({title, backButton, onBack}) => {
   return (
     <View style={styles.container}>
       {backButton && (
-        <Button type="icon-only" icon={IconArrowBack} onPress={onBack} />
+        <Button type="icon-only" icon={IconArrowBack} onPress={onBack} borderRadius={4}/>
       )}
       <View style={styles.titleContainer}>
         <Text style={styles.titleText}>{title}</Text>

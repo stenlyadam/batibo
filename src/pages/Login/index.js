@@ -71,6 +71,7 @@ const Login = ({navigation}) => {
           <Button
             title="Sign In"
             onPress={onContinue}
+            borderRadius={10}
           />
         </View>
         <View style={styles.bottomContainer}>

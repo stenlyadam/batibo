@@ -29,7 +29,7 @@ const Checkout = ({navigation}) => {
                 <Picker.Item label="Alamat Rumah" value="Alamat Rumah" />
                 <Picker.Item label="Kantor" value="Kantor" />
               </Picker>
-              <Button type="icon-only" icon="icon-arrow-right" />
+              <Button type="icon-only" icon="icon-arrow-right" borderRadius={4}/>
             </View>
             {/* <View style={styles.dropdownContainer}>
               <Text style={styles.paymentSummaryCategory}>Pilih Alamat</Text>
@@ -80,6 +80,7 @@ const Checkout = ({navigation}) => {
         <Button
           title="Pesan Sekarang"
           onPress={() => navigation.navigate('OrderSuccess')}
+          borderRadius={4}
         />
       </View>
     </SafeAreaView>
