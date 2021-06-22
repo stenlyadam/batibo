@@ -70,7 +70,7 @@ const HomeScreen = ({navigation}) => {
               productUnit={item.productUnit}
               discount={item.discount}
               onBuy={() => navigation.navigate('Cart')}
-              onDetail={() => navigation.navigate('Detail')}
+              onDetail={() => navigation.navigate('Detail', item)}
             /> 
             )
           })}

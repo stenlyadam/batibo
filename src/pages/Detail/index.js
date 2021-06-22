@@ -5,11 +5,12 @@ import {Button} from '../../components';
 import {colors, fonts} from '../../utils';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 
-const Detail = ({navigation}) => {
+const Detail = ({navigation, route}) => {
+  const item = route.params;
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
-        <ImageBackground source={IMGWortel} style={styles.image}>
+        <ImageBackground source={{uri: item.image}} style={styles.image}>
           <View style={styles.backButtonContainer}>
             <Button
               type="icon-only"
@@ -24,17 +25,17 @@ const Detail = ({navigation}) => {
       <View style={styles.detailContainer}>
         <View style={styles.titleTopContainer}>
           <View style={styles.titleContainer}>
-            <Text style={styles.title}>Wortel Oren</Text>
-            <Text style={styles.category}>Sayuran</Text>
-            <Text style={styles.originalPrice}>Rp 20.000</Text>
+            <Text style={styles.title}>{item.name}</Text>
+            <Text style={styles.category}>{item.category}</Text>
+            <Text style={styles.originalPrice}>Rp {item.price}</Text>
             <View style={styles.currentPriceContainer}>
-              <Text style={styles.currentPrice}>Rp 10.000</Text>
-              <Text style={styles.quantity}>/ 500 gr</Text>
+              <Text style={styles.currentPrice}>Rp {item.price-(item.price*(item.discount/100))}</Text>
+              <Text style={styles.quantity}>/ {item.productUnit}</Text>
             </View>
           </View>
 
           <View style={styles.discountContainer}>
-            <Text style={styles.discount}>35%</Text>
+            <Text style={styles.discount}>{item.discount}%</Text>
           </View>
         </View>
         <View style={styles.textContainer}>
