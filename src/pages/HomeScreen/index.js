@@ -5,12 +5,24 @@ import Category from '../../components/molecules/Category';
 import { firebase } from '../../config';
 import { colors, fonts, getData } from '../../utils';
 
+const pushCart = (itemId, userId) => {
+  firebase
+    .database()
+    .ref(`users/${userId}/cart/${itemId}`)
+    .set({id: `${itemId}`, count: 1})
+
+    .catch(error => {
+      showError(error.message);
+    });
+}
+
 const HomeScreen = ({navigation}) => {
 
   const [form, setForm] = useState({
     username: '',
     email: '',
-    password: ''
+    password: '',
+    uid: ''
   });
 
   const [listProduct, setListProduct] = useState([]);
@@ -20,8 +32,9 @@ const HomeScreen = ({navigation}) => {
       const data = response;
       console.log('profile data: ' + data);
       setForm(data);
+    });
 
-      firebase
+    firebase
       .database()
       .ref('products/')
       .once('value')
@@ -34,7 +47,6 @@ const HomeScreen = ({navigation}) => {
       .catch(error => {
         showError(error.message);
       });
-    });
   }, []);
 
   return (
@@ -58,9 +70,7 @@ const HomeScreen = ({navigation}) => {
       
         <View style={styles.productContainer}>
           {listProduct.map(item => {
-            console.log(item.image);
             return (
-              
               <Product
               key={item.id}
               name={item.name}
@@ -69,7 +79,7 @@ const HomeScreen = ({navigation}) => {
               Price={item.price}
               productUnit={item.productUnit}
               discount={item.discount}
-              onBuy={() => navigation.navigate('Cart')}
+              onBuy={() => pushCart(item.id, form.uid)}
               onDetail={() => navigation.navigate('Detail', item)}
             /> 
             )
