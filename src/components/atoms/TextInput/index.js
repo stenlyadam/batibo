@@ -3,7 +3,7 @@ import {StyleSheet, Text, View, TextInput as Input} from 'react-native';
 import {colors, fonts} from '../../../utils';
 
 const TextInput = (props) => {
-  const {label, placeholder, value, onChangeText, ...rest} = props;
+  const {label, placeholder, value, onChangeText, secureTextEntry, disable, ...rest} = props;
   return (
     <View style={styles.container}>
       <Text style={styles.label}>{label}</Text>
@@ -12,6 +12,8 @@ const TextInput = (props) => {
         style={styles.input}
         value={value}
         onChangeText={onChangeText}
+        secureTextEntry={secureTextEntry}
+        editable={!disable}
         {...rest}
       />
     </View>

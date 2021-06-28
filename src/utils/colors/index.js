@@ -45,4 +45,5 @@ export const colors = {
     blue: listColors.blue,
     red: listColors.red,
   },
+  error: listColors.red1,
 };

@@ -29,6 +29,7 @@ const Register = ({navigation}) => {
           username: form.username,
           email: form.email,
           uid: success.user.uid,
+          handphone: form.handphone,
         };
         firebase
           .database()

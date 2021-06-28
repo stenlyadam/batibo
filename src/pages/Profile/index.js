@@ -2,21 +2,26 @@ import React, {useState, useEffect} from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
 import {Button, ProfileMenu} from '../../components';
 import {colors, fonts} from '../../utils';
-import {IMGProfilePicture} from '../../assets/images';
 import {IconArrowRight} from '../../assets/icons';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {getData} from '../../utils';
+import { DummyUserPhoto } from '../../assets';
 const Profile = ({navigation}) => {
 
   const [form, setForm] = useState({
     username: '',
     email: '',
-    password: ''
+    password: '',
+    handphone: '',
+    photo: DummyUserPhoto,
   });
+
+  const [photo, setPhoto] = useState(DummyUserPhoto);
 
   useEffect(() => {
     getData('user').then(response => {
       const data = response;
+      data.photo = {uri:response.photo}
       console.log('profile data: ' + data);
       setForm(data);
     });
@@ -26,11 +31,12 @@ const Profile = ({navigation}) => {
     <View style={styles.container}>
       <View style={styles.profileHeaderContainer}>
         <View style={styles.profilePictureContainer}>
-          <Image source={IMGProfilePicture} style={styles.profilePicture} />
+          <Image source={form.photo} style={styles.profilePicture} />
         </View>
         <View style={styles.nameContainer}>
           <Text style={styles.nameText}>{form.username}</Text>
           <Text style={styles.emailText}>{form.email}</Text>
+          <Text style={styles.handphoneText}>Phone : {form.handphone}</Text>
         </View>
         <View style={styles.optionContainer}>
           <Button
@@ -74,13 +80,20 @@ const styles = StyleSheet.create({
   profilePictureContainer: {
     width: 92,
     height: 92,
-    borderRadius: 50,
-    borderWidth: 20,
+    borderRadius: 92/2,
+    borderWidth: 1,
     justifyContent: 'center',
     alignItems: 'center',
     borderColor: colors.grey,
     marginLeft: 24,
     marginTop: 33,
+  },
+  profilePicture: {
+    width: 78,
+    height: 78,
+    borderRadius: 78/2,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   nameContainer: {
     marginTop: 45,
@@ -96,6 +109,12 @@ const styles = StyleSheet.create({
     fontFamily: fonts.nunito.semibold,
     fontSize: 14,
     color: colors.text.blue,
+    marginBottom: 5,
+  },
+  handphoneText: {
+    fontFamily: fonts.nunito.light,
+    fontSize: 12,
+    color: colors.text.primary,
   },
   optionContainer: {
     flex: 1,

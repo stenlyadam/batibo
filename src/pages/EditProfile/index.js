@@ -1,91 +1,196 @@
 import React, {useEffect, useState} from 'react';
-import {Image, StyleSheet, View, Text} from 'react-native';
-import {IMGProfilePicture} from '../../assets';
-import {Button} from '../../components';
-import {colors, fonts, getData} from '../../utils';
+import {Image, StyleSheet, View, Text, SafeAreaView, ScrollView} from 'react-native';
+import {DummyUserPhoto} from '../../assets';
+import {Button, TextInput, Gap} from '../../components';
+import {colors, fonts, getData, storeData} from '../../utils';
+import {launchImageLibrary} from 'react-native-image-picker';
+import {showMessage} from 'react-native-flash-message';
+import {firebase} from '../../config';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const EditProfile = ({navigation}) => {
 
   const [form, setForm] = useState({
     username: '',
     email: '',
-    password: ''
+    uid: '',
+    password: '',
+    handphone: '',
+    photo: DummyUserPhoto,
   });
+
+  const [photo, setPhoto] = useState(DummyUserPhoto);
+  const [photoForDB, setPhotoForDB] = useState('');
+  const [getImageCheck, setGetImageCheck] = useState(false);
 
   useEffect(() => {
     getData('user').then(response => {
       const data = response;
       console.log('profile data: ' + data);
+      setPhoto({uri:response.photo})
       setForm(data);
     });
   }, []);
 
+  const getImage = () => {
+    launchImageLibrary(
+      {quality: 0.2, maxWidth: 200, maxHeight: 200, includeBase64: true},
+      response => {
+        console.log('response: ', response);
+        if (response.didCancel || response.error) {
+          console.log('response getImage type: ', form);
+          setPhotoForDB(form.photo);
+          setGetImageCheck(true);
+        } else {
+          console.log('response getImage type: ', response.assets[0].type);
+          setPhotoForDB(`data:${response.assets[0].type};base64, ${response.assets[0].base64}`);
+          const source = {uri: response.assets[0].uri};
+          setPhoto(source);
+          setGetImageCheck(true);
+        }
+      },
+    );
+  };
+
+  const updateProfileData = () => {
+    const data = form;
+
+    if (getImageCheck) {
+      data.photo = photoForDB;
+      console.log('data from get Image: ', data.photo);
+    }
+    if (!getImageCheck) {
+      data.photo = form.photo;
+      console.log('data from useEffect: ', data.photo);
+    }
+    
+    firebase
+      .database()
+      .ref('users/' + form.uid + '/')
+      .update(data)
+      .then(() => {
+        firebase
+          .database()
+          .ref(`users/${form.uid}/`)
+          .once('value')
+          .then(snapshot => {
+            console.log('snapshot success:' + JSON.stringify(snapshot.val()));
+            storeData('user', snapshot.val());
+            navigation.replace('HomeScreen');
+          })
+      })
+      .catch(error => {
+        showMessage({
+          message: error.message,
+          type: 'default',
+          backgroundColor: colors.error,
+          color: colors.white,
+        });
+      });
+  };
+
+  const changeText = (key, value) => {
+    setForm({
+      ...form,
+      [key]: value,
+    });
+  };
+
   return (
-    <View style={styles.container}>
-      <View style={styles.headerContainer}>
-        <View style={styles.backButtonContainer}>
-          <Button
-            type="icon-only"
-            icon="icon-arrow-back"
-            style={styles.backButton}
-            onPress={() => navigation.navigate('Profile')}
-            borderRadius={4}
-          />
-        </View>
-        <View style={styles.titleTextContainer}>
-          <Text style={styles.titleText}>Edit Profile</Text>
-        </View>
-      </View>
+    <SafeAreaView style={styles.page}>
+      <View style={styles.container}>
+            <View style={styles.headerContainer}>
+              <View style={styles.backButtonContainer}>
+                <Button
+                  type="icon-only"
+                  icon="icon-arrow-back"
+                  style={styles.backButton}
+                  onPress={() => navigation.navigate('Profile')}
+                  borderRadius={4}
+                />
+              </View>
+              <View style={styles.titleTextContainer}>
+                <Text style={styles.titleText}>Edit Profile</Text>
+              </View>
+            </View>
+            <ScrollView showsVerticalScrollIndicator={false}>
+            <View style={styles.profilePictureWrapper}>
+              <TouchableOpacity style={styles.profilePictureContainer} onPress={getImage}>
+                <Image source={photo} style={styles.profilePicture} />
+              </TouchableOpacity>
+              <View style={styles.crossContainer}>
+                <Button
+                  type="icon-only"
+                  icon="icon-cross"
+                  style={styles.backButton}
+                  borderRadius={4}
+                />
+              </View>
+            </View>
 
-      <View style={styles.profilePictureWrapper}>
-        <View style={styles.profilePictureContainer}>
-          <Image source={IMGProfilePicture} style={styles.profilePicture} />
-        </View>
-        <View style={styles.crossContainer}>
-          <Button
-            type="icon-only"
-            icon="icon-cross"
-            style={styles.backButton}
-            borderRadius={4}
-          />
-        </View>
-      </View>
+            <View style={styles.contentWrapper}>
+              {/* <View style={styles.contentContainer}>
+                <View style={styles.contentTitleContainer}>
+                  <Text style={styles.contentTitle}>Nama</Text>
+                </View>
+                <View style={styles.contentValueContainer}>
+                  <Text style={styles.contentValueName}>{form.username}</Text>
+                </View>
+              </View>
 
-      <View style={styles.contentWrapper}>
-        <View style={styles.contentContainer}>
-          <View style={styles.contentTitleContainer}>
-            <Text style={styles.contentTitle}>Nama</Text>
-          </View>
-          <View style={styles.contentValueContainer}>
-            <Text style={styles.contentValueName}>{form.username}</Text>
-          </View>
-        </View>
+              <View style={styles.contentContainer}>
+                <View style={styles.contentTitleContainer}>
+                  <Text style={styles.contentTitle}>Email</Text>
+                </View>
+                <View style={styles.contentValueContainer}>
+                  <Text style={styles.contentValue}>{form.email}</Text>
+                </View>
+              </View>
 
-        <View style={styles.contentContainer}>
-          <View style={styles.contentTitleContainer}>
-            <Text style={styles.contentTitle}>Email</Text>
-          </View>
-          <View style={styles.contentValueContainer}>
-            <Text style={styles.contentValue}>{form.email}</Text>
-          </View>
-        </View>
+              <View style={styles.contentContainer}>
+                <View style={styles.contentTitleContainer}>
+                  <Text style={styles.contentTitle}>No.Handphone</Text>
+                </View>
+                <View style={styles.contentValueContainer}>
+                  <Text style={styles.contentValue}>+62 811 7812 0012</Text>
+                </View>
+              </View> */}
 
-        <View style={styles.contentContainer}>
-          <View style={styles.contentTitleContainer}>
-            <Text style={styles.contentTitle}>No.Handphone</Text>
+                <TextInput
+                    label="Nama"
+                    value={form.username}
+                    onChangeText={value => changeText('username', value)}
+                  />
+                <Gap height={14} />
+                <TextInput
+                    label="Email"
+                    value={form.email}
+                    onChangeText={value => changeText('email', value)}
+                    disable
+                  />
+                <Gap height={14} />
+                <TextInput
+                    label="No.Handphone"
+                    value={form.handphone}
+                    onChangeText={value => changeText('handphone', value)}
+                  />
+                <Gap height={22} />
+                <Button title="Save Profile" borderRadius={8} onPress={updateProfileData} />
+            </View>
+            </ScrollView>
           </View>
-          <View style={styles.contentValueContainer}>
-            <Text style={styles.contentValue}>+62 811 7812 0012</Text>
-          </View>
-        </View>
-      </View>
-    </View>
+    </SafeAreaView>
+    
   );
 };
 
 export default EditProfile;
 
 const styles = StyleSheet.create({
+  page: {
+    backgroundColor: colors.white,
+    flex: 1,
+  },
   container: {
     flex: 1,
     backgroundColor: colors.white,
@@ -93,6 +198,8 @@ const styles = StyleSheet.create({
   headerContainer: {
     backgroundColor: 'white',
     flexDirection: 'row',
+    height: 105,
+    paddingBottom: 105/2,
   },
   backButtonContainer: {
     backgroundColor: colors.button.primary.backgroundColor,
@@ -120,20 +227,27 @@ const styles = StyleSheet.create({
   },
 
   profilePictureWrapper: {
-    marginTop: 38,
+    marginTop: 10,
     marginLeft: 25,
+    width: 95,
+    height: 95,
   },
   profilePictureContainer: {
     backgroundColor: colors.white,
-    // paddingHorizontal: 5,
-    // paddingVertical: 5,
     justifyContent: 'center',
     alignItems: 'center',
-    width: 85,
-    height: 85,
-    borderRadius: 50,
+    width: 95,
+    height: 95,
+    borderRadius: 95/2,
     borderColor: colors.grey,
     borderWidth: 1,
+  },
+  profilePicture: {
+    width: 84,
+    height: 84,
+    borderRadius: 84/2,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   crossContainer: {
     backgroundColor: 'red',
@@ -145,19 +259,19 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: colors.grey,
     position: 'absolute',
-    marginTop: 60,
-    marginLeft: 60,
+    marginTop: 65,
+    marginLeft: 65,
   },
-
   contentWrapper: {
-    marginTop: 38,
+    marginVertical: 38,
+    marginHorizontal: 24,
   },
   contentContainer: {
     flexDirection: 'row',
     marginHorizontal: 24,
     paddingBottom: 14,
     marginBottom: 14,
-    borderBottomWidth: 1,
+    borderBottomWidth: 0,
     borderBottomColor: colors.border,
   },
   contentTitleContainer: {
