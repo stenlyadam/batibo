@@ -3,15 +3,17 @@ import {StyleSheet, View, Text} from 'react-native';
 import {Button} from '../../components';
 import {colors, fonts} from '../../utils';
 
-const AddressItem = ({navigation, title, content}) => {
+const AddressItem = ({title, address, onPress}) => {
   return (
     <View style={styles.addressContainer}>
       <View style={styles.iconRemoveContainer}>
         <Button type="icon-only" icon="icon-remove" style={styles.iconRemove} />
-      </View>
+      </View>  
       <Text style={styles.subTitle}>{title}</Text>
-      <Text style={styles.text}>{content}</Text>
-      <Button title="Ubah Alamat" />
+      <View style={styles.textWrapper}>
+        <Text style={styles.text}>{address}</Text>
+      </View>
+      <Button title="Ubah Alamat" onPress={onPress}/>
     </View>
   );
 };
@@ -32,6 +34,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 14,
     top: 14,
+  },
+  textWrapper:{
+    maxWidth: 320,
   },
   text: {
     fontFamily: fonts.nunito.normal,

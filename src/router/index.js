@@ -15,6 +15,7 @@ import {
   Profile,
   EditProfile,
   Address,
+  EditAddress
 } from '../pages';
 import Page from '../pages/OnBoarding/Page';
 import OrderItem from '../pages/Order/OrderItem';
@@ -151,6 +152,11 @@ const Router = () => {
       <Stack.Screen
         name="Address"
         component={Address}
+        options={{headerShown: false}}
+      />
+        <Stack.Screen
+        name="EditAddress"
+        component={EditAddress}
         options={{headerShown: false}}
       />
       <Stack.Screen

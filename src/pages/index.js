@@ -11,8 +11,8 @@ import Detail from './Detail';
 import Payment from './Payment';
 import Profile from './Profile';
 import EditProfile from './EditProfile';
-
 import Address from './Address';
+import EditAddress from './EditAddress'
 import Page from './OnBoarding/Page';
 import OrderItem from './Order/OrderItem';
 
@@ -32,7 +32,7 @@ export {
   Profile,
   EditProfile,
   Address,
+  EditAddress,
   Page,
   OrderItem,
-
 };

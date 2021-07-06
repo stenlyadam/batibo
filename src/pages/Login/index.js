@@ -24,21 +24,22 @@ const Login = ({navigation}) => {
       .auth()
       .signInWithEmailAndPassword(form.email, form.password)
       .then(response => {
-        console.log('response: ' + response.user.uid)
+        // console.log('response: ' + response.user.uid)
         firebase
           .database()
           .ref(`users/${response.user.uid}/`)
           .once('value')
           .then(snapshot => {
-            console.log('snapshot success:' + JSON.stringify(snapshot.val()));
+            
             storeData('user', snapshot.val());
+            // console.log('snapshot success:' + JSON.stringify(snapshot.val()));
             navigation.replace('HomeScreen');
             
           })
           setForm('reset');
       })
       .catch(error => {
-        console.log(error.message);
+        // console.log(error.message);
       })
   }
 

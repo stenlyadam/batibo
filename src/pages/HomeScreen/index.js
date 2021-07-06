@@ -10,7 +10,7 @@ const HomeScreen = ({navigation}) => {
   const [form, setForm] = useState({
     username: '',
     email: '',
-    password: ''
+    password: '',
   });
 
   const [listProduct, setListProduct] = useState([]);
@@ -18,15 +18,13 @@ const HomeScreen = ({navigation}) => {
   useEffect(() => {
     getData('user').then(response => {
       const data = response;
-      console.log('profile data: ' + data);
       setForm(data);
-
       firebase
       .database()
       .ref('products/')
       .once('value')
       .then(response => {
-        console.log('data: ', response.val());
+        // console.log('data: ', response.val());
         if (response.val()) {
           setListProduct(response.val());
         }
@@ -58,7 +56,7 @@ const HomeScreen = ({navigation}) => {
       
         <View style={styles.productContainer}>
           {listProduct.map(item => {
-            console.log(item.image);
+            // console.log(item.image);
             return (
               
               <Product
