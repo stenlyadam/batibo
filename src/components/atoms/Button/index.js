@@ -22,13 +22,16 @@ const Button = ({
       <IconOnly icon={icon} onPress={onPress} width={width} height={height} />
     );
   }
-  return (
-    <TouchableOpacity onPress={onPress}>
-      <View style={styles.container(space, height, color, borderRadius, borderColor, marginTop)}>
-        <Text style={styles.text(size, color)}>{title}</Text>
-      </View>
-    </TouchableOpacity>
-  );
+  else{
+    return (
+      <TouchableOpacity onPress={onPress}>
+        <View style={styles.container(space, height, color, borderRadius, borderColor, marginTop)}>
+          <Text style={styles.text(size, color)}>{title}</Text>
+        </View>
+      </TouchableOpacity>
+    );
+  }
+
 };
 
 export default Button;

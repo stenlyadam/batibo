@@ -26,8 +26,10 @@ const EditProfile = ({navigation}) => {
   useEffect(() => {
     getData('user').then(response => {
       const data = response;
-      console.log('profile data: ' + data);
-      setPhoto({uri:response.photo})
+      if(response.photo != undefined){
+        setPhoto({uri:response.photo})
+      }
+      console.log('profile data: ' + JSON.stringify(photo));
       setForm(data);
     });
   }, []);
@@ -53,21 +55,21 @@ const EditProfile = ({navigation}) => {
   };
 
   const updateProfileData = () => {
-    const data = form;
+    const dataUpdate = form;
 
     if (getImageCheck) {
-      data.photo = photoForDB;
-      console.log('data from get Image: ', data.photo);
+      dataUpdate.photo = photoForDB;
+      console.log('data from get Image: ', dataUpdate.photo);
     }
     if (!getImageCheck) {
-      data.photo = form.photo;
-      console.log('data from useEffect: ', data.photo);
+      dataUpdate.photo = form.photo;
+      console.log('data from useEffect: ', dataUpdate.photo);
     }
     
     firebase
       .database()
       .ref('users/' + form.uid + '/')
-      .update(data)
+      .update(dataUpdate)
       .then(() => {
         firebase
           .database()
@@ -77,6 +79,12 @@ const EditProfile = ({navigation}) => {
             console.log('snapshot success:' + JSON.stringify(snapshot.val()));
             storeData('user', snapshot.val());
             navigation.replace('HomeScreen');
+            showMessage({
+              message: "Data Profil Anda berhasil disimpan",
+              type: 'default',
+              backgroundColor: colors.primary,
+              color: colors.white,
+            })
           })
       })
       .catch(error => {
@@ -105,7 +113,7 @@ const EditProfile = ({navigation}) => {
                   type="icon-only"
                   icon="icon-arrow-back"
                   style={styles.backButton}
-                  onPress={() => navigation.navigate('Profile')}
+                  onPress={() => navigation.goBack()}
                   borderRadius={4}
                 />
               </View>

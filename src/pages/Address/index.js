@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, View, Text} from 'react-native';
-import {Button} from '../../components';
-import {colors, fonts, getData} from '../../utils';
+import {StyleSheet, View, Text, ScrollView} from 'react-native';
+import {Button, Gap} from '../../components';
+import {colors, fonts, getData, storeData} from '../../utils';
 import AddressItem from './AddressItem';
 import { firebase } from '../../config';
 
@@ -16,39 +16,59 @@ const Address = ({navigation}) => {
   },[]);
 
   const [listAddress, setListAddress] = useState([]);
+  const [totalAddress, setTotalAddress] = useState('');
 
   useEffect(() => {
     getData('user').then(response => {
       const data = response;
       setForm(data);
-      console.log('form: ', form);
-      // setListAddress(form.address);
-      
-      
-      // firebase
-      // .database()
-      // .ref('users/' + form.uid + '/address')
-      // .once('value')
-      // .then(response => {
-        //   // console.log('data: ', form.uid);
-        //   if (response.val()) {
-          //     setListAddress(response.val());
-          //     // console.log('data: ', listAddress);
-          
-          //   }
-          // })
-          // .catch(error => {
-            //   showError(error.message);
-            // });
           });
         }, []);
         
   useEffect(() => {
-    console.log('data user:  ', form.address)
     setListAddress(form.address);
-  },[form])
+    setTotalAddress(form.address.length);
+  },[form.address])
   
+  const deleteAddress = (item) => {
+    firebase.database()
+    .ref(`users/${form.uid}/address/${item}/`)
+    .remove()
+    .then(() => {
+        firebase
+        .database()
+        .ref('users/' + form.uid)
+        .once('value')
+        .then(snapshot => {
+            storeData('user', snapshot.val());
+            // console.log('snapshot: ', snapshot);
+            getData('user').then(response => {
+              const data = response;
+              const totalAlamat = listAddress.length - 1 ;
+              console.log('total alamat setelah dikurangi: ', totalAlamat);
+              setTotalAddress(totalAlamat);
+              setForm(data);
+              // setTotalAddress(form.address.length);
+                  });
+    })
+
+    })
+    .catch(error => {
+        showMessage({
+            message: error.message,
+            type: 'default',
+            backgroundColor: colors.error,
+            color: colors.white,
+        });
+    });
+    // console.log('deleted data Address successfully');
+    // console.log('jumlah address: ', totalAddress);
+    setListAddress(form.address);
+  } 
+
+
   return (
+
     <View style={styles.container}>
       <View style={styles.headerContainer}>
         <View style={styles.backButtonContainer}>
@@ -56,7 +76,7 @@ const Address = ({navigation}) => {
             type="icon-only"
             icon="icon-arrow-back"
             style={styles.backButton}
-            onPress={() => navigation.navigate('Profile')}
+            onPress={() => navigation.goBack('Profile')}
             borderRadius={4}
           />
         </View>
@@ -64,33 +84,41 @@ const Address = ({navigation}) => {
           <Text style={styles.titleText}>Alamat</Text>
         </View>
       </View>
-
-      <View style={styles.addressListContainer}>
-
+      
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={styles.addressListContainer}>
+          
         {listAddress.map(item => {
-        return (
+        return item && item.id != 0 ? (
           <AddressItem
           key={item.id}
           title={item.kategori}
+          onDelete={() => deleteAddress(item.id)}
           address={`${item.kelurahan}, ${item.alamat}, ${item.kecamatan}, ${item.kota_kabupaten}, ${item.provinsi}`}
           onPress={() => navigation.navigate('EditAddress', item)}
         /> 
         )
+        : console.log('totalAddress : ', totalAddress - 1);
       })}
-
-      </View>
-      <View style = {styles.buttonExpand}>
-            <Button 
-            title="Tambah Alamat" 
-            size={16} 
-            height={10} 
-            space={358} 
-            color={"secondary"}
-            borderRadius={4}
-            // onPress={() => navigation.navigate('AddAddress')}
-            />
         </View>
+
+        <View style = {styles.buttonExpand}>
+              <Button 
+              title="Tambah Alamat" 
+              size={16} 
+              height={10} 
+              space={358} 
+              color={"secondary"}
+              borderRadius={4}
+              onPress={() => navigation.navigate('AddAddress')}
+              />
+        </View>
+        <Gap height={32} />
+      </ScrollView>
+      
+
     </View>
+    
   );
 };
 

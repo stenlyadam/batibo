@@ -39,7 +39,7 @@ const Login = ({navigation}) => {
           setForm('reset');
       })
       .catch(error => {
-        // console.log(error.message);
+        console.log(error.message);
       })
   }
 

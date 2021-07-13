@@ -3,11 +3,11 @@ import {StyleSheet, View, Text} from 'react-native';
 import {Button} from '../../components';
 import {colors, fonts} from '../../utils';
 
-const AddressItem = ({title, address, onPress}) => {
+const AddressItem = ({title, address, onPress, onDelete}) => {
   return (
     <View style={styles.addressContainer}>
       <View style={styles.iconRemoveContainer}>
-        <Button type="icon-only" icon="icon-remove" style={styles.iconRemove} />
+        <Button type="icon-only" icon="icon-remove" onPress={onDelete}/>
       </View>  
       <Text style={styles.subTitle}>{title}</Text>
       <View style={styles.textWrapper}>
@@ -49,5 +49,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: colors.text.primary,
     marginBottom: 5,
+    maxWidth: 280,
   },
 });

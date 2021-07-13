@@ -6,6 +6,8 @@ import {IconArrowRight} from '../../assets/icons';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {getData} from '../../utils';
 import { DummyUserPhoto } from '../../assets';
+import {firebase} from '../../config';
+
 const Profile = ({navigation}) => {
 
   const [form, setForm] = useState({
@@ -21,17 +23,38 @@ const Profile = ({navigation}) => {
   useEffect(() => {
     getData('user').then(response => {
       const data = response;
-      data.photo = {uri:response.photo}
-      console.log('profile data: ' + data);
+      if(response.photo != undefined){
+        setPhoto({uri:response.photo})
+      }
+      console.log('profile data: ' + JSON.stringify(photo));
       setForm(data);
     });
   }, []);
+
+  const signOut = () => {
+    firebase
+      .auth()
+      .signOut()
+      .then(() => {
+        console.log('success sign out');
+        navigation.replace('Login');
+      })
+      .catch(error => {
+        showMessage({
+          message: error.message,
+          type: 'default',
+          backgroundColor: colors.error,
+          color: colors.white,
+        });
+      });
+  };
+
 
   return (
     <View style={styles.container}>
       <View style={styles.profileHeaderContainer}>
         <View style={styles.profilePictureContainer}>
-          <Image source={form.photo} style={styles.profilePicture} />
+          <Image source={photo} style={styles.profilePicture} />
         </View>
         <View style={styles.nameContainer}>
           <Text style={styles.nameText}>{form.username}</Text>
@@ -51,12 +74,12 @@ const Profile = ({navigation}) => {
         <ProfileMenu
           title="Alamat"
           icon="icon-address"
-          onClick={() => navigation.navigate('Address')}
+          onClick={() => navigation.push('Address')}
         />
         <ProfileMenu title="Privasi dan Kebijakan" icon="icon-protection" />
         <ProfileMenu title="Bantuan" icon="icon-help" />
         <View>
-          <TouchableOpacity style={styles.voucherButtonContainer}>
+          <TouchableOpacity style={styles.voucherButtonContainer} onPress={signOut}>
             <Text style={styles.keluarText}>Keluar</Text>
             <View style={styles.arrowRightContainer}>
               <IconArrowRight />

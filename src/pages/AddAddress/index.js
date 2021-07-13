@@ -5,29 +5,25 @@ import {colors, fonts, getData, storeData} from '../../utils';
 import {showMessage} from 'react-native-flash-message';
 import { firebase } from '../../config';
 
-const EditAddress = ({navigation, route}) => {
-
-    const item = route.params;
-    // console.log('item id : ', item.id);
+const AddAddress = ({navigation}) => {
 
     const [form, setForm] = useState({
         uid: '',
         address: [],
     }, [])
 
-    const [idUser, setIdUser] = useState('');
-
     useEffect(() => {
         getData('user').then(response => {
             const data = response;
-            setIdUser(data.uid);
-            console.log('profile id: ' + idUser);
+            setForm(data);
+            console.log(data);
         });
-        setForm(item);
-    },[]);
+            }, []);
 
-
-
+    // useEffect(() => {
+    //     console.log(form);
+    //     }, [form]);
+    
     const changeText = (key, value) => {
         setForm({
             ...form,
@@ -35,23 +31,38 @@ const EditAddress = ({navigation, route}) => {
         });
     };
 
-    const updateAddressData = () => {
-        const data = form;
-        console.log('id user: ', idUser);
-        firebase
-        .database()
-        .ref('users/' + idUser + '/address/' + item.id)
-        .update(data)
+    const addAddress = () => {
+
+        // if (form.address.length == undefined) {
+        //     form.address.length = 1;
+        // }
+
+        console.log('form length yg telah di cek: ', form.address.length);
+        const data = {
+            alamat: form.alamat,
+            kategori: form.kategori,
+            kecamatan: form.kecamatan,
+            kelurahan: form.kelurahan,
+            kota_kabupaten: form.kota_kabupaten,
+            provinsi: form.provinsi,
+            id: form.address.length,
+        }
+    
+        firebase.database()
+        .ref(`users/${form.uid}/address/`)
+        .child(form.address.length)
+        .set(data)
         .then(() => {
             firebase
             .database()
-            .ref('users/' + idUser)
+            .ref('users/' + form.uid)
             .once('value')
             .then(snapshot => {
                 storeData('user', snapshot.val());
+                setForm('reset');
                 navigation.replace('HomeScreen');
                 showMessage({
-                    message: "Data Alamat Anda berhasil diubah",
+                    message: "Data Alamat Anda berhasil ditambahkan",
                     type: 'default',
                     backgroundColor: colors.primary,
                     color: colors.white,
@@ -66,7 +77,8 @@ const EditAddress = ({navigation, route}) => {
                 color: colors.white,
             });
         });
-    };
+        
+    }
 
     return (
         <View style={styles.container}>
@@ -81,7 +93,7 @@ const EditAddress = ({navigation, route}) => {
                 />
                 </View>
                 <View style={styles.titleTextContainer}>
-                <Text style={styles.titleText}>Ubah Alamat</Text>
+                <Text style={styles.titleText}>Tambah Alamat</Text>
                 </View>
             </View> 
 
@@ -89,48 +101,54 @@ const EditAddress = ({navigation, route}) => {
                 <View style={styles.contentWrapper}>
                     <TextInput
                         label="Alamat"
+                        placeholder="Masukkan Alamat"
                         value={form.alamat}
                         onChangeText={value => changeText('alamat', value)}
                     />
                     <Gap height={14} />
                     <TextInput
                         label="Kategori"
+                        placeholder="Masukkan Kategori Alamat"
                         value={form.kategori}
                         onChangeText={value => changeText('kategori', value)}
                     />
                     <Gap height={14} />
                     <TextInput
                         label="Kecamatan"
+                        placeholder="Masukkan Kecamatan"
                         value={form.kecamatan}
                         onChangeText={value => changeText('kecamatan', value)}
                     />
                     <Gap height={14} />
                     <TextInput
                         label="Kelurahan"
+                        placeholder="Masukkan Kelurahan"
                         value={form.kelurahan}
                         onChangeText={value => changeText('kelurahan', value)}
                     />
                     <Gap height={14} />
                     <TextInput
                         label="Kota/Kabupaten"
+                        placeholder="Masukkan Kota/Kabupaten"
                         value={form.kota_kabupaten}
                         onChangeText={value => changeText('kota_kabupaten', value)}
                     />
                     <Gap height={14} />
                     <TextInput
                         label="Provinsi"
+                        placeholder="Masukkan Provinsi"
                         value={form.provinsi}
                         onChangeText={value => changeText('provinsi', value)}
                     />
                     <Gap height={22} />
-                    <Button title="Simpan Alamat" borderRadius={8}  onPress={updateAddressData}/>    
+                    <Button title="Simpan Alamat" borderRadius={8}  onPress={addAddress}/>    
                 </View>
             </ScrollView>
         </View>
     )
 }
 
-export default EditAddress
+export default AddAddress
 
 const styles = StyleSheet.create({
     container: {

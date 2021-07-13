@@ -15,6 +15,7 @@ import {
   Profile,
   EditProfile,
   Address,
+  AddAddress,
   EditAddress
 } from '../pages';
 import Page from '../pages/OnBoarding/Page';
@@ -69,10 +70,10 @@ const BottomNavigator = () => {
         name="Profile"
         component={Profile}
         options={{
-          tabBarLabel: 'Profil',
-          tabBarIcon: ({color, size}) => (
+          tabBarLabel: 'Profile',
+          tabBarIcon: ({color, size}) => 
             <IconProfile color={color} size={size} />
-          ),
+          ,
         }}
       />
     </Tab.Navigator>
@@ -139,11 +140,11 @@ const Router = () => {
         component={Payment}
         options={{headerShown: false}}
       />
-      {/* <Stack.Screen
+      <Stack.Screen
         name="Profile"
         component={Profile}
         options={{headerShown: false}}
-      /> */}
+      />
       <Stack.Screen
         name="EditProfile"
         component={EditProfile}
@@ -152,6 +153,11 @@ const Router = () => {
       <Stack.Screen
         name="Address"
         component={Address}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="AddAddress"
+        component={AddAddress}
         options={{headerShown: false}}
       />
         <Stack.Screen

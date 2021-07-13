@@ -16,7 +16,18 @@ const Register = ({navigation}) => {
     username: '',
     email: '',
     password: '',
+    handphone: '',
   });
+  
+  const [defaultAddress] = useForm({
+    id: 0,
+    kategori: ' ',
+    kelurahan: ' ',
+    alamat: ' ',
+    kecamatan: ' ',
+    kota_kabupaten: ' ',
+    provinsi: ' ',
+  })
 
   const onContinue = () => {
     console.log(form);
@@ -30,15 +41,16 @@ const Register = ({navigation}) => {
           email: form.email,
           uid: success.user.uid,
           handphone: form.handphone,
+          address: [defaultAddress],
         };
         firebase
           .database()
           .ref('users/' + success.user.uid + '/')
           .set(data);
-        console.log('data: ', data);
+        // console.log('data: ', data);
         storeData('users', data);
 
-        console.log('register success', success);
+        // console.log('register success', success);
         navigation.replace('Login');
       })
       .catch((error) => {

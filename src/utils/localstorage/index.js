@@ -18,6 +18,7 @@ export const getData = async key => {
     console.log('getData: '+ value);
   } catch (e) {
     // error reading value
+    console.log('error reading: ', e)
   }
   
 };

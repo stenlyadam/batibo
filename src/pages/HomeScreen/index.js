@@ -11,7 +11,7 @@ const HomeScreen = ({navigation}) => {
     username: '',
     email: '',
     password: '',
-  });
+  },[]);
 
   const [listProduct, setListProduct] = useState([]);
 
