@@ -4,12 +4,12 @@ import {DummyBrokoliHijau} from '../../assets';
 import {colors, fonts} from '../../utils';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
-const SentItem = ({title, price, status}) => {
+const SentItem = ({id, title, price, status, image}) => {
   return (
     <View style={styles.cardWrapper}>
       <View style={styles.cardContainer}>
         <View style={styles.imageContainer}>
-          <Image source={DummyBrokoliHijau} style={styles.picture} />
+          <Image source={image} style={styles.picture} />
         </View>
         <View style={styles.deliveryTextContainer}>
           <Text style={styles.deliveryTitle}>{title}</Text>
@@ -19,9 +19,9 @@ const SentItem = ({title, price, status}) => {
               <Text style={styles.deliverySubText}>Total Belanja</Text>
               <Text style={styles.deliveryTotalText}>{price}</Text>
             </View>
-            <TouchableOpacity style={styles.deliveryButton}>
+            <View style={styles.deliveryButton}>
               <Text style={styles.buttonTitle}>{status}</Text>
-            </TouchableOpacity>
+            </View>
           </View>
         </View>
       </View>
@@ -33,8 +33,9 @@ export default SentItem;
 
 const styles = StyleSheet.create({
   picture: {
-    width: 107,
+    width: 87,
     height: 67,
+    resizeMode: 'cover',
   },
   cardWrapper: {
     backgroundColor: colors.white,
@@ -51,6 +52,11 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     justifyContent: 'center',
+    width: 107,
+    
+  },
+  deliveryTextContainer: {
+    flex: 1,
   },
   deliveryCardBottomContainer: {
     flexDirection: 'row',
@@ -62,13 +68,15 @@ const styles = StyleSheet.create({
   deliveryButton: {
     backgroundColor: colors.button.green,
     paddingVertical: 7,
-    width: 130,
+    marginHorizontal: 15,
+    width: 120,
     borderRadius: 6,
     justifyContent: 'center',
     alignItems: 'center',
   },
   buttonTitle: {
     color: colors.white,
+    fontSize: 13,
     fontFamily: fonts.nunito.semibold,
   },
   deliveryTitle: {

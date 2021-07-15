@@ -1,15 +1,24 @@
 import React, {useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {Button} from '../../atoms';
+import {useDispatch} from 'react-redux';
 
-const Counter = ({onChange}) => {
-  const [count, setCount] = useState(0);
+const Counter = ({itemCount, itemId}) => {
+  let item = {itemCount, itemId}
+  dispatch = useDispatch();
+  const [count, setCount] = useState(itemCount);
   const onPressMinus = () => {
     if (count > 0) {
-      setCount((prevCount) => prevCount - 1);
+      setCount((prevCount) => prevCount - 1)
+      dispatch({type: 'UPDATE_COUNT_DECREMENT', value:item})
+    } else {
+      dispatch({type: 'DELETE_CART', value:item})
     }
   };
-  const onPressPlus = () => setCount((prevCount) => prevCount + 1);
+  const onPressPlus = () => {
+    setCount((prevCount) => prevCount + 1)
+    dispatch({type: 'UPDATE_COUNT_INCREMENT', value:item})
+  };
 
   return (
     <View style={styles.container}>

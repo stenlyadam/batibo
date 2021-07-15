@@ -12,7 +12,7 @@ const Cart = ({navigation}) => {
   return (
     <SafeAreaView style={styles.page}>
       <View style={styles.pageTitle}>
-        <PageTitle title="Keranjang" />
+        <PageTitle title={"Keranjang"} />
       </View>
 
       <View style={styles.contentWrapper}>

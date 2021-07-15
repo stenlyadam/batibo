@@ -52,6 +52,7 @@ const BottomNavigator = () => {
         name="Cart"
         component={Cart}
         options={{
+          unmountOnBlur:true,
           tabBarLabel: 'Keranjang',
           tabBarIcon: ({color, size}) => <IconCart color={color} size={size} />,
         }}
@@ -60,6 +61,7 @@ const BottomNavigator = () => {
         name="Order"
         component={Order}
         options={{
+          unmountOnBlur:true,
           tabBarLabel: 'Order Saya',
           tabBarIcon: ({color, size}) => (
             <IconReceipt color={color} size={size} />
@@ -100,11 +102,11 @@ const Router = () => {
         component={Register}
         options={{headerShown: false}}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="Cart"
         component={Cart}
         options={{headerShown: false}}
-      />
+      /> */}
       <Stack.Screen
         name="Checkout"
         component={Checkout}
@@ -120,11 +122,11 @@ const Router = () => {
         component={OrderSuccess}
         options={{headerShown: false}}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="Order"
         component={Order}
         options={{headerShown: false}}
-      />
+      /> */}
       <Stack.Screen
         name="OnBoarding"
         component={OnBoarding}

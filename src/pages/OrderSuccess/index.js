@@ -13,7 +13,10 @@ import {colors, fonts} from '../../utils';
 
 const {width} = Dimensions.get('window');
 
-const OrderSuccess = ({navigation}) => {
+const OrderSuccess = ({navigation, route}) => {
+  console.log(route.params)
+  const totalPrice = route.params.price;
+  const orderKey = route.params.key;
   return (
     <SafeAreaView style={styles.page}>
       <PageTitle title="Order Sukses" onBack={() => navigation.goBack()} />
@@ -24,10 +27,10 @@ const OrderSuccess = ({navigation}) => {
           </View>
           <View style={styles.amountContainer}>
             <Text style={styles.totalAmountText}>Total Tagihan</Text>
-            <Text style={styles.totalAmount}>Rp 140.000</Text>
+            <Text style={styles.totalAmount}>Rp {totalPrice}</Text>
             <Gap height={12} />
             <Text style={styles.orderNumber}>
-              No. Order #PG-PH90MK2DWNET-NR
+              No. Order {orderKey}
             </Text>
           </View>
         </View>

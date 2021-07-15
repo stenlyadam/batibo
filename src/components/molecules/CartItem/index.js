@@ -4,10 +4,9 @@ import {colors} from '../../../utils';
 import {CheckBox} from '../../atoms';
 import Counter from '../Counter';
 
-const CartItem = ({image, name, weight, originalPrice, currentPrice, id}) => {
+const CartItem = ({image, name, weight, originalPrice, currentPrice, id, count}) => {
   return (
     <View style={styles.container}>
-      <CheckBox />
 
       <View style={styles.productImageContainer}>
         <Image source={image} style={styles.productImage} />
@@ -21,7 +20,7 @@ const CartItem = ({image, name, weight, originalPrice, currentPrice, id}) => {
         </View>
       </View>
       <View style={styles.counterContainer}>
-        <Counter />
+        <Counter itemCount={count} itemId={id}/>
       </View>
     </View>
   );
@@ -38,10 +37,11 @@ const styles = StyleSheet.create({
   },
   productImageContainer: {
     justifyContent: 'center',
+    paddingRight: 10,
   },
   productImage: {
     height: 67,
-    width: 107,
+    width: 97,
   },
   productName: {
     fontWeight: '700',

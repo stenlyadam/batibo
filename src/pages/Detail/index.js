@@ -1,12 +1,35 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, View, Text, ImageBackground} from 'react-native';
-import {IMGWortel} from '../../assets';
 import {Button} from '../../components';
-import {colors, fonts} from '../../utils';
+import {colors, fonts, getData} from '../../utils';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
+import {firebase} from '../../config';
 
 const Detail = ({navigation, route}) => {
+  const pushCart = (itemId, itemPrice) => {
+    let item = {id: `${itemId}`, count: 1, price: itemPrice}
+    dispatch({type: 'PUSH_CART', value:item})
+  }
+
   const item = route.params;
+
+  
+
+  const [form, setForm] = useState({
+    username: '',
+    email: '',
+    password: '',
+    uid: ''
+  });
+
+  useEffect(() => {
+    getData('user').then(response => {
+      const data = response;
+      console.log('profile data test: ', data);
+      setForm(data);
+    });
+  }, []);
+
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
@@ -41,18 +64,16 @@ const Detail = ({navigation, route}) => {
         <View style={styles.textContainer}>
           <ScrollView style={styles.scrollView}>
             <Text style={styles.text}>
-              {`Tumbuhan biennial (siklus hidup 12 - 24 bulan) yang menyimpan karbohidrat dalam jumlah besar untuk tumbuhan tersebut berbunga pada tahun kedua. Batang bunga tumbuh setinggi sekitar 1 m, dengan bunga berwarna putih, dan rasa yang manis langu. Bagian yang dapat dimakan dari wortel adalah bagian umbi atau akarnya.
-
-Wortel mengandung vitamin A yang baik untuk kesehatan mata. Mengkonsumsi wortel baik untuk penglihatan pada mata, terutama bisa meningkatkan pandangan jarak jauh. Selain vitamin A, wortel juga mengandung vitamin B1, B2, B3, B6, B9, dan C, kalsium, zat besi, magnesium, fosfor, kalium, dan sodium.`}
+              {item.detail}
             </Text>
           </ScrollView>
         </View>
         <View style={styles.footer}>
           <View style={styles.centerContainer}>
             <View style={styles.cartButtonContainer}>
-              <Button color="blue" type="icon-only" icon="icon-cart" borderRadius={4}/>
+              <Button color="blue" type="icon-only" icon="icon-cart" borderRadius={4} onPress={() => navigation.navigate('Cart')}/>
             </View>
-            <TouchableOpacity style={styles.beliButtonContainer}>
+            <TouchableOpacity style={styles.beliButtonContainer} onPress={() => pushCart(item.id, form.uid)}>
               <Text style={styles.textButton}>Beli Sekarang</Text>
             </TouchableOpacity>
           </View>

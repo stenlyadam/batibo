@@ -1,12 +1,71 @@
-import React, {useState} from 'react';
-import {SafeAreaView, StyleSheet, Text, View, ScrollView} from 'react-native';
-import {DummyBrokoliHijau, DummyJerukBali} from '../../assets';
+import React, {useState, useEffect} from 'react';
+import {SafeAreaView, StyleSheet, Text, View, ScrollView, FlatList} from 'react-native';
 import {Button, CartItem, PageTitle, CheckBox} from '../../components';
 import {colors, fonts} from '../../utils';
 import {Picker} from '@react-native-community/picker';
+import {firebase} from '../../config';
+import { useDispatch, useSelector } from "react-redux";
 
 const Checkout = ({navigation}) => {
+  const dispatch = useDispatch();
+
+  const cart = useSelector(state => state.cart);
+  const user = useSelector(state => state.user);
   const [selectedValue, setSelectedValue] = useState('Alamat Rumah');
+
+  console.log("CartPesanan: ", cart)
+  
+  const [listCart, setListCart] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [deliveryCost, setDeliveryCost] = useState(15000);
+
+  const submitOrder = () => {
+    let submitCart = [];
+    submitCart['Cart'] = listCart;
+    console.log("submitCartBefore: ", submitCart)
+    submitCart['totalPrice'] = totalPrice;
+    submitCart['deliveryCost'] = deliveryCost;
+    submitCart['status'] = "Dalam Pengiriman";
+    submitCart['title'] = listCart[0].name;
+    submitCart['image'] = listCart[0].image;
+    submitCart['firstItemPrice'] = (listCart[0].price - (listCart[0].price * (listCart[0].discount/100)));
+    submitCart['firstItemUnit'] = listCart[0].productUnit;
+    console.log("submitCartAfter: ", submitCart)
+
+    console.log(submitCart)
+    let orderKey = firebase.database().ref(`users/${user.uid}/order`).push().getKey()
+    submitCart['id'] = orderKey;
+
+    firebase.database().ref(`users/${user.uid}/order/${orderKey}`).set(submitCart)
+
+    let sendItem = {key: orderKey, price: (totalPrice + deliveryCost)}
+
+    dispatch({type: 'CLEAR_CART'})
+    navigation.navigate('OrderSuccess', (sendItem))
+  }
+
+  useEffect(() => {
+    setListCart([]);
+    console.log("cart: ", cart)
+    let tempPrice = 0;
+    cart.map(item => {
+      firebase
+      .database()
+      .ref(`products/${item.id}`)
+      .once('value')
+      .then(response => {
+        const data = response.val()
+        data["count"] = item.count;
+        console.log("Data: ", data)
+        console.log("response3: ", data)
+        setListCart(listCart => [...listCart, data])
+      })
+      tempPrice += (item.price * item.count);
+    })
+    setTotalPrice(tempPrice);
+  }, [])
+
+
   return (
     <SafeAreaView style={styles.page}>
       <PageTitle
@@ -31,45 +90,41 @@ const Checkout = ({navigation}) => {
               </Picker>
               <Button type="icon-only" icon="icon-arrow-right" borderRadius={4}/>
             </View>
-            {/* <View style={styles.dropdownContainer}>
-              <Text style={styles.paymentSummaryCategory}>Pilih Alamat</Text>
-              <Button type="icon-only" icon="icon-arrow-right" />
-            </View> */}
           </View>
 
           <View>
             <View style={styles.deliverContainer}>
               <Text style={styles.deliver}>Pesanan</Text>
-              <CartItem
-                image={DummyBrokoliHijau}
-                name="Brokoli Hijau"
-                weight="500 gram"
-                originalPrice="Rp. 20.000"
-                currentPrice="Rp. 10.000"
-              />
-              <CartItem
-                image={DummyJerukBali}
-                name="Jeruk Bali"
-                weight="500 gram"
-                originalPrice="Rp. 40.000"
-                currentPrice="Rp. 35.000"
+              <FlatList style={styles.cartContainer}
+                keyExtractor={(item) => item.id}
+                data={listCart} 
+                renderItem={({item}) => (
+                    <CartItem
+                      id={item.id}
+                      image={{uri: item.image}}
+                      name={item.name}
+                      weight={item.productUnit}
+                      originalPrice={item.price}
+                      currentPrice={item.price - (item.price * (item.discount/100))}
+                      count={item.count}
+                    />
+                  )}
               />
             </View>
             <View style={styles.deliverContainer}>
               <Text style={styles.deliver}>Pembayaran</Text>
-              {/* <Text style={styles.subTitle}>Metode Pembayaran</Text> */}
               <Text style={styles.subTitle}>Ringkasan Pembayaran</Text>
               <View style={styles.paymentSummary}>
                 <Text style={styles.paymentSummaryCategory}>Total Belanja</Text>
-                <Text style={styles.priceSummary}>Rp 125.000</Text>
+                <Text style={styles.priceSummary}>Rp {totalPrice}</Text>
               </View>
               <View style={styles.paymentSummary}>
                 <Text style={styles.paymentSummaryCategory}>Ongkos Kirim</Text>
-                <Text style={styles.priceSummary}>Rp 15.000</Text>
+                <Text style={styles.priceSummary}>Rp {deliveryCost}</Text>
               </View>
               <View style={styles.totalPayment}>
                 <Text style={styles.totalPaymentText}>Total Pembayaran</Text>
-                <Text style={styles.totalPrice}>Rp 140.000</Text>
+                <Text style={styles.totalPrice}>Rp {totalPrice + deliveryCost}</Text>
               </View>
             </View>
           </View>
@@ -79,7 +134,7 @@ const Checkout = ({navigation}) => {
       <View style={styles.paymentButton}>
         <Button
           title="Pesan Sekarang"
-          onPress={() => navigation.navigate('OrderSuccess')}
+          onPress={() => submitOrder()}
           borderRadius={4}
         />
       </View>

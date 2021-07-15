@@ -1,24 +1,57 @@
-import React from 'react';
-import {StyleSheet, Text, View, Image} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {StyleSheet, Text, View, Image, FlatList} from 'react-native';
 import {Button} from '../../components';
 import {colors, fonts} from '../../utils';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
-import {DummyBrokoliHijau} from '../../assets';
 import OrderItem from './OrderItem';
+import {firebase} from '../../config';
+import { useDispatch, useSelector } from "react-redux";
 
 const OnProcess = ({navigation, status}) => {
+
+  const user = useSelector(state => state.user);
+
+  const [listOrder, setListOrder] = useState([]);
+
+  useEffect(() => {
+    setListOrder([])
+
+    firebase
+      .database()
+      .ref(`users/${user.uid}/order/`)
+      .once(`value`)
+      .then(response => {
+        if(response.val()){
+          const obj = response.val()
+          const status = "Selesai";
+          let arr = Object.keys(obj).map((k) => obj[k])
+          console.log('order: ', arr)
+          arr = arr.filter( i => status.includes( i.status ) );
+          console.log("orderFiltered: ", arr)
+          setListOrder(arr)
+        }
+        })
+
+  }, [])
+
   return (
-    <ScrollView style={styles.tabContainer}>
-      <OrderItem
-        status="Pesanan Selesai"
-        deliveryDate="18 Oktober 2020"
-        press={() => navigation.navigate('Payment')}
-      />
-      <OrderItem
-        status="Pesanan Dibatalkan"
-        press={() => navigation.navigate('Payment')}
-      />
-    </ScrollView>
+    <FlatList style={styles.tabContainer}
+      keyExtractor={(item) => item.id}
+      data={listOrder}
+      renderItem={({item}) => (
+          <OrderItem
+            id={item.id}
+            image={{uri: item.image}}
+            title={item.title}
+            price={(item.totalPrice + item.deliveryCost)}
+            status={item.status}
+            deliveryDate="18 Oktober 2020"
+            firstItemPrice={item.firstItemPrice}
+            firstItemUnit= {item.firstItemUnit}
+            press={() => navigation.navigate('Payment')}
+          />
+        )}
+    />
   );
 };
 

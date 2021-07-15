@@ -4,27 +4,39 @@ import { Carousel, Gap, Product, SearchBox, Button } from '../../components';
 import Category from '../../components/molecules/Category';
 import { firebase } from '../../config';
 import { colors, fonts, getData } from '../../utils';
+import {useDispatch} from 'react-redux';
 
 const HomeScreen = ({navigation}) => {
+  
+  const pushCart = (itemId, itemPrice) => {
+    let item = {id: `${itemId}`, count: 1, price: itemPrice}
+    dispatch({type: 'PUSH_CART', value:item})
+  }
+
+  const dispatch = useDispatch()
 
   const [form, setForm] = useState({
     username: '',
     email: '',
     password: '',
-  },[]);
+    uid: ''
+  });
 
   const [listProduct, setListProduct] = useState([]);
 
   useEffect(() => {
     getData('user').then(response => {
       const data = response;
+      console.log('profile data: ' + data);
       setForm(data);
-      firebase
+    });
+
+    firebase
       .database()
       .ref('products/')
       .once('value')
       .then(response => {
-        // console.log('data: ', response.val());
+        console.log('data: ', response.val());
         if (response.val()) {
           setListProduct(response.val());
         }
@@ -32,7 +44,6 @@ const HomeScreen = ({navigation}) => {
       .catch(error => {
         showError(error.message);
       });
-    });
   }, []);
 
   return (
@@ -55,21 +66,20 @@ const HomeScreen = ({navigation}) => {
       <Text style={styles.titleText}>Sedang Diskon</Text>
       
         <View style={styles.productContainer}>
+          {console.log('listProduct: ', listProduct)}
           {listProduct.map(item => {
-            // console.log(item.image);
             return (
-              
               <Product
-              key={item.id}
-              name={item.name}
-              image={item.image}
-              category={item.category}
-              Price={item.price}
-              productUnit={item.productUnit}
-              discount={item.discount}
-              onBuy={() => navigation.navigate('Cart')}
-              onDetail={() => navigation.navigate('Detail', item)}
-            /> 
+                key={item.id}
+                name={item.name}
+                image={item.image}
+                category={item.category}
+                Price={item.price}
+                productUnit={item.productUnit}
+                discount={item.discount}
+                onBuy={() => pushCart(item.id, (item.price - (item.price * (item.discount/100))))}
+                onDetail={() => navigation.navigate('Detail', item)}
+              /> 
             )
           })}
         </View>

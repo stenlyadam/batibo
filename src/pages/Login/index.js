@@ -10,13 +10,15 @@ import {IMGBackground} from '../../assets';
 import {Button, CheckBox, Gap, Link, TextInput} from '../../components';
 import {colors, fonts, useForm, storeData} from '../../utils';
 import {firebase} from '../../config';
+import {useDispatch} from 'react-redux';
 
 const Login = ({navigation}) => {
-
+  dispatch = useDispatch();
   const [form, setForm] = useForm({
     username: '',
     email: '',
     password: '',
+    uid: ''
   });
 
   const onContinue = () =>{
@@ -32,6 +34,7 @@ const Login = ({navigation}) => {
           .then(snapshot => {
             
             storeData('user', snapshot.val());
+            dispatch({type: 'SAVE_USER', value:snapshot.val()})
             // console.log('snapshot success:' + JSON.stringify(snapshot.val()));
             navigation.replace('HomeScreen');
             

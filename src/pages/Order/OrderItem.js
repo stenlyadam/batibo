@@ -5,7 +5,7 @@ import {colors, fonts} from '../../utils';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {DummyBrokoliHijau} from '../../assets';
 
-const OrderItem = ({navigation, status, deliveryDate = '-', press}) => {
+const OrderItem = ({navigation, status, deliveryDate = '-', press, id, image, price, firstItemPrice, firstItemUnit, title}) => {
   return (
     <TouchableOpacity style={styles.orderContainer} onPress={press}>
       <View style={styles.orderStatusContainer}>
@@ -18,20 +18,20 @@ const OrderItem = ({navigation, status, deliveryDate = '-', press}) => {
         </View>
         <View>
           <Text style={styles.subTitleText}>ID Pesanan</Text>
-          <Text style={styles.orderNumber}>GD-56789107899</Text>
+          <Text style={styles.orderNumber}>{id}</Text>
         </View>
       </View>
       <View style={styles.itemContainer}>
         <View style={styles.imageContainer}>
-          <Image source={DummyBrokoliHijau} style={styles.image} />
+          <Image source={image} style={styles.image} />
         </View>
         <View style={styles.itemTitleContainer}>
-          <Text style={styles.titleText}>Brokoli Hijau</Text>
+          <Text style={styles.titleText}>{title}</Text>
           <View style={styles.itemPriceContainer}>
-            <Text style={styles.itemWeight}>500gram</Text>
+            <Text style={styles.itemWeight}>{firstItemUnit}</Text>
           </View>
         </View>
-        <Text style={styles.itemPrice}>Rp 20.000</Text>
+        <Text style={styles.itemPrice}>Rp {firstItemPrice}</Text>
       </View>
       <View style={styles.moreItemContainer}>
         <Text style={styles.moreItemText}>Lihat Pesanan Lainnya</Text>
@@ -39,7 +39,7 @@ const OrderItem = ({navigation, status, deliveryDate = '-', press}) => {
       </View>
       <View style={styles.orderAmountContainer}>
         <Text style={styles.subTitleText}>Total Pembayaran</Text>
-        <Text style={styles.orderAmount}>Rp. 140.000</Text>
+        <Text style={styles.orderAmount}>Rp. {price}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
   itemContainer: {
     flexDirection: 'row',
     paddingVertical: 24,
-    paddingHorizontal: 15,
+    paddingHorizontal: 16,
     borderColor: colors.border,
     borderTopWidth: 1,
     borderBottomWidth: 1,
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
   },
   itemTitleContainer: {
     justifyContent: 'space-between',
-    marginRight: 90,
+    marginRight: 70,
   },
   titleText: {
     fontFamily: fonts.nunito.bold,
