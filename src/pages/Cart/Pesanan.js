@@ -55,7 +55,7 @@ const Pesanan = ({navigation}) => {
           />
       <View style={styles.cartSummaryContainer}>
         <CartSummary
-          totalPrice={`Rp. ${totalPrice}`}
+          totalPrice={`Rp. ${totalPrice.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`}
           onPress={() => navigation.navigate('Checkout')}
         />
       </View>

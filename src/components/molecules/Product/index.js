@@ -37,9 +37,9 @@ const Product = ({
       <View style={styles.productDetails}>
         <Text style={styles.productName}>{name}</Text>
         <Text style={styles.category}>{category}</Text>
-        <Text style={styles.originalPriceStyle}>Rp{Price}</Text>
+        <Text style={styles.originalPriceStyle}>Rp{Price.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</Text>
         <View style={styles.productPrice}>
-          <Text style={styles.sellPrice}>Rp{Price - (Price*(discount/100))}</Text>
+          <Text style={styles.sellPrice}>Rp{(Price - (Price*(discount/100))).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</Text>
           <Text style={styles.productUnit}>/ {productUnit}</Text>
         </View>
         <Button title="Beli" size={14} height={8} onPress={onBuy} borderRadius={4}/>

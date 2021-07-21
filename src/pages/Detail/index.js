@@ -13,8 +13,6 @@ const Detail = ({navigation, route}) => {
 
   const item = route.params;
 
-  
-
   const [form, setForm] = useState({
     username: '',
     email: '',
@@ -39,7 +37,7 @@ const Detail = ({navigation, route}) => {
               type="icon-only"
               icon="icon-arrow-back"
               style={styles.backButton}
-              onPress={() => navigation.goBack()}
+              onPress={() => navigation.navigate('HomeScreen')}
               borderRadius={4}
             />
           </View>
@@ -50,13 +48,12 @@ const Detail = ({navigation, route}) => {
           <View style={styles.titleContainer}>
             <Text style={styles.title}>{item.name}</Text>
             <Text style={styles.category}>{item.category}</Text>
-            <Text style={styles.originalPrice}>Rp {item.price}</Text>
+            <Text style={styles.originalPrice}>Rp {item.price.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</Text>
             <View style={styles.currentPriceContainer}>
-              <Text style={styles.currentPrice}>Rp {item.price-(item.price*(item.discount/100))}</Text>
+              <Text style={styles.currentPrice}>Rp {(item.price-(item.price*(item.discount/100))).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</Text>
               <Text style={styles.quantity}>/ {item.productUnit}</Text>
             </View>
           </View>
-
           <View style={styles.discountContainer}>
             <Text style={styles.discount}>{item.discount}%</Text>
           </View>

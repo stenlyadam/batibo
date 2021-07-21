@@ -31,7 +31,7 @@ const OrderItem = ({navigation, status, deliveryDate = '-', press, id, image, pr
             <Text style={styles.itemWeight}>{firstItemUnit}</Text>
           </View>
         </View>
-        <Text style={styles.itemPrice}>Rp {firstItemPrice}</Text>
+        <Text style={styles.itemPrice}>Rp {firstItemPrice.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</Text>
       </View>
       <View style={styles.moreItemContainer}>
         <Text style={styles.moreItemText}>Lihat Pesanan Lainnya</Text>
@@ -39,7 +39,7 @@ const OrderItem = ({navigation, status, deliveryDate = '-', press, id, image, pr
       </View>
       <View style={styles.orderAmountContainer}>
         <Text style={styles.subTitleText}>Total Pembayaran</Text>
-        <Text style={styles.orderAmount}>Rp. {price}</Text>
+        <Text style={styles.orderAmount}>Rp. {price.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</Text>
       </View>
     </TouchableOpacity>
   );

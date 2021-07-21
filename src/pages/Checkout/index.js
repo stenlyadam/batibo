@@ -116,15 +116,15 @@ const Checkout = ({navigation}) => {
               <Text style={styles.subTitle}>Ringkasan Pembayaran</Text>
               <View style={styles.paymentSummary}>
                 <Text style={styles.paymentSummaryCategory}>Total Belanja</Text>
-                <Text style={styles.priceSummary}>Rp {totalPrice}</Text>
+                <Text style={styles.priceSummary}>Rp {totalPrice.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</Text>
               </View>
               <View style={styles.paymentSummary}>
                 <Text style={styles.paymentSummaryCategory}>Ongkos Kirim</Text>
-                <Text style={styles.priceSummary}>Rp {deliveryCost}</Text>
+                <Text style={styles.priceSummary}>Rp {deliveryCost.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</Text>
               </View>
               <View style={styles.totalPayment}>
                 <Text style={styles.totalPaymentText}>Total Pembayaran</Text>
-                <Text style={styles.totalPrice}>Rp {totalPrice + deliveryCost}</Text>
+                <Text style={styles.totalPrice}>Rp {(totalPrice + deliveryCost).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</Text>
               </View>
             </View>
           </View>
