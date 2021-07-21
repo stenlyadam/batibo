@@ -34,6 +34,7 @@ const HomeScreen = ({navigation}) => {
     firebase
       .database()
       .ref('products/')
+      .limitToFirst(4)
       .once('value')
       .then(response => {
         console.log('data: ', response.val());
@@ -58,10 +59,10 @@ const HomeScreen = ({navigation}) => {
         <Carousel />
       </View>
       <View style={styles.categoryContainer}>
-        <Category title="sayuran" />
-        <Category title="buah" />
-        <Category title="rempah" />
-        <Category title="lainnya" />
+        <Category title="sayuran" onPress={() => navigation.navigate('InCategory', "Sayuran")}/>
+        <Category title="buah" onPress={() => navigation.navigate('InCategory', "Buah")}/>
+        <Category title="rempah" onPress={() => navigation.navigate('InCategory', "Rempah")}/>
+        <Category title="lainnya" onPress={() => navigation.navigate('InCategory', "Lainnya")}/>
       </View>
       <Text style={styles.titleText}>Sedang Diskon</Text>
       
@@ -91,6 +92,7 @@ const HomeScreen = ({navigation}) => {
             space={358} 
             color={"secondary"}
             borderRadius={4}
+            onPress={() => navigation.navigate('OnDiscount')}
             />
         </View>
       </ScrollView>

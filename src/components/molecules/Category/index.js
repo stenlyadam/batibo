@@ -4,11 +4,11 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import {IMGLainnya, IMGBuah, IMGRempah, IMGSayuran} from '../../../assets';
 import {colors, fonts} from '../../../utils';
 
-const Category = ({title, onChange}) => {
+const Category = ({title, onPress}) => {
   if (title === 'sayuran') {
     return (
       <View style={styles.container}>
-        <TouchableOpacity style={styles.imageContainer}>
+        <TouchableOpacity style={styles.imageContainer} onPress={onPress}>
           <Image source={IMGSayuran} style={styles.image} />
         </TouchableOpacity>
         <Text style={styles.text}>Sayuran</Text>
@@ -18,7 +18,7 @@ const Category = ({title, onChange}) => {
   if (title === 'buah') {
     return (
       <View style={styles.container}>
-        <TouchableOpacity style={styles.imageContainer}>
+        <TouchableOpacity style={styles.imageContainer} onPress={onPress}>
           <Image source={IMGBuah} style={styles.image} />
         </TouchableOpacity>
         <Text style={styles.text}>Buah</Text>
@@ -28,7 +28,7 @@ const Category = ({title, onChange}) => {
   if (title === 'rempah') {
     return (
       <View style={styles.container}>
-        <TouchableOpacity style={styles.imageContainer}>
+        <TouchableOpacity style={styles.imageContainer} onPress={onPress}>
           <Image source={IMGRempah} style={styles.image} />
         </TouchableOpacity>
         <Text style={styles.text}>Rempah</Text>
@@ -38,7 +38,7 @@ const Category = ({title, onChange}) => {
   if (title === 'lainnya') {
     return (
       <View style={styles.container}>
-        <TouchableOpacity style={styles.imageContainer}>
+        <TouchableOpacity style={styles.imageContainer} onPress={onPress}>
           <Image source={IMGLainnya} style={styles.image} />
         </TouchableOpacity>
         <Text style={styles.text}>Lainnya</Text>

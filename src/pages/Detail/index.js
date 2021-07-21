@@ -39,7 +39,7 @@ const Detail = ({navigation, route}) => {
               type="icon-only"
               icon="icon-arrow-back"
               style={styles.backButton}
-              onPress={() => navigation.navigate('HomeScreen')}
+              onPress={() => navigation.goBack()}
               borderRadius={4}
             />
           </View>

@@ -4,12 +4,14 @@ import {
   Cart,
   Checkout,
   HomeScreen,
+  InCategory,
   Login,
   Register,
   Splash,
   OrderSuccess,
   Order,
   OnBoarding,
+  OnDiscount,
   Detail,
   Payment,
   Profile,
@@ -118,6 +120,11 @@ const Router = () => {
         options={{headerShown: false}}
       />
       <Stack.Screen
+        name="InCategory"
+        component={InCategory}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
         name="OrderSuccess"
         component={OrderSuccess}
         options={{headerShown: false}}
@@ -130,6 +137,11 @@ const Router = () => {
       <Stack.Screen
         name="OnBoarding"
         component={OnBoarding}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="OnDiscount"
+        component={OnDiscount}
         options={{headerShown: false}}
       />
       <Stack.Screen
