@@ -1,3 +1,5 @@
+import { MarkerUnits } from "react-native-svg";
+
 const listColors = {
   green1: '#00CC99',
   green2: '#07AD82',
@@ -13,6 +15,7 @@ const listColors = {
   grey6: '#F2F2F2',
   red1: '#FF3C21',
   black: 'black',
+  black2: 'rgba(0,0,0, 0.5)',
   blue: '#0045A3',
   red: '#ff1818',
 };
@@ -46,4 +49,5 @@ export const colors = {
     red: listColors.red,
   },
   error: listColors.red1,
+  loadingBackground: listColors.black2,
 };

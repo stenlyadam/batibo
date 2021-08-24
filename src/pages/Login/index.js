@@ -13,15 +13,15 @@ import {firebase} from '../../config';
 import {useDispatch} from 'react-redux';
 
 const Login = ({navigation}) => {
-  dispatch = useDispatch();
+  const dispatch = useDispatch();
+
   const [form, setForm] = useForm({
-    username: '',
     email: '',
     password: '',
-    uid: ''
   });
 
   const onContinue = () =>{
+    dispatch({type: 'SET_LOADING', value: true});
     firebase
       .auth()
       .signInWithEmailAndPassword(form.email, form.password)
@@ -32,11 +32,11 @@ const Login = ({navigation}) => {
           .ref(`users/${response.user.uid}/`)
           .once('value')
           .then(snapshot => {
-            
             storeData('user', snapshot.val());
             dispatch({type: 'SAVE_USER', value:snapshot.val()})
+            dispatch({type: 'SET_LOADING', value: false});
             // console.log('snapshot success:' + JSON.stringify(snapshot.val()));
-            navigation.replace('HomeScreen');
+            navigation.replace('MainApp');
             
           })
           setForm('reset');

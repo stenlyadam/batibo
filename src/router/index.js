@@ -25,10 +25,13 @@ import OrderItem from '../pages/Order/OrderItem';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {IconHome, IconCart, IconReceipt, IconProfile} from '../assets';
 import {colors, fonts} from '../utils';
+import { useSelector } from "react-redux";
 
 const Tab = createBottomTabNavigator();
 
-const BottomNavigator = () => {
+
+const MainApp = () => {
+  const user = useSelector(state => state.user);
   return (
     <Tab.Navigator
       tabBarOptions={{
@@ -39,7 +42,8 @@ const BottomNavigator = () => {
           marginTop: 6,
         },
         tabStyle: {
-          paddingTop: 15,
+          paddingTop: 15
+          // maxHeight: 50
         },
       }}>
       <Tab.Screen
@@ -56,6 +60,7 @@ const BottomNavigator = () => {
         options={{
           unmountOnBlur:true,
           tabBarLabel: 'Keranjang',
+          tabBarBadge: user.cart.length == 1 ? null : user.cart.length - 1,
           tabBarIcon: ({color, size}) => <IconCart color={color} size={size} />,
         }}
       />
@@ -116,7 +121,7 @@ const Router = () => {
       />
       <Stack.Screen
         name="HomeScreen"
-        component={BottomNavigator}
+        component={HomeScreen}
         options={{headerShown: false}}
       />
       <Stack.Screen
@@ -187,6 +192,11 @@ const Router = () => {
       <Stack.Screen
         name="OrderItem"
         component={OrderItem}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="MainApp"
+        component={MainApp}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

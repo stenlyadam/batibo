@@ -1,43 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { Carousel, Gap, Product, SearchBox, Button } from '../../components';
+import { Carousel, Gap, Product, SearchBox, Button, CartItem } from '../../components';
 import Category from '../../components/molecules/Category';
 import { firebase } from '../../config';
-import { colors, fonts, getData } from '../../utils';
-import {useDispatch} from 'react-redux';
+import { colors, fonts, getData, storeData } from '../../utils';
+import {useDispatch , useSelector} from 'react-redux';
+import {showMessage} from 'react-native-flash-message';
 
 const HomeScreen = ({navigation}) => {
   
-  const pushCart = (itemId, itemPrice) => {
-    let item = {id: `${itemId}`, count: 1, price: itemPrice}
-    dispatch({type: 'PUSH_CART', value:item})
-  }
-
   const dispatch = useDispatch()
 
-  const [form, setForm] = useState({
-    username: '',
-    email: '',
-    password: '',
-    uid: ''
-  });
-
+  const user = useSelector(state => state.user);
+  console.log('user cart: ', user.cart);
   const [listProduct, setListProduct] = useState([]);
+  const [listCartCheck, setListCartCheck] = useState([]);
+  
 
   useEffect(() => {
-    getData('user').then(response => {
-      const data = response;
-      console.log('profile data: ' + data);
-      setForm(data);
-    });
-
     firebase
       .database()
       .ref('products/')
       .limitToFirst(4)
       .once('value')
       .then(response => {
-        console.log('data: ', response.val());
         if (response.val()) {
           setListProduct(response.val());
         }
@@ -45,13 +31,114 @@ const HomeScreen = ({navigation}) => {
       .catch(error => {
         showError(error.message);
       });
-  }, []);
+      setListCartCheck(user.cart)
+  },[user.cart]);
+
+  const pushCart = (toCart) => {
+    const data = {
+      category: toCart.category,
+      detail: toCart.detail,
+      discount: toCart.discount,
+      id: user.cart.length,
+      image: toCart.image,
+      name: toCart.name,
+      price: toCart.price,
+      priceAfterDiscount:toCart.priceAfterDiscount,
+      productUnit: toCart.productUnit,
+      count: user.cart.length,
+      
+    } 
+    console.log('data id sebelum : ', data.id );
+
+    let checkCart = false;
+
+    console.log('----------------------------');
+    // console.log('cart length : ', form.cart.length)
+    {listCartCheck.map(item => {
+      if(item.name == toCart.name){
+        checkCart = true;
+        data.count = item.count
+        data.count++
+        data.id = item.id
+        // console.log('data id sesudah dicek : ', data.count );
+      }
+      else{
+        // console.log('kok tidak ada siii');
+      }
+      // console.log(' hallloooo jugaa ifff sudah di cek ? ', checkCart)
+    })}    
+
+    if (checkCart == false) {
+      console.log('tidak ada data');
+      data.count = 1;
+    }
+
+    console.log('data count untuk database: ', data.count);
+
+    firebase.database()
+        .ref(`users/${user.uid}/cart/`)
+        .child(data.id)
+        .set(data)
+        .then(() => {
+              dispatch({type: 'SET_LOADING', value: true});
+              //tambah data ke redux - code marshal
+              // const toCartPrice = toCart.price - (toCart.price * (toCart.discount/100));
+              // let item = {id: `${toCart.id}`, count: data.count, price: toCartPrice}
+              // dispatch({type: 'PUSH_CART', value:item})
+
+                firebase
+                .database()
+                .ref(`users/${user.uid}/`)
+                .once('value')
+                .then(snapshot => {
+                  storeData('user', snapshot.val());
+                  dispatch({type: 'SAVE_USER', value:snapshot.val()})
+                  navigation.replace('MainApp');
+                  dispatch({type: 'SET_LOADING', value: false});
+                  showMessage({
+                    message: "Data Cart Anda berhasil ditambahkan",
+                    type: 'default',
+                    backgroundColor: colors.primary,
+                    color: colors.white,
+                })
+                })
+        })
+        .catch(error => {
+            dispatch({type: 'SET_LOADING', value: false});
+            showMessage({
+                message: error.message,
+                type: 'default',
+                backgroundColor: colors.error,
+                color: colors.white,
+            });
+        });
+  }
+
+  const chooseSayuran = () => {
+    dispatch({type: 'SET_LOADING', value: true});
+    navigation.navigate('InCategory', "Sayuran")
+  }
+
+  const chooseBuah = () => {
+    dispatch({type: 'SET_LOADING', value: true});
+    navigation.navigate('InCategory', "Buah")
+  }
+
+  const chooseRempah = () => {
+    dispatch({type: 'SET_LOADING', value: true});
+    navigation.navigate('InCategory', "Rempah")
+  }
+
+  const chooseLainnya = () => {
+    dispatch({type: 'SET_LOADING', value: true});
+    navigation.navigate('InCategory', "Lainnya")
+  }
 
   return (
     <SafeAreaView style={styles.page}>
       <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.headerContainer}>
-        <Text style={styles.welcomeText}>Halo {form.username}</Text>
+        <Text style={styles.welcomeText}>Halo {user.username}</Text>
         <Text style={styles.welcomeText}>Pilih Sayuran-mu disini</Text>
         <Gap height={5} />
         <SearchBox label="Cari yang kamu butuhkan" />
@@ -59,15 +146,15 @@ const HomeScreen = ({navigation}) => {
         <Carousel />
       </View>
       <View style={styles.categoryContainer}>
-        <Category title="sayuran" onPress={() => navigation.navigate('InCategory', "Sayuran")}/>
-        <Category title="buah" onPress={() => navigation.navigate('InCategory', "Buah")}/>
-        <Category title="rempah" onPress={() => navigation.navigate('InCategory', "Rempah")}/>
-        <Category title="lainnya" onPress={() => navigation.navigate('InCategory', "Lainnya")}/>
+        <Category title="sayuran" onPress={chooseSayuran}/>
+        <Category title="buah" onPress={chooseBuah}/>
+        <Category title="rempah" onPress={chooseRempah}/>
+        <Category title="lainnya" onPress={chooseLainnya}/>
       </View>
       <Text style={styles.titleText}>Sedang Diskon</Text>
       
         <View style={styles.productContainer}>
-          {console.log('listProduct: ', listProduct)}
+          {/* {console.log('listProduct: ', listProduct)} */}
           {listProduct.map(item => {
             return (
               <Product
@@ -76,9 +163,10 @@ const HomeScreen = ({navigation}) => {
                 image={item.image}
                 category={item.category}
                 Price={item.price}
+                PriceAfterDiscount={item.priceAfterDiscount}
                 productUnit={item.productUnit}
                 discount={item.discount}
-                onBuy={() => pushCart(item.id, (item.price - (item.price * (item.discount/100))))}
+                onBuy={() => pushCart(item)}
                 onDetail={() => navigation.navigate('Detail', item)}
               /> 
             )

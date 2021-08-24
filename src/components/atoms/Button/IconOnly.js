@@ -5,6 +5,7 @@ import {
   IconMinus,
   IconPlus,
   IconCart,
+  IconCartGreen,
   IconDotsIcon,
   IconCross,
   IconArrowRight,
@@ -45,6 +46,13 @@ const IconOnly = ({icon, onPress, width, height, color = colors.grey}) => {
       return (
         <View style={styles.iconContainer(width, height, colors.button.black)}>
           <IconCart color={color} />
+        </View>
+      );
+    }
+    if (icon === 'icon-cart-green') {
+      return (
+        <View style={styles.iconContainer(width, height, colors.button.black)}>
+          <IconCartGreen color={color} />
         </View>
       );
     }

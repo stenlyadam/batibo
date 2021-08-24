@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {colors} from '../../../utils';
 import IconOnly from './IconOnly';
+import Third from './Third';
 
 const Button = ({
   title,
@@ -16,10 +17,16 @@ const Button = ({
   borderRadius,
   borderColor,
   marginTop,
+  onSelected
 }) => {
   if (type === 'icon-only') {
     return (
       <IconOnly icon={icon} onPress={onPress} width={width} height={height} />
+    );
+  }
+  else if(type === 'Third'){
+    return (
+      <Third title={title} onSelected={onSelected} onPress={onPress}/>
     );
   }
   else{
@@ -45,7 +52,6 @@ const styles = StyleSheet.create({
     borderColor: color === "secondary" ? colors.button.primary.backgroundColor: colors.button.primary.backgroundColor,
     borderWidth: color === 'secondary' ? 2 : 0,
     marginTop: marginTop
-
   }),
   text: (size, color) => ({
     color: color === "secondary" ? colors.button.secondary.text : colors.button.primary.text,

@@ -41,7 +41,7 @@ const OnBoarding = ({navigation}) => {
           kamu dapat belanja dengan mudah, petani bahagia."
           image={IMGOnBoarding1}
           press={() => handleNext()}
-          lewati={() => navigation.navigate('Login')}
+          lewati={() => navigation.replace('Login')}
         />
       </View>
 
@@ -53,7 +53,7 @@ const OnBoarding = ({navigation}) => {
           tersedia juga."
           image={IMGOnBoarding2}
           press={() => handleNext()}
-          lewati={() => navigation.navigate('Login')}
+          lewati={() => navigation.replace('Login')}
         />
       </View>
 
@@ -65,7 +65,7 @@ const OnBoarding = ({navigation}) => {
           image={IMGOnBoarding3}
           topButton=""
           bottomButton="Selesai"
-          press={() => navigation.navigate('Login')}
+          press={() => navigation.replace('Login')}
         />
       </View>
     </Swiper>

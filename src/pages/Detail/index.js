@@ -1,17 +1,18 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, View, Text, ImageBackground} from 'react-native';
 import {Button} from '../../components';
-import {colors, fonts, getData} from '../../utils';
+import {colors, fonts, getData, storeData} from '../../utils';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import {firebase} from '../../config';
+import {useDispatch , useSelector} from 'react-redux';
+import {showMessage} from 'react-native-flash-message';
 
 const Detail = ({navigation, route}) => {
-  const pushCart = (itemId, itemPrice) => {
-    let item = {id: `${itemId}`, count: 1, price: itemPrice}
-    dispatch({type: 'PUSH_CART', value:item})
-  }
 
   const item = route.params;
+  const user = useSelector(state => state.user);
+  const [listCartCheck, setListCartCheck] = useState(user.cart);
+  const dispatch = useDispatch()
 
   const [form, setForm] = useState({
     username: '',
@@ -19,6 +20,7 @@ const Detail = ({navigation, route}) => {
     password: '',
     uid: ''
   });
+
 
   useEffect(() => {
     getData('user').then(response => {
@@ -28,6 +30,86 @@ const Detail = ({navigation, route}) => {
     });
   }, []);
 
+  const pushCart = (toCart) => {
+    const data = {
+      category: toCart.category,
+      detail: toCart.detail,
+      discount: toCart.discount,
+      id: user.cart.length,
+      image: toCart.image,
+      name: toCart.name,
+      price: toCart.price,
+      priceAfterDiscount:toCart.priceAfterDiscount,
+      productUnit: toCart.productUnit,
+      count: user.cart.length,
+      
+    } 
+    console.log('data id sebelum : ', data.id );
+
+    let checkCart = false;
+
+    console.log('----------------------------');
+    // console.log('cart length : ', form.cart.length)
+    {listCartCheck.map(item => {
+      if(item.name == toCart.name){
+        checkCart = true;
+        data.count = item.count
+        data.count++
+        data.id = item.id
+        // console.log('data id sesudah dicek : ', data.count );
+      }
+      else{
+        // console.log('kok tidak ada siii');
+      }
+      // console.log(' hallloooo jugaa ifff sudah di cek ? ', checkCart)
+    })}    
+
+    if (checkCart == false) {
+      console.log('tidak ada data');
+      data.count = 1;
+    }
+
+    console.log('data count untuk database: ', data.count);
+
+    firebase.database()
+        .ref(`users/${user.uid}/cart/`)
+        .child(data.id)
+        .set(data)
+        .then(() => {
+              dispatch({type: 'SET_LOADING', value: true});
+              //tambah data ke redux - code marshal
+              // const toCartPrice = toCart.price - (toCart.price * (toCart.discount/100));
+              // let item = {id: `${toCart.id}`, count: data.count, price: toCartPrice}
+              // dispatch({type: 'PUSH_CART', value:item})
+
+                firebase
+                .database()
+                .ref(`users/${user.uid}/`)
+                .once('value')
+                .then(snapshot => {
+                  storeData('user', snapshot.val());
+                  dispatch({type: 'SAVE_USER', value:snapshot.val()})
+                  navigation.replace('Detail', item);
+                  dispatch({type: 'SET_LOADING', value: false});
+                  showMessage({
+                    message: "Data Cart Anda berhasil ditambahkan",
+                    type: 'default',
+                    backgroundColor: colors.primary,
+                    color: colors.white,
+                })
+                })
+        })
+        .catch(error => {
+            dispatch({type: 'SET_LOADING', value: false});
+            showMessage({
+                message: error.message,
+                type: 'default',
+                backgroundColor: colors.error,
+                color: colors.white,
+            });
+        });
+        
+  }
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
@@ -37,7 +119,7 @@ const Detail = ({navigation, route}) => {
               type="icon-only"
               icon="icon-arrow-back"
               style={styles.backButton}
-              onPress={() => navigation.navigate('HomeScreen')}
+              onPress={() => navigation.navigate('MainApp')}
               borderRadius={4}
             />
           </View>
@@ -48,9 +130,9 @@ const Detail = ({navigation, route}) => {
           <View style={styles.titleContainer}>
             <Text style={styles.title}>{item.name}</Text>
             <Text style={styles.category}>{item.category}</Text>
-            <Text style={styles.originalPrice}>Rp {item.price.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</Text>
+            <Text style={styles.originalPrice}>Rp.{item.price.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ".")}</Text>
             <View style={styles.currentPriceContainer}>
-              <Text style={styles.currentPrice}>Rp {(item.price-(item.price*(item.discount/100))).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</Text>
+              <Text style={styles.currentPrice}>Rp.{item.priceAfterDiscount.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ".")}</Text>
               <Text style={styles.quantity}>/ {item.productUnit}</Text>
             </View>
           </View>
@@ -59,7 +141,7 @@ const Detail = ({navigation, route}) => {
           </View>
         </View>
         <View style={styles.textContainer}>
-          <ScrollView style={styles.scrollView}>
+          <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
             <Text style={styles.text}>
               {item.detail}
             </Text>
@@ -68,9 +150,9 @@ const Detail = ({navigation, route}) => {
         <View style={styles.footer}>
           <View style={styles.centerContainer}>
             <View style={styles.cartButtonContainer}>
-              <Button color="blue" type="icon-only" icon="icon-cart" borderRadius={4} onPress={() => navigation.navigate('Cart')}/>
+              <Button type="icon-only" icon="icon-cart" borderRadius={4} onPress={() => pushCart(item)}/>
             </View>
-            <TouchableOpacity style={styles.beliButtonContainer} onPress={() => pushCart(item.id, form.uid)}>
+            <TouchableOpacity style={styles.beliButtonContainer} onPress={() => pushCart(item)}>
               <Text style={styles.textButton}>Beli Sekarang</Text>
             </TouchableOpacity>
           </View>

@@ -4,25 +4,26 @@ import {Button, TextInput, Gap} from '../../components';
 import {colors, fonts, getData, storeData} from '../../utils';
 import {showMessage} from 'react-native-flash-message';
 import { firebase } from '../../config';
+import { useDispatch, useSelector } from "react-redux";
 
 const EditAddress = ({navigation, route}) => {
 
     const item = route.params;
     // console.log('item id : ', item.id);
+    const user = useSelector(state => state.user);
+    
+    const dispatch = useDispatch();
 
     const [form, setForm] = useState({
-        uid: '',
         address: [],
     }, [])
 
-    const [idUser, setIdUser] = useState('');
-
     useEffect(() => {
-        getData('user').then(response => {
-            const data = response;
-            setIdUser(data.uid);
-            console.log('profile id: ' + idUser);
-        });
+        // getData('user').then(response => {
+        //     const data = response;
+        //     setIdUser(data.uid);
+        //     console.log('profile id: ' + idUser);
+        // });
         setForm(item);
     },[]);
 
@@ -37,19 +38,20 @@ const EditAddress = ({navigation, route}) => {
 
     const updateAddressData = () => {
         const data = form;
-        console.log('id user: ', idUser);
+        console.log('id user: ', user.uid);
         firebase
         .database()
-        .ref('users/' + idUser + '/address/' + item.id)
+        .ref('users/' + user.uid + '/address/' + item.id)
         .update(data)
         .then(() => {
             firebase
             .database()
-            .ref('users/' + idUser)
+            .ref('users/' + user.uid)
             .once('value')
             .then(snapshot => {
                 storeData('user', snapshot.val());
-                navigation.replace('HomeScreen');
+                dispatch({type: 'SAVE_USER', value:snapshot.val()})
+                navigation.goBack();
                 showMessage({
                     message: "Data Alamat Anda berhasil diubah",
                     type: 'default',

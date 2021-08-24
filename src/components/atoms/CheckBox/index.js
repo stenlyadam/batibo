@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {colors} from '../../../utils';
 
-const CheckBox = ({label, value, onValueChange}) => {
+const CheckBox = ({label, value, onValueChange, text}) => {
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   return (
     <View style={styles.container}>
@@ -16,7 +16,7 @@ const CheckBox = ({label, value, onValueChange}) => {
         value={toggleCheckBox}
         onValueChange={(newValue) => setToggleCheckBox(newValue)}
       />
-      <Text style={styles.label}>{label}</Text>
+      <Text style={styles.label(text)}>{label}</Text>
     </View>
   );
 };
@@ -28,8 +28,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  label: {
-    fontSize: 13,
+  label: (text) => ({
+    fontSize: text ? text : 13,
     color: colors.text.primary,
-  },
+  }),
 });

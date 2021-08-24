@@ -4,54 +4,75 @@ import {Button, Gap} from '../../components';
 import {colors, fonts, getData, storeData} from '../../utils';
 import AddressItem from './AddressItem';
 import { firebase } from '../../config';
+import {useDispatch , useSelector} from 'react-redux';
 
 const Address = ({navigation}) => {
 
-  const [form, setForm] = useState({
-    username: '',
-    email: '',
-    password: '',
-    uid: '',
-    address: [],
-  },[]);
+  const user = useSelector(state => state.user);
+  console.log('user selector address: ', user.address);
+  const dispatch = useDispatch();
+
+  // const [form, setForm] = useState({
+  //   username: '',
+  //   email: '',
+  //   password: '',
+  //   uid: '',
+  //   address: [],
+  // },[]);
 
   const [listAddress, setListAddress] = useState([]);
   const [totalAddress, setTotalAddress] = useState('');
 
-  useEffect(() => {
-    getData('user').then(response => {
-      const data = response;
-      setForm(data);
-          });
-        }, []);
+  // useEffect(() => {
+  //   getData('user').then(response => {
+  //     const data = response;
+  //     setForm(data);
+  //         });
+  //       }, []);
         
   useEffect(() => {
-    setListAddress(form.address);
-    setTotalAddress(form.address.length);
-  },[form.address])
+    setListAddress(user.address);
+    let tempAddress = 0;
+
+    listAddress.map(item => {
+      if(item != null && item.id != 0 ){
+        tempAddress = tempAddress + 1;
+      }
+      console.log('temp address length :', tempAddress);
+    })
+
+    // userCart.map(item => {
+    //   //taru proses untuk mapping cart dari user(redux) untuk ditampilkan pada flat list menggantikan cart map dibawah  
+    //   if(item && item.id != 0){
+    //     console.log('user cart mapping : ', item);
+    //     const data = item;
+    //     data["count"] = item.count;
+    //     setListCart(listCart => [...listCart, data])
+    //   }
+    //   console.log('temp price : ', tempPrice);
+    //   tempPrice += (item.price * item.count);
+    // })
+
+    setTotalAddress(user.address.length);
+    console.log('total address ', totalAddress);
+
+
+  },[user.address])
   
   const deleteAddress = (item) => {
     firebase.database()
-    .ref(`users/${form.uid}/address/${item}/`)
+    .ref(`users/${user.uid}/address/${item}/`)
     .remove()
     .then(() => {
         firebase
         .database()
-        .ref('users/' + form.uid)
+        .ref('users/' + user.uid)
         .once('value')
         .then(snapshot => {
-            storeData('user', snapshot.val());
-            // console.log('snapshot: ', snapshot);
-            getData('user').then(response => {
-              const data = response;
-              const totalAlamat = listAddress.length - 1 ;
-              console.log('total alamat setelah dikurangi: ', totalAlamat);
-              setTotalAddress(totalAlamat);
-              setForm(data);
-              // setTotalAddress(form.address.length);
-                  });
+            dispatch({type: 'SAVE_USER', value:snapshot.val()})
+            const totalAlamat = listAddress.length - 1 ;
+            setTotalAddress(totalAlamat);
     })
-
     })
     .catch(error => {
         showMessage({
@@ -63,7 +84,7 @@ const Address = ({navigation}) => {
     });
     // console.log('deleted data Address successfully');
     // console.log('jumlah address: ', totalAddress);
-    setListAddress(form.address);
+    setListAddress(user.address);
   } 
 
 
@@ -89,7 +110,7 @@ const Address = ({navigation}) => {
         <View style={styles.addressListContainer}>
           
         {listAddress.map(item => {
-        return item && item.id != 0 ? (
+        return item != null && item.id != 0 ? (
           <AddressItem
           key={item.id}
           title={item.kategori}
@@ -110,7 +131,7 @@ const Address = ({navigation}) => {
               space={358} 
               color={"secondary"}
               borderRadius={4}
-              onPress={() => navigation.navigate('AddAddress')}
+              onPress={() => navigation.navigate('AddAddress', totalAddress)}
               />
         </View>
         <Gap height={32} />

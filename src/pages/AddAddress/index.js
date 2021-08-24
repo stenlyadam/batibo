@@ -4,25 +4,16 @@ import {Button, TextInput, Gap} from '../../components';
 import {colors, fonts, getData, storeData} from '../../utils';
 import {showMessage} from 'react-native-flash-message';
 import { firebase } from '../../config';
+import { useDispatch, useSelector } from "react-redux";
 
 const AddAddress = ({navigation}) => {
 
+    const dispatch = useDispatch();
+    const user = useSelector(state => state.user);
+    // console.log('address length for id database address : ', user.address);
     const [form, setForm] = useState({
-        uid: '',
         address: [],
     }, [])
-
-    useEffect(() => {
-        getData('user').then(response => {
-            const data = response;
-            setForm(data);
-            console.log(data);
-        });
-            }, []);
-
-    // useEffect(() => {
-    //     console.log(form);
-    //     }, [form]);
     
     const changeText = (key, value) => {
         setForm({
@@ -33,10 +24,6 @@ const AddAddress = ({navigation}) => {
 
     const addAddress = () => {
 
-        // if (form.address.length == undefined) {
-        //     form.address.length = 1;
-        // }
-
         console.log('form length yg telah di cek: ', form.address.length);
         const data = {
             alamat: form.alamat,
@@ -45,22 +32,23 @@ const AddAddress = ({navigation}) => {
             kelurahan: form.kelurahan,
             kota_kabupaten: form.kota_kabupaten,
             provinsi: form.provinsi,
-            id: form.address.length,
+            id: user.address.length,
         }
     
         firebase.database()
-        .ref(`users/${form.uid}/address/`)
-        .child(form.address.length)
+        .ref(`users/${user.uid}/address/`)
+        .child(user.address.length)
         .set(data)
         .then(() => {
             firebase
             .database()
-            .ref('users/' + form.uid)
+            .ref('users/' + user.uid)
             .once('value')
             .then(snapshot => {
-                storeData('user', snapshot.val());
+                dispatch({type: 'SAVE_USER', value:snapshot.val()})
                 setForm('reset');
-                navigation.replace('HomeScreen');
+                navigation.goBack();
+
                 showMessage({
                     message: "Data Alamat Anda berhasil ditambahkan",
                     type: 'default',

@@ -1,13 +1,12 @@
 import React, {useState} from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
 import {colors} from '../../../utils';
-import {CheckBox} from '../../atoms';
 import Counter from '../Counter';
+import {CheckBox} from '../../atoms';
 
 const CartItem = ({image, name, weight, originalPrice, currentPrice, id, count}) => {
   return (
     <View style={styles.container}>
-
       <View style={styles.productImageContainer}>
         <Image source={image} style={styles.productImage} />
       </View>
@@ -15,8 +14,8 @@ const CartItem = ({image, name, weight, originalPrice, currentPrice, id, count})
         <Text style={styles.productName}>{name}</Text>
         <Text style={styles.productWeight}>{weight}</Text>
         <View style={styles.priceContainer}>
-          <Text style={styles.originalPrice}>{originalPrice}</Text>
-          <Text style={styles.currentPrice}>{currentPrice}</Text>
+          <Text style={styles.originalPrice}>Rp.{originalPrice.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ".")}</Text>
+          <Text style={styles.currentPrice}>Rp.{currentPrice.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ".")}</Text>
         </View>
       </View>
       <View style={styles.counterContainer}>

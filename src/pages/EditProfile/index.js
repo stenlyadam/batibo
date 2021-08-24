@@ -7,15 +7,19 @@ import {launchImageLibrary} from 'react-native-image-picker';
 import {showMessage} from 'react-native-flash-message';
 import {firebase} from '../../config';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useDispatch, useSelector } from "react-redux";
 
 const EditProfile = ({navigation}) => {
 
+  const dispatch = useDispatch();
+  const user = useSelector(state => state.user);
+  // console.log("User Select(Profile): ", user.photo);
+
+  //form buat isi data sementara sebelum di update
   const [form, setForm] = useState({
-    username: '',
-    email: '',
-    uid: '',
-    password: '',
-    handphone: '',
+    username: user.username,
+    email: user.email,
+    handphone: user.handphone,
     photo: DummyUserPhoto,
   });
 
@@ -26,15 +30,16 @@ const EditProfile = ({navigation}) => {
 
 
   useEffect(() => {
-    getData('user').then(response => {
-      const data = response;
-      if(response.photo != undefined){
-        setPhoto({uri:response.photo})
+    // getData('user').then(response => {
+    //   const data = response;
+      if(user.photo != undefined){
+        setPhoto({uri:user.photo})
+        setPhotoForDB(user.photo)
       }
-      console.log('profile data: ' + JSON.stringify(form.photo));
-      setForm(data);
-    });
-  }, []);
+    //   console.log('profile data: ' + JSON.stringify(form.photo));
+    //   setForm(data);
+    // });
+  }, [user]);
 
   const getImage = () => {
     launchImageLibrary(
@@ -42,11 +47,9 @@ const EditProfile = ({navigation}) => {
       response => {
         console.log('response: ', response);
         if (response.didCancel || response.error) {
-          setPhotoForDB(form.photo);
-          setGetImageCheck(true);
-
+          console.log('photo for DB from cancel : ', photoForDB);
         } else {
-          console.log('response getImage type: ', response.assets[0].type);
+          // console.log('response getImage type: ', response.assets[0].base64);
           setPhotoForDB(`data:${response.assets[0].type};base64, ${response.assets[0].base64}`);
           const source = {uri: response.assets[0].uri};
           setPhoto(source);
@@ -63,31 +66,33 @@ const EditProfile = ({navigation}) => {
   }
 
   const updateProfileData = () => {
+    dispatch({type: 'SET_LOADING', value: true});
     const dataUpdate = form;
 
     if (getImageCheck) {
       dataUpdate.photo = photoForDB;
-      // console.log('data from get Image: ', dataUpdate.photo);
+      console.log('data from get Image: ', dataUpdate.photo);
     }
     if (!getImageCheck) {
-        setPhotoForDB(form.photo);
-      dataUpdate.photo = form.photo;
-      // console.log('data from useEffect: ', dataUpdate.photo);
+      dataUpdate.photo = photoForDB;
+      console.log('data from useEffect: ', dataUpdate.photo);
     }
     
     firebase
       .database()
-      .ref('users/' + form.uid + '/')
+      .ref('users/' + user.uid + '/')
       .update(dataUpdate)
       .then(() => {
         firebase
           .database()
-          .ref(`users/${form.uid}/`)
+          .ref(`users/${user.uid}/`)
           .once('value')
           .then(snapshot => {
-            console.log('snapshot success:' + JSON.stringify(snapshot.val()));
+            console.log('snapshot data success:' + JSON.stringify(snapshot.val()));
             storeData('user', snapshot.val());
-            navigation.replace('HomeScreen');
+            dispatch({type: 'SAVE_USER', value:snapshot.val()})
+            navigation.navigate('MainApp');
+            dispatch({type: 'SET_LOADING', value: false});
             showMessage({
               message: "Data Profil Anda berhasil disimpan",
               type: 'default',
@@ -97,6 +102,7 @@ const EditProfile = ({navigation}) => {
           })
       })
       .catch(error => {
+        dispatch({type: 'SET_LOADING', value: false});
         showMessage({
           message: error.message,
           type: 'default',
@@ -104,6 +110,7 @@ const EditProfile = ({navigation}) => {
           color: colors.white,
         });
       });
+      
   };
 
   const changeText = (key, value) => {
@@ -147,33 +154,6 @@ const EditProfile = ({navigation}) => {
             </View>
 
             <View style={styles.contentWrapper}>
-              {/* <View style={styles.contentContainer}>
-                <View style={styles.contentTitleContainer}>
-                  <Text style={styles.contentTitle}>Nama</Text>
-                </View>
-                <View style={styles.contentValueContainer}>
-                  <Text style={styles.contentValueName}>{form.username}</Text>
-                </View>
-              </View>
-
-              <View style={styles.contentContainer}>
-                <View style={styles.contentTitleContainer}>
-                  <Text style={styles.contentTitle}>Email</Text>
-                </View>
-                <View style={styles.contentValueContainer}>
-                  <Text style={styles.contentValue}>{form.email}</Text>
-                </View>
-              </View>
-
-              <View style={styles.contentContainer}>
-                <View style={styles.contentTitleContainer}>
-                  <Text style={styles.contentTitle}>No.Handphone</Text>
-                </View>
-                <View style={styles.contentValueContainer}>
-                  <Text style={styles.contentValue}>+62 811 7812 0012</Text>
-                </View>
-              </View> */}
-
                 <TextInput
                     label="Nama"
                     value={form.username}

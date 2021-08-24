@@ -1,45 +1,37 @@
-import React, {useState, useEffect} from 'react';
-import {Image, StyleSheet, Text, View} from 'react-native';
-import {Button, ProfileMenu} from '../../components';
-import {colors, fonts} from '../../utils';
-import {IconArrowRight} from '../../assets/icons';
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import {getData} from '../../utils';
+import React, { useEffect, useState } from 'react';
+import { Image, StyleSheet, Text, View } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useDispatch, useSelector } from "react-redux";
 import { DummyUserPhoto } from '../../assets';
-import {firebase} from '../../config';
+import { IconArrowRight } from '../../assets/icons';
+import { Button, ProfileMenu } from '../../components';
+import { firebase } from '../../config';
+import { colors, fonts } from '../../utils';
 
 const Profile = ({navigation}) => {
-
-  const [form, setForm] = useState({
-    username: '',
-    email: '',
-    password: '',
-    handphone: '',
-    photo: DummyUserPhoto,
-  });
-
+  const dispatch = useDispatch();
+  const user = useSelector(state => state.user);
   const [photo, setPhoto] = useState(DummyUserPhoto);
 
   useEffect(() => {
-    getData('user').then(response => {
-      const data = response;
-      if(response.photo != undefined){
-        setPhoto({uri:response.photo})
+    console.log('photo : ', user.photo)
+      if(user.photo != undefined){
+        setPhoto({uri:user.photo})
       }
-      console.log('profile data: ' + JSON.stringify(photo));
-      setForm(data);
-    });
-  }, []);
+  }, [user]);
 
   const signOut = () => {
+    dispatch({type: 'SET_LOADING', value: true});
     firebase
       .auth()
       .signOut()
       .then(() => {
+        dispatch({type: 'SET_LOADING', value: false});
         console.log('success sign out');
-        navigation.replace('Login');
+        // navigation.replace('MainApp');
       })
       .catch(error => {
+        dispatch({type: 'SET_LOADING', value: false});
         showMessage({
           message: error.message,
           type: 'default',
@@ -49,7 +41,6 @@ const Profile = ({navigation}) => {
       });
   };
 
-
   return (
     <View style={styles.container}>
       <View style={styles.profileHeaderContainer}>
@@ -57,9 +48,9 @@ const Profile = ({navigation}) => {
           <Image source={photo} style={styles.profilePicture} />
         </View>
         <View style={styles.nameContainer}>
-          <Text style={styles.nameText}>{form.username}</Text>
-          <Text style={styles.emailText}>{form.email}</Text>
-          <Text style={styles.handphoneText}>Phone : {form.handphone}</Text>
+          <Text style={styles.nameText}>{user.username}</Text>
+          <Text style={styles.emailText}>{user.email}</Text>
+          <Text style={styles.handphoneText}>Phone : {user.handphone}</Text>
         </View>
         <View style={styles.optionContainer}>
           <Button
@@ -74,7 +65,7 @@ const Profile = ({navigation}) => {
         <ProfileMenu
           title="Alamat"
           icon="icon-address"
-          onClick={() => navigation.push('Address')}
+          onClick={() => navigation.navigate('Address')}
         />
         <ProfileMenu title="Privasi dan Kebijakan" icon="icon-protection" />
         <ProfileMenu title="Bantuan" icon="icon-help" />

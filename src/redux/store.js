@@ -2,6 +2,7 @@ import {createStore} from 'redux';
 import {firebase} from '../config';
 
 const initialState = {
+    loading: false,
     user: {},
     cart: [],
 
@@ -9,21 +10,32 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
     switch(action.type){
+        
+        case 'SET_LOADING' : 
+            return {
+                ...state,
+                loading: action.value
+            };
+    
         case 'PUSH_CART':
-            console.log("PUSH_CART: ", action.value)
+            // console.log("PUSH_CART: ", action.value)
             let status = false;
             state.cart.map((item) => {
                 if(item.id === action.value.id){
                     status = true;
+                    console.log('data sudah ada');
                 }
             })
 
             if (status === false){
+                console.log('data belum ada');
                 return {
                     ...state,
                     cart: [...state.cart, action.value]
+                    
                 }
             }
+
         case 'DELETE_CART':
             console.log("DELETE_CART: ", action.value)
             let tempCart = state.cart
@@ -45,10 +57,12 @@ const reducer = (state = initialState, action) => {
                 cart: []
             }
         case 'UPDATE_COUNT_INCREMENT':
+            console.log('hello');
             let tempCart2 = state.cart
             tempCart2.map((item) => {
                 if(item.id === action.value.itemId){
                     item.count += 1;
+                    
                 }
             })
             return {

@@ -6,6 +6,9 @@ import {Button} from '../../atoms';
 const CartSummary = ({totalPrice, onPress}) => {
   return (
     <View style={styles.container}>
+      <View style={styles.cartIcon}>
+        <Button type="icon-only" icon="icon-cart-green" borderRadius={4}/>
+      </View>
       <View style={styles.summaryContainer}>
         <View style={styles.description}>
           <Text style={styles.totalBelanjaText}>Total Belanja </Text>
@@ -15,6 +18,7 @@ const CartSummary = ({totalPrice, onPress}) => {
       <View style={styles.buttonContainer}>
         <Button onPress={onPress} title="Check Out" borderRadius={4} />
       </View>
+      
     </View>
   );
 };
@@ -26,7 +30,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingVertical: 17,
     paddingHorizontal: 24,
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     borderTopColor: colors.black,
     shadowColor: colors.black,
     shadowOffset: {
@@ -37,17 +41,24 @@ const styles = StyleSheet.create({
     shadowRadius: 6,
     elevation: 1,
   },
+  cartIcon: {
+    justifyContent: 'center',
+    marginLeft: 5
+  },
   summaryContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    paddingRight: 24
   },
   description: {
-    paddingLeft: 12,
+    marginLeft: 12,
+    width: 147,
   },
   buttonContainer: {
+    position: 'relative',
     height: 38,
     width: 134,
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   totalBelanjaText: {
     color: colors.text.secondary,

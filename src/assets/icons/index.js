@@ -3,6 +3,7 @@ import IconArrowBack from './ic-arrow-back.svg';
 import IconMinus from './ic-minus.svg';
 import IconPlus from './ic-plus.svg';
 import IconCart from './ic-cart.svg';
+import IconCartGreen from './ic-cart-green.svg'
 import IconDotsIcon from './ic-dots-option.svg';
 import IconCoupon from './ic-coupon.svg';
 import IconAddress from './ic-address.svg';
@@ -23,6 +24,7 @@ export {
   IconMinus,
   IconPlus,
   IconCart,
+  IconCartGreen,
   IconDotsIcon,
   IconCoupon,
   IconAddress,
