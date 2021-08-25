@@ -25,7 +25,10 @@ const HomeScreen = ({navigation}) => {
       .once('value')
       .then(response => {
         if (response.val()) {
-          setListProduct(response.val());
+          const data = response.val();
+          const filterData = data.filter(element => element !== null);
+          // console.log('data hasil filter : ', filterData);
+          setListProduct(filterData);
         }
       })
       .catch(error => {
@@ -73,7 +76,11 @@ const HomeScreen = ({navigation}) => {
       data.count = 1;
     }
 
-    console.log('data count untuk database: ', data.count);
+    // console.log('data count untuk database: ', data.count);
+
+
+    // var newCartKey = firebase.database().ref().child('cart').push().key;
+    // console.log('new Cart Key : ', newCartKey);
 
     firebase.database()
         .ref(`users/${user.uid}/cart/`)

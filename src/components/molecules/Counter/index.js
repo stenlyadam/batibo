@@ -3,13 +3,15 @@ import {StyleSheet, Text, View, Alert} from 'react-native';
 import {Button} from '../../atoms';
 import {useDispatch, useSelector} from 'react-redux';
 import { firebase } from '../../../config';
+import {showMessage} from 'react-native-flash-message';
+import {colors} from '../../../utils';
 
 const Counter = ({itemCount, itemId}) => {
   let item = {itemCount, itemId}
   
   const user = useSelector(state => state.user);
 
-  dispatch = useDispatch();
+  const dispatch = useDispatch();
   const [count, setCount] = useState(itemCount);
   const onPressMinus = () => {
     console.log('item id : ',itemId);
@@ -106,18 +108,71 @@ const Counter = ({itemCount, itemId}) => {
   }
 
   const deleteProduct = (product) => {
-      console.log('producasdgasdg : ', product);
+      dispatch({type: 'SET_LOADING', value: true});
       firebase.database()
       .ref(`users/${user.uid}/cart/${product}/`)
       .remove()
       .then(() => {
-          firebase
-          .database()
-          .ref('users/' + user.uid)
-          .once('value')
-          .then(snapshot => {
-              dispatch({type: 'SAVE_USER', value:snapshot.val()})
-      })
+      const updateCart = user.cart;
+
+      updateCart.map(item => {
+        if(product < item.id){
+          const data = {
+            category: item.category,
+            detail: item.detail,
+            discount: item.discount,
+            id: item.id - 1,
+            image: item.image,
+            name: item.name,
+            price: item.price,
+            priceAfterDiscount:item.priceAfterDiscount,
+            productUnit: item.productUnit,
+            count: item.count,
+          }
+          // console.log('helooooooouuu');
+          firebase.database()
+          .ref(`users/${user.uid}/cart/`)
+          .child(data.id)
+          .update(data)
+        }
+          // .then(() => {
+                const deleteProductAfterUpdate = user.cart.length - 1;
+                console.log('product to delete after update : ', deleteProductAfterUpdate)
+                
+                firebase.database()
+                .ref(`users/${user.uid}/cart/${deleteProductAfterUpdate}/`)
+                .remove()
+                .then(() => {
+
+                  firebase
+                  .database()
+                  .ref(`users/${user.uid}/`)
+                  .once('value')
+                  .then(snapshot => {
+                    dispatch({type: 'SAVE_USER', value:snapshot.val()})
+                    dispatch({type: 'SET_LOADING', value: false});
+                    showMessage({
+                      message: "Produk berhasil dihapus dari keranjang",
+                      type: 'default',
+                      backgroundColor: colors.primary,
+                      color: colors.white,
+                })
+              })
+            })
+            .catch(error => {
+              dispatch({type: 'SET_LOADING', value: false});
+              showMessage({
+                  message: error.message,
+                  type: 'default',
+                  backgroundColor: colors.error,
+                  color: colors.white,
+              });
+          });
+          // })
+
+        
+    })
+
       })
       .catch(error => {
           showMessage({

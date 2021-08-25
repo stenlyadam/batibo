@@ -22,7 +22,10 @@ const OnDiscount = ({navigation}) => {
         .then(response => {
             // console.log('data: ', response.val());
             if (response.val()) {
-            setListProduct(response.val());
+            const data = response.val();
+            const filterData = data.filter(element => element !== null);
+            // console.log('data hasil filter : ', filterData);
+            setListProduct(filterData);
             }
         })
         .catch(error => {

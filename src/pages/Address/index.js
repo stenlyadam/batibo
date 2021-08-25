@@ -5,6 +5,7 @@ import {colors, fonts, getData, storeData} from '../../utils';
 import AddressItem from './AddressItem';
 import { firebase } from '../../config';
 import {useDispatch , useSelector} from 'react-redux';
+import {showMessage} from 'react-native-flash-message';
 
 const Address = ({navigation}) => {
 
@@ -59,32 +60,105 @@ const Address = ({navigation}) => {
 
   },[user.address])
   
-  const deleteAddress = (item) => {
-    firebase.database()
-    .ref(`users/${user.uid}/address/${item}/`)
-    .remove()
-    .then(() => {
-        firebase
-        .database()
-        .ref('users/' + user.uid)
-        .once('value')
-        .then(snapshot => {
-            dispatch({type: 'SAVE_USER', value:snapshot.val()})
-            const totalAlamat = listAddress.length - 1 ;
-            setTotalAddress(totalAlamat);
-    })
-    })
-    .catch(error => {
-        showMessage({
-            message: error.message,
-            type: 'default',
-            backgroundColor: colors.error,
-            color: colors.white,
-        });
-    });
+  const deleteAddress = (address) => {
+    // firebase.database()
+    // .ref(`users/${user.uid}/address/${item}/`)
+    // .remove()
+    // .then(() => {
+    //     firebase
+    //     .database()
+    //     .ref('users/' + user.uid)
+    //     .once('value')
+    //     .then(snapshot => {
+    //         dispatch({type: 'SAVE_USER', value:snapshot.val()})
+    //         const totalAlamat = listAddress.length - 1 ;
+    //         setTotalAddress(totalAlamat);
+    // })
+    // })
+    // .catch(error => {
+    //     showMessage({
+    //         message: error.message,
+    //         type: 'default',
+    //         backgroundColor: colors.error,
+    //         color: colors.white,
+    //     });
+    // });
     // console.log('deleted data Address successfully');
     // console.log('jumlah address: ', totalAddress);
-    setListAddress(user.address);
+    
+
+    dispatch({type: 'SET_LOADING', value: true});
+    firebase.database()
+      .ref(`users/${user.uid}/address/${address}/`)
+      .remove()
+      .then(() => {
+      const updateAddress = user.address;
+
+      updateAddress.map(item => {
+        if(address < item.id){
+          const data = {
+            alamat: item.alamat,
+            id: item.id - 1,
+            kategori: item.kategori,
+            kecamatan: item.kecamatan,
+            kelurahan: item.kelurahan,
+            kota_kabupaten:item.kota_kabupaten,
+            provinsi: item.provinsi,
+          }
+          // console.log('helooooooouuu');
+          firebase.database()
+          .ref(`users/${user.uid}/address/`)
+          .child(data.id)
+          .update(data)
+        }
+          // .then(() => {
+                const deleteAddressAfterUpdate = user.address.length - 1;
+                console.log('product to delete after update : ', deleteAddressAfterUpdate)
+                
+                firebase.database()
+                .ref(`users/${user.uid}/address/${deleteAddressAfterUpdate}/`)
+                .remove()
+                .then(() => {
+
+                  firebase
+                  .database()
+                  .ref(`users/${user.uid}/`)
+                  .once('value')
+                  .then(snapshot => {
+                    dispatch({type: 'SET_LOADING', value: false});
+                    dispatch({type: 'SAVE_USER', value:snapshot.val()})
+                    const totalAlamat = listAddress.length - 1 ;
+                    setTotalAddress(totalAlamat);
+                    showMessage({
+                      message: "Alamat yang dipilih berhasil dihapus",
+                      type: 'default',
+                      backgroundColor: colors.primary,
+                      color: colors.white,
+                })
+              })
+            })
+            .catch(error => {
+              dispatch({type: 'SET_LOADING', value: false});
+              showMessage({
+                  message: error.message,
+                  type: 'default',
+                  backgroundColor: colors.error,
+                  color: colors.white,
+              });
+          });
+          setListAddress(user.address);
+    })
+
+      })
+      .catch(error => {
+          showMessage({
+              message: error.message,
+              type: 'default',
+              backgroundColor: colors.error,
+              color: colors.white,
+          });
+      });
+    
   } 
 
 
