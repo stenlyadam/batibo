@@ -164,7 +164,6 @@ const styles = StyleSheet.create({
     
   // },
   cartSummaryContainer: {
-    backgroundColor: colors.white,
   },
   pesananContainer: {
     flex: 1,

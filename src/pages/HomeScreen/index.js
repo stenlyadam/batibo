@@ -234,9 +234,10 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   buttonExpand: {
-    paddingHorizontal: 24,
-    paddingTop: 24,
-    paddingBottom: 38,
+    maxWidth: 340,
+    marginHorizontal: 24,
+    marginTop: 22,
+    marginBottom: 38,
     flexDirection: 'row',
     flexWrap: 'wrap',
     alignItems: 'center',

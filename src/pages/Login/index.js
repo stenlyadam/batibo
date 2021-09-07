@@ -42,6 +42,7 @@ const Login = ({navigation}) => {
           setForm('reset');
       })
       .catch(error => {
+        dispatch({type: 'SET_LOADING', value: false});
         console.log(error.message);
       })
   }
@@ -63,7 +64,7 @@ const Login = ({navigation}) => {
           <TextInput
             label="Password"
             placeholder="Masukan Password-mu"
-            value={form.Registerpassword}
+            value={form.password}
             onChangeText={(value) => setForm('password', value)}
             secureTextEntry={true}
           />

@@ -29,8 +29,8 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     paddingVertical: 17,
-    paddingHorizontal: 24,
-    justifyContent: 'flex-start',
+    paddingHorizontal: 22,
+    justifyContent:'center',
     borderTopColor: colors.black,
     shadowColor: colors.black,
     shadowOffset: {
@@ -40,15 +40,15 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 6,
     elevation: 1,
+    maxWidth: 440, 
   },
   cartIcon: {
     justifyContent: 'center',
-    marginLeft: 5
   },
   summaryContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingRight: 24
+    paddingRight: 42
   },
   description: {
     marginLeft: 12,

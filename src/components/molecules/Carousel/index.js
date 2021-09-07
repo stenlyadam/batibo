@@ -30,15 +30,17 @@ const Carousel = () => {
 export default Carousel;
 
 const styles = StyleSheet.create({
-  carouselWrapper: {},
+  carouselWrapper: {
+  },
   slide1: {
     paddingTop: 22,
     flex: 1,
     alignItems: 'center',
+    maxWidth: 360,
   },
   carouselPicture: {
     height: 132,
-    width: 360,
+    width: 350,
     borderRadius: 8,
   },
 });
