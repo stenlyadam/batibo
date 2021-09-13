@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
   },
   carouselPicture: {
     height: 132,
-    width: 350,
+    width: 310,
     borderRadius: 8,
   },
 });

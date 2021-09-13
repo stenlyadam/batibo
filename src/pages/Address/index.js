@@ -202,7 +202,7 @@ const Address = ({navigation}) => {
               title="Tambah Alamat" 
               size={16} 
               height={10} 
-              space={358} 
+              space={318} 
               color={"secondary"}
               borderRadius={4}
               onPress={() => navigation.navigate('AddAddress', totalAddress)}
@@ -257,7 +257,9 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   buttonExpand: {
-    paddingTop: 10,
+    marginHorizontal:24 ,
+    maxWidth:328,
+    marginTop: 10,
     alignItems: 'center',
   }
 });

@@ -164,6 +164,13 @@ const styles = StyleSheet.create({
     
   // },
   cartSummaryContainer: {
+    maxWidth: 420,
+    // marginHorizontal:0,
+    // marginTop: 22,
+    // marginBottom: 38,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'center',
   },
   pesananContainer: {
     flex: 1,

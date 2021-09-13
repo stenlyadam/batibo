@@ -11,6 +11,7 @@ import {Button, CheckBox, Gap, Link, TextInput} from '../../components';
 import {colors, fonts, useForm, storeData} from '../../utils';
 import {firebase} from '../../config';
 import {useDispatch} from 'react-redux';
+import axios from 'axios';
 
 const Login = ({navigation}) => {
   const dispatch = useDispatch();
@@ -21,30 +22,38 @@ const Login = ({navigation}) => {
   });
 
   const onContinue = () =>{
-    dispatch({type: 'SET_LOADING', value: true});
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(form.email, form.password)
-      .then(response => {
-        // console.log('response: ' + response.user.uid)
-        firebase
-          .database()
-          .ref(`users/${response.user.uid}/`)
-          .once('value')
-          .then(snapshot => {
-            storeData('user', snapshot.val());
-            dispatch({type: 'SAVE_USER', value:snapshot.val()})
-            dispatch({type: 'SET_LOADING', value: false});
-            // console.log('snapshot success:' + JSON.stringify(snapshot.val()));
-            navigation.replace('MainApp');
+    console.log('hello :', form);
+    axios.post('http://192.168.1.19:8081/api/login', form)
+    .then(res => {
+      console.log('berhasil', res);
+    })
+    .catch(err => {
+      console.log('tidak berhasil', err);
+    })
+    // dispatch({type: 'SET_LOADING', value: true});
+    // firebase
+    //   .auth()
+    //   .signInWithEmailAndPassword(form.email, form.password)
+    //   .then(response => {
+    //     // console.log('response: ' + response.user.uid)
+    //     firebase
+    //       .database()
+    //       .ref(`users/${response.user.uid}/`)
+    //       .once('value')
+    //       .then(snapshot => {
+    //         storeData('user', snapshot.val());
+    //         dispatch({type: 'SAVE_USER', value:snapshot.val()})
+    //         dispatch({type: 'SET_LOADING', value: false});
+    //         // console.log('snapshot success:' + JSON.stringify(snapshot.val()));
+    //         navigation.replace('MainApp');
             
-          })
-          setForm('reset');
-      })
-      .catch(error => {
-        dispatch({type: 'SET_LOADING', value: false});
-        console.log(error.message);
-      })
+    //       })
+    //       setForm('reset');
+    //   })
+    //   .catch(error => {
+    //     dispatch({type: 'SET_LOADING', value: false});
+    //     console.log(error.message);
+    //   })
   }
 
   return (

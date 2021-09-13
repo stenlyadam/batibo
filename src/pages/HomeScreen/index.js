@@ -184,7 +184,7 @@ const HomeScreen = ({navigation}) => {
             title="Lihat Semua" 
             size={16} 
             height={10} 
-            space={358} 
+            space={317} 
             color={"secondary"}
             borderRadius={4}
             onPress={() => navigation.navigate('OnDiscount')}
@@ -235,12 +235,12 @@ const styles = StyleSheet.create({
   },
   buttonExpand: {
     maxWidth: 340,
-    marginHorizontal: 24,
+    marginHorizontal:22,
     marginTop: 22,
     marginBottom: 38,
     flexDirection: 'row',
     flexWrap: 'wrap',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    // justifyContent: 'space-between',
   }
 });
