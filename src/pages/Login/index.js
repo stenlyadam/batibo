@@ -12,6 +12,8 @@ import {colors, fonts, useForm, storeData} from '../../utils';
 import {firebase} from '../../config';
 import {useDispatch} from 'react-redux';
 import axios from 'axios';
+import { API_HOST } from '../../config';
+import {showMessage} from 'react-native-flash-message';
 
 const Login = ({navigation}) => {
   const dispatch = useDispatch();
@@ -22,15 +24,34 @@ const Login = ({navigation}) => {
   });
 
   const onContinue = () =>{
+    dispatch({type: 'SET_LOADING', value: true});
     console.log('hello :', form);
-    axios.post('http://192.168.1.19:8081/api/login', form)
+    axios.post(`${API_HOST.url}/login`, form)
     .then(res => {
-      console.log('berhasil', res);
+      console.log('berhasil login: ', res.data.data);
+      dispatch({type: 'SAVE_USER', value:res.data.data})
+      dispatch({type: 'SET_LOADING', value: false});
+
+      showMessage({
+        message: "Login berhasil",
+        type: 'default',
+        backgroundColor: colors.primary,
+        color: colors.white,
+      })
+      dispatch({type: 'SET_LOADING', value: true});
+      navigation.replace('HomeScreen');
     })
     .catch(err => {
-      console.log('tidak berhasil', err);
+      console.log('tidak berhasil login', err);
+      dispatch({type: 'SET_LOADING', value: false});
+      showMessage({
+        message: err.message,
+        type: 'default',
+        backgroundColor: colors.error,
+        color: colors.white,
+      });
     })
-    // dispatch({type: 'SET_LOADING', value: true});
+    
     // firebase
     //   .auth()
     //   .signInWithEmailAndPassword(form.email, form.password)
@@ -42,8 +63,7 @@ const Login = ({navigation}) => {
     //       .once('value')
     //       .then(snapshot => {
     //         storeData('user', snapshot.val());
-    //         dispatch({type: 'SAVE_USER', value:snapshot.val()})
-    //         dispatch({type: 'SET_LOADING', value: false});
+ 
     //         // console.log('snapshot success:' + JSON.stringify(snapshot.val()));
     //         navigation.replace('MainApp');
             

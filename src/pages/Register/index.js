@@ -11,6 +11,7 @@ import {Button, Gap, Link, TextInput} from '../../components';
 import {firebase} from '../../config';
 import {colors, fonts, useForm, storeData} from '../../utils';
 import axios from 'axios';
+import { API_HOST } from '../../config';
 
 const Register = ({navigation}) => {
   const [form, setForm] = useForm({
@@ -49,7 +50,7 @@ const Register = ({navigation}) => {
     form.password_confirmation = form.password;
     console.log('form update: ', form);
 
-    axios.post('http://192.168.1.19:8081/api/register', form, {
+    axios.post(`${API_HOST.url}/register`, form, {
       headers: {
         Accept : 'application/json'
       }

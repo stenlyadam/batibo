@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Carousel, Gap, Product, SearchBox, Button, CartItem } from '../../components';
 import Category from '../../components/molecules/Category';
-import { firebase } from '../../config';
+import { API_HOST, firebase } from '../../config';
 import { colors, fonts, getData, storeData } from '../../utils';
 import {useDispatch , useSelector} from 'react-redux';
 import {showMessage} from 'react-native-flash-message';
+import axios from 'axios';
 
 const HomeScreen = ({navigation}) => {
   
@@ -18,24 +19,49 @@ const HomeScreen = ({navigation}) => {
   
 
   useEffect(() => {
-    firebase
-      .database()
-      .ref('products/')
-      .limitToFirst(4)
-      .once('value')
-      .then(response => {
-        if (response.val()) {
-          const data = response.val();
-          const filterData = data.filter(element => element !== null);
-          // console.log('data hasil filter : ', filterData);
-          setListProduct(filterData);
-        }
+    axios.get(`${API_HOST.url}/product`, {
+      params: {
+        limit: 4,
+      },
+    })
+    .then(res => {
+        console.log('product database : ', res.data.data.data);
+        const dataProduct = res.data.data.data;
+        setListProduct(dataProduct);
+
       })
-      .catch(error => {
-        showError(error.message);
+    .catch(err => {
+      console.log('tidak berhasil login', err);
+      showMessage({
+        message: err.message,
+        type: 'default',
+        backgroundColor: colors.error,
+        color: colors.white,
       });
-      setListCartCheck(user.cart)
-  },[user.cart]);
+    dispatch({type: 'SET_LOADING', value: false});
+  },[]);
+
+});
+
+  // useEffect(() => {
+  //   firebase
+  //     .database()
+  //     .ref('products/')
+  //     .limitToFirst(4)
+  //     .once('value')
+  //     .then(response => {
+  //       if (response.val()) {
+  //         const data = response.val();
+  //         const filterData = data.filter(element => element !== null);
+  //         // console.log('data hasil filter : ', filterData);
+  //         setListProduct(filterData);
+  //       }
+  //     })
+  //     .catch(error => {
+  //       showError(error.message);
+  //     });
+  //     setListCartCheck(user.cart)
+  // },[user.cart]);
 
   const pushCart = (toCart) => {
     const data = {
@@ -145,7 +171,7 @@ const HomeScreen = ({navigation}) => {
     <SafeAreaView style={styles.page}>
       <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.headerContainer}>
-        <Text style={styles.welcomeText}>Halo {user.username}</Text>
+        <Text style={styles.welcomeText}>Halo {user.name}</Text>
         <Text style={styles.welcomeText}>Pilih Sayuran-mu disini</Text>
         <Gap height={5} />
         <SearchBox label="Cari yang kamu butuhkan" />
@@ -167,11 +193,11 @@ const HomeScreen = ({navigation}) => {
               <Product
                 key={item.id}
                 name={item.name}
-                image={item.image}
+                image={item.picturePath}
                 category={item.category}
                 Price={item.price}
-                PriceAfterDiscount={item.priceAfterDiscount}
-                productUnit={item.productUnit}
+                PriceAfterDiscount={item.price_after_discount}
+                productUnit={item.product_unit}
                 discount={item.discount}
                 onBuy={() => pushCart(item)}
                 onDetail={() => navigation.navigate('Detail', item)}
