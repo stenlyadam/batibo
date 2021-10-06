@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useEffect, useState } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -6,39 +7,29 @@ import { DummyUserPhoto } from '../../assets';
 import { IconArrowRight } from '../../assets/icons';
 import { Button, ProfileMenu } from '../../components';
 import { firebase } from '../../config';
-import { colors, fonts } from '../../utils';
+import { setLoading } from '../../redux/action/global';
+import { colors, fonts, showMessage } from '../../utils';
 
 const Profile = ({navigation}) => {
+
   const dispatch = useDispatch();
-  const user = useSelector(state => state.user);
+  const {user} = useSelector(state => state.loginReducer);
   const [photo, setPhoto] = useState(DummyUserPhoto);
 
-  useEffect(() => {
-    console.log('photo : ', user.photo)
-      if(user.photo != undefined){
-        setPhoto({uri:user.photo})
-      }
-  }, [user]);
-
   const signOut = () => {
-    dispatch({type: 'SET_LOADING', value: true});
-    firebase
-      .auth()
-      .signOut()
-      .then(() => {
-        dispatch({type: 'SET_LOADING', value: false});
-        console.log('success sign out');
-        // navigation.replace('MainApp');
-      })
-      .catch(error => {
-        dispatch({type: 'SET_LOADING', value: false});
-        showMessage({
-          message: error.message,
-          type: 'default',
-          backgroundColor: colors.error,
-          color: colors.white,
-        });
-      });
+    dispatch(setLoading(true));
+    AsyncStorage.multiRemove(['userProfile', 'token'])
+    .then(() => {
+      setTimeout(() =>{ 
+        navigation.reset({index: 0, routes: [{name: 'Login'}]}), 
+        showMessage('Logout Success', 'success')
+        }, 1000);
+    })
+    .catch(() => {
+      dispatch(setLoading(false));
+      showMessage('Terjadi error pada proses logout user');
+    })
+    setTimeout(() => dispatch(setLoading(false)), 1000);
   };
 
   return (
@@ -48,9 +39,9 @@ const Profile = ({navigation}) => {
           <Image source={photo} style={styles.profilePicture} />
         </View>
         <View style={styles.nameContainer}>
-          <Text style={styles.nameText}>{user.username}</Text>
+          <Text style={styles.nameText}>{user.name}</Text>
           <Text style={styles.emailText}>{user.email}</Text>
-          <Text style={styles.handphoneText}>Phone : {user.handphone}</Text>
+          <Text style={styles.handphoneText}>Phone : {user.phone_number}</Text>
         </View>
         <View style={styles.optionContainer}>
           <Button

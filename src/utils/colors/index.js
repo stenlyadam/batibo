@@ -11,11 +11,11 @@ const listColors = {
   grey2: '#303030',
   grey3: '#D6CDCD',
   grey4: '#C4C4C4',
-  grey5: '#202020',
+  grey5: 'rgba(49,49,49, 0.35)',
   grey6: '#F2F2F2',
   red1: '#FF3C21',
   black: 'black',
-  black2: 'rgba(0,0,0, 0.5)',
+  black2: 'rgba(0,0,0, 0.25)',
   blue: '#0045A3',
   red: '#ff1818',
 };

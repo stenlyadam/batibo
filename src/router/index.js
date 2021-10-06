@@ -7,6 +7,7 @@ import {
   InCategory,
   Login,
   Register,
+  RegisterAddress,
   Splash,
   OrderSuccess,
   Order,
@@ -18,7 +19,7 @@ import {
   EditProfile,
   Address,
   AddAddress,
-  EditAddress
+  EditAddress,
 } from '../pages';
 import Page from '../pages/OnBoarding/Page';
 import OrderItem from '../pages/Order/OrderItem';
@@ -31,7 +32,7 @@ const Tab = createBottomTabNavigator();
 
 
 const MainApp = () => {
-  const user = useSelector(state => state.user);
+  const {cart} = useSelector(state => state.loginReducer);
   return (
     <Tab.Navigator
       tabBarOptions={{
@@ -60,7 +61,7 @@ const MainApp = () => {
         options={{
           unmountOnBlur:true,
           tabBarLabel: 'Keranjang',
-          tabBarBadge: user.cart.length == 1 ? null : user.cart.length - 1,
+          tabBarBadge: cart.length == 0 ? null : cart.length,
           tabBarIcon: ({color, size}) => <IconCart color={color} size={size} />,
         }}
       />
@@ -107,6 +108,11 @@ const Router = () => {
       <Stack.Screen
         name="Register"
         component={Register}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="RegisterAddress"
+        component={RegisterAddress}
         options={{headerShown: false}}
       />
       {/* <Stack.Screen

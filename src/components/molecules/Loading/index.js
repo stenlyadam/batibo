@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 15,
         color: colors.black,
-        fontFamily: fonts.nunito.light,
+        fontFamily: fonts.nunito.normal,
         marginTop: 16,
     },
 });

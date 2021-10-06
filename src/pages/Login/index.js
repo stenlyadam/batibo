@@ -8,72 +8,47 @@ import {
 } from 'react-native';
 import {IMGBackground} from '../../assets';
 import {Button, CheckBox, Gap, Link, TextInput} from '../../components';
-import {colors, fonts, useForm, storeData} from '../../utils';
+import {colors, fonts, useForm, storeData, showMessage, getData} from '../../utils';
 import {firebase} from '../../config';
 import {useDispatch} from 'react-redux';
 import axios from 'axios';
 import { API_HOST } from '../../config';
-import {showMessage} from 'react-native-flash-message';
+import { setLoading, signInAction } from '../../redux/action';
 
 const Login = ({navigation}) => {
-  const dispatch = useDispatch();
 
   const [form, setForm] = useForm({
     email: '',
     password: '',
   });
+  const dispatch = useDispatch();
 
-  const onContinue = () =>{
-    dispatch({type: 'SET_LOADING', value: true});
-    console.log('hello :', form);
-    axios.post(`${API_HOST.url}/login`, form)
-    .then(res => {
-      console.log('berhasil login: ', res.data.data);
-      dispatch({type: 'SAVE_USER', value:res.data.data})
-      dispatch({type: 'SET_LOADING', value: false});
-
-      showMessage({
-        message: "Login berhasil",
-        type: 'default',
-        backgroundColor: colors.primary,
-        color: colors.white,
-      })
-      dispatch({type: 'SET_LOADING', value: true});
-      navigation.replace('HomeScreen');
-    })
-    .catch(err => {
-      console.log('tidak berhasil login', err);
-      dispatch({type: 'SET_LOADING', value: false});
-      showMessage({
-        message: err.message,
-        type: 'default',
-        backgroundColor: colors.error,
-        color: colors.white,
-      });
-    })
+  const onContinue = () => {
+    var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     
-    // firebase
-    //   .auth()
-    //   .signInWithEmailAndPassword(form.email, form.password)
-    //   .then(response => {
-    //     // console.log('response: ' + response.user.uid)
-    //     firebase
-    //       .database()
-    //       .ref(`users/${response.user.uid}/`)
-    //       .once('value')
-    //       .then(snapshot => {
-    //         storeData('user', snapshot.val());
- 
-    //         // console.log('snapshot success:' + JSON.stringify(snapshot.val()));
-    //         navigation.replace('MainApp');
-            
-    //       })
-    //       setForm('reset');
-    //   })
-    //   .catch(error => {
-    //     dispatch({type: 'SET_LOADING', value: false});
-    //     console.log(error.message);
-    //   })
+    //jika data belum diisi - email & password
+    if(form.email == '' && form.password == ''){
+      showMessage('Anda belum mengisi email dan password');
+    }
+    //jika data belum diisi - email
+    else if(form.email == ''){
+        showMessage('Anda belum mengisi email');
+    }
+    //jika data belum diisi - password
+    else if(form.password == ''){
+      showMessage('Anda belum mengisi password');
+    }
+    //jika data telah diisi
+    else{
+      //bila email sesuai
+      if(form.email.match(mailformat)){
+        dispatch(signInAction(form, navigation));
+      }
+      //bila email tidak sesuai
+      else{
+        showMessage('Email Anda tidak sesuai');
+      }
+    }  
   }
 
   return (

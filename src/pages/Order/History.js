@@ -13,45 +13,48 @@ const OnProcess = ({navigation, status}) => {
 
   const [listOrder, setListOrder] = useState([]);
 
-  useEffect(() => {
-    setListOrder([])
+  // useEffect(() => {
+  //   setListOrder([])
 
-    firebase
-      .database()
-      .ref(`users/${user.uid}/order/`)
-      .once(`value`)
-      .then(response => {
-        if(response.val()){
-          const obj = response.val()
-          const status = "Selesai";
-          let arr = Object.keys(obj).map((k) => obj[k])
-          console.log('order: ', arr)
-          arr = arr.filter( i => status.includes( i.status ) );
-          console.log("orderFiltered: ", arr)
-          setListOrder(arr)
-        }
-        })
+  //   firebase
+  //     .database()
+  //     .ref(`users/${user.uid}/order/`)
+  //     .once(`value`)
+  //     .then(response => {
+  //       if(response.val()){
+  //         const obj = response.val()
+  //         const status = "Selesai";
+  //         let arr = Object.keys(obj).map((k) => obj[k])
+  //         console.log('order: ', arr)
+  //         arr = arr.filter( i => status.includes( i.status ) );
+  //         console.log("orderFiltered: ", arr)
+  //         setListOrder(arr)
+  //       }
+  //       })
 
-  }, [])
+  // }, [])
 
   return (
-    <FlatList style={styles.tabContainer}
-      keyExtractor={(item) => item.id}
-      data={listOrder}
-      renderItem={({item}) => (
-          <OrderItem
-            id={item.id}
-            image={{uri: item.image}}
-            title={item.title}
-            price={(item.totalPrice + item.deliveryCost)}
-            status={item.status}
-            deliveryDate="18 Oktober 2020"
-            firstItemPrice={item.firstItemPrice}
-            firstItemUnit= {item.firstItemUnit}
-            press={() => navigation.navigate('Payment')}
-          />
-        )}
-    />
+    <View>
+      <Text>Hallo History</Text>
+    </View>
+    // <FlatList style={styles.tabContainer}
+    //   keyExtractor={(item) => item.id}
+    //   data={listOrder}
+    //   renderItem={({item}) => (
+    //       <OrderItem
+    //         id={item.id}
+    //         image={{uri: item.image}}
+    //         title={item.title}
+    //         price={(item.totalPrice + item.deliveryCost)}
+    //         status={item.status}
+    //         deliveryDate="18 Oktober 2020"
+    //         firstItemPrice={item.firstItemPrice}
+    //         firstItemUnit= {item.firstItemUnit}
+    //         press={() => navigation.navigate('Payment')}
+    //       />
+    //     )}
+    // />
   );
 };
 

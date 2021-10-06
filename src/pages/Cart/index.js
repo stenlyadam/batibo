@@ -1,51 +1,39 @@
-import React, {useEffect, useState} from 'react';
-import {SafeAreaView, StyleSheet, View, Dimensions, FlatList, ScrollView, Alert} from 'react-native';
-import {CartItem, CartSummary, PageTitle, Button} from '../../components';
-import {colors, fonts} from '../../utils';
-import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import Pesanan from './Pesanan';
-import Dikirim from './Dikirim';
-import {firebase} from '../../config';
+import React, { useEffect, useState } from 'react';
+import { Dimensions, SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
+import { showMessage } from 'react-native-flash-message';
 import { useDispatch, useSelector } from "react-redux";
-import {showMessage} from 'react-native-flash-message';
-
-// const CartTab = createMaterialTopTabNavigator();
+import { CartItem, CartSummary, PageTitle } from '../../components';
+import { colors } from '../../utils';
 
 const Cart = ({navigation}) => {
 
-  const user = useSelector(state => state.user);
-  const userCart = user.cart;
+  const dispatch = useDispatch();
   const [listCart, setListCart] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
+  const {cart} = useSelector(state => state.loginReducer);
 
   useEffect(() => { 
     setListCart([]);
-    // console.log('user.cart : ',userCart);
     let tempPrice = 0;
 
-    userCart.map(item => {
-      //taru proses untuk mapping cart dari user(redux) untuk ditampilkan pada flat list menggantikan cart map dibawah  
-      if(item && item.id != 0){
-        // console.log('user cart mapping : ', item);
+    cart.map(item => {
+      if(item){
         const data = item;
-        data["count"] = item.count;
         setListCart(listCart => [...listCart, data])
       }
-      // console.log('temp price : ', tempPrice);
-      tempPrice += (item.priceAfterDiscount * item.count);
+      tempPrice += (item.total);
     })
     setTotalPrice(tempPrice);
 
-  }, [userCart])
-
-  useEffect(() => {
-    // console.log("listCart: ", listCart)
-    // console.log('total price : ', totalPrice);
-  }, [listCart])
+    
+  },[cart])
 
   const chooseCheckOut = () => {
-    console.log('hellooooo : ', user.cart.length);
-    if(user.cart.length > 1){
+    if(cart.length > 1){
+      const checkoutFromDetail = false;
+
+      dispatch({type: 'SET_CHECKOUT', value: listCart});
+      dispatch({type: 'SET_ORDER_FROM_DETAIL', value: checkoutFromDetail});
       navigation.navigate('Checkout');
     }
     else{
@@ -63,64 +51,31 @@ const Cart = ({navigation}) => {
       <View style={styles.pageTitle}>
         <PageTitle title={"Keranjang"} />
       </View>
-      {/* <ScrollView showsVerticalScrollIndicator={false}>
-      <View style={styles.checkBoxTitle}>
-        <CheckBox label = "Pilih Semua" text = {14}/>
-      </View> */}
+      <ScrollView>
       <View style={styles.pesananContainer}>
-        <FlatList style={styles.cartContainer}
-              keyExtractor={(item) => item.id}
-              data={listCart} 
-              renderItem={({item}) => (
-                // <View style={styles.cartWrapper}>
-                //   <View style={styles.checkBoxCart}><CheckBox/></View>
-                // <View>      
-                  <CartItem
-                    id={item.id}
-                    image={{uri: item.image}}
-                    name={item.name}
-                    weight={item.productUnit}
-                    originalPrice={item.price}
-                    currentPrice={item.price - (item.price * (item.discount/100))}
-                    count={item.count}
-                  />
-                //   {/* </View>
-                // </View> */
-                )}
+      {listCart.map(item => {
+            return (
+              <CartItem
+              key={item.id}
+              id={item.id}
+              productId={item.product_id}
+              image={{uri: item.product.picturePath}}
+              name={item.product.name}
+              weight={item.product.product_unit}
+              originalPrice={item.product.price}
+              currentPrice={item.product.price_after_discount}
+              count={item.quantity}
             />
+            )
+          })}
       </View>
-      {/* </ScrollView> */}
+      </ScrollView>
       <View style={styles.cartSummaryContainer}>
         <CartSummary
           totalPrice={`Rp. ${totalPrice.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`}
           onPress={chooseCheckOut}
         />
       </View>
-      {/* <View style={styles.contentWrapper}>
-        <CartTab.Navigator
-          tabBarOptions={{
-            labelStyle: {
-              fontFamily: fonts.primary.normal,
-              textTransform: 'capitalize',
-              fontSize: 14,
-              fontWeight: '600',
-            },
-            indicatorStyle: {
-              backgroundColor: colors.button.green,
-            },
-          }}>
-          <CartTab.Screen
-            name="Pesanan"
-            component={Pesanan}
-            options={{tabBarLabel: 'Pesanan'}}
-          />
-          <CartTab.Screen
-            name="Dikirim"
-            component={Dikirim}
-            options={{tabBarLabel: 'Dikirim'}}
-          />
-        </CartTab.Navigator>
-      </View> */}
     </SafeAreaView>
   );
 };
@@ -144,35 +99,17 @@ const styles = StyleSheet.create({
     marginTop: 32,
   },
   pageTitle: {
-    marginVertical: 32,
+    marginVertical: 28,
+    marginTop: 18
   },
-  cartItemContainer: {
-    paddingHorizontal: 24,
-    backgroundColor: colors.white,
-  },
-  cartContainer: {
+  pesananContainer: {
+    paddingHorizontal: 12,
     flex: 1,
-    backgroundColor: colors.white,
-    paddingHorizontal: 24,
   },
-  // cartWrapper:{
-  //   flexDirection: "row",
-  //   backgroundColor: "yellow"
-  // },
-  // checkBoxCart:{
-  //   backgroundColor:"blue"
-    
-  // },
   cartSummaryContainer: {
     maxWidth: 420,
-    // marginHorizontal:0,
-    // marginTop: 22,
-    // marginBottom: 38,
     flexDirection: 'row',
     flexWrap: 'wrap',
     alignItems: 'center',
-  },
-  pesananContainer: {
-    flex: 1,
   },
 });

@@ -1,102 +1,51 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View, Image, FlatList} from 'react-native';
-import {Button} from '../../components';
+import {Button, Gap} from '../../components';
 import {colors, fonts} from '../../utils';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import OrderItem from './OrderItem';
 import {firebase} from '../../config';
 import { useDispatch, useSelector } from "react-redux";
+import { getOnProcess, getOrders } from '../../redux/action';
 
 const OnProcess = ({navigation}) => {
-
-  const user = useSelector(state => state.user);
-
-  const [listOrder, setListOrder] = useState([]);
-
+  const dispatch = useDispatch();
+  const {token} = useSelector(state => state.loginReducer);
+  const {order} = useSelector(state => state.orderReducer);
+  const {onProcess} = useSelector(state => state.orderReducer)
+  console.log('order : ', order);
+  console.log('onProcess: ', onProcess);
+  
+  let i = 0;
+  
   useEffect(() => {
-    setListOrder([])
-
-    firebase
-      .database()
-      .ref(`users/${user.uid}/order/`)
-      .once(`value`)
-      .then(response => {
-        if(response.val()){
-          const obj = response.val()
-          const status = "Dalam Pengiriman";
-          let arr = Object.keys(obj).map((k) => obj[k])
-          console.log('order: ', arr)
-          arr = arr.filter( i => status.includes( i.status ) );
-          console.log("orderFiltered: ", arr)
-          setListOrder(arr)
-        }
-        })
-
+    dispatch(getOrders(token));
+    dispatch(getOnProcess(token));
   }, [])
 
-  
   return (
-    // <ScrollView style={styles.tabContainer}>
-    <FlatList style={styles.tabContainer}
-      keyExtractor={(item) => item.id}
-      data={listOrder}
-      renderItem={({item}) => (
-          <OrderItem
-            id={item.id}
-            image={{uri: item.image}}
-            title={item.title}
-            price={(item.totalPrice + item.deliveryCost)}
-            status={item.status}
-            deliveryDate="18 Oktober 2020"
-            firstItemPrice={item.firstItemPrice}
-            firstItemUnit= {item.firstItemUnit}
-            press={() => navigation.navigate('Payment')}
-          />
-        )}
-    />
-      // <OrderItem
-      //   status="Pesanan Dikirim"
-      //   deliveryDate="18 Oktober 2020"
-      //   press={() => navigation.navigate('Payment')}
-      // />
-      // {/* <TouchableOpacity
-      //   style={styles.orderContainer}
-      //   onPress={() => navigation.navigate('Payment')}>
-      //   <View style={styles.orderStatusContainer}>
-      //     <Text style={styles.orderStatusText}>Pesanan Dikirim</Text>
-      //   </View>
-      //   <View style={styles.orderDescriptionContainer}>
-      //     <View>
-      //       <Text style={styles.subTitleText}>Tanggal Pengiriman</Text>
-      //       <Text style={styles.date}>18 Oktober 2020</Text>
-      //     </View>
-      //     <View>
-      //       <Text style={styles.subTitleText}>ID Pesanan</Text>
-      //       <Text style={styles.orderNumber}>GD-56789107899</Text>
-      //     </View>
-      //   </View>
-      //   <View style={styles.itemContainer}>
-      //     <View style={styles.imageContainer}>
-      //       <Image source={DummyBrokoliHijau} style={styles.image} />
-      //     </View>
-      //     <View style={styles.itemTitleContainer}>
-      //       <Text style={styles.titleText}>Brokoli Hijau</Text>
-      //       <View style={styles.itemPriceContainer}>
-      //         <Text style={styles.itemWeight}>500gram</Text>
-      //       </View>
-      //     </View>
-      //     <Text style={styles.itemPrice}>Rp 20.000</Text>
-      //   </View>
-      //   <View style={styles.moreItemContainer}>
-      //     <Text style={styles.moreItemText}>Lihat Pesanan Lainnya</Text>
-      //     <Button type="icon-only" icon="icon-arrow-bottom" />
-      //   </View>
-      //   <View style={styles.orderAmountContainer}>
-      //     <Text style={styles.subTitleText}>Total Pembayaran</Text>
-      //     <Text style={styles.orderAmount}>Rp. 140.000</Text>
-      //   </View>
-      // </TouchableOpacity> */}
-    // </ScrollView>
+    <ScrollView showsVerticalScrollIndicator={false}>
+      <View styles={styles.tabContainer}>
+        {onProcess.map(item => {
+          //jika i tidak sama dengan id transaksi akan mereturn komponen OrderItem
+          if(i != item.id){
+            console.log('transaction id :', item.id);
+            i = item.id;
+            console.log('i saat dicek dengan transaction id : ', i);
+            return(
+              <OrderItem
+              key={item.id}
+              id={item.id}
+              price={item.total}
+              status={item.status}
+              deliveryDate={item.updated_at}
+              press={() => navigation.navigate('Payment')}
+              />
+            )
+          }
+        })}
+      </View> 
+    </ScrollView>
   );
 };
 
@@ -106,7 +55,8 @@ const styles = StyleSheet.create({
   tabContainer: {
     flex: 1,
     backgroundColor: colors.white,
-    paddingTop: 22,
+    paddingTop: 20,
+    marginVertical:20,
   },
   orderContainer: {
     borderColor: colors.border,

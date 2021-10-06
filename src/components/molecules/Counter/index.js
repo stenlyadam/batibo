@@ -2,187 +2,80 @@ import React, {useState} from 'react';
 import {StyleSheet, Text, View, Alert} from 'react-native';
 import {Button} from '../../atoms';
 import {useDispatch, useSelector} from 'react-redux';
-import { firebase } from '../../../config';
+import { API_HOST, firebase } from '../../../config';
 import {showMessage} from 'react-native-flash-message';
 import {colors} from '../../../utils';
+import { updateCartAction } from '../../../redux/action';
+import axios from 'axios';
 
-const Counter = ({itemCount, itemId}) => {
-  let item = {itemCount, itemId}
-  
-  const user = useSelector(state => state.user);
+const Counter = ({itemCount, itemId, productId, itemPrice}) => {
 
   const dispatch = useDispatch();
+  const {user} = useSelector(state => state.loginReducer);
+  const {token} = useSelector(state => state.loginReducer);
   const [count, setCount] = useState(itemCount);
+
+
   const onPressMinus = () => {
     console.log('item id : ',itemId);
     if (count > 0) {
-      let updateCount = -1 ;
-      // dispatch({type: 'UPDATE_COUNT_DECREMENT', value:item})
-      // setCount((prevCount) => prevCount + updateCount);
-      updateData(updateCount);
-    } else {
-      let updateCount = 0 ;
-      // dispatch({type: 'DELETE_CART', value:item})
-      console.log('hellooasdf');
-      updateData(updateCount);
+      let updateCount = -1;
+      updateCartAction(updateCount);
+    } 
+    else {
+      let updateCount = 0;
+      updateCartAction(updateCount);
     }
 
 
   };
   const onPressPlus = () => {
-    let updateCount = 1 ;
-    // setCount((prevCount) => prevCount + updateCount);
-    // dispatch({type: 'UPDATE_COUNT_INCREMENT', value:item})
-    // console.log('count : ', count);
-    updateData(updateCount);
+    let updateCount = 1;
+    updateCartAction(updateCount);
   };
 
-  const updateData = (updateCount) => {
-    console.log('updateCount : ', updateCount);
-    
-    //ubah count ke data object utk update data cart pada firebase
-    const updateCart = {
-      count : count + updateCount
-    }
-        // save count cart to firebase
-        firebase
-        .database()
-        .ref(`users/${user.uid}/cart/${itemId}/`)
-        .update(updateCart)
-        .then(() => {
-                //load data firebase to save in redux
-                firebase
-                .database()
-                .ref(`users/${user.uid}/`)
-                .once('value')
-                .then(snapshot => {
-                  
-                  itemCount = itemCount + updateCount;
-                  console.log('count : ', itemCount)
-                  //kondisi jika jumlah 1 produk sama dengan nol
-                  if (itemCount == 0){
-                    //tampilan jumlah produk tidak berubah, tapi muncul tampilan untuk konfirmasi penghapusan produk
-                    setCount(1);
-                    console.log('asdfasdfasdf ');
-                    deleteProductConfirmation(itemId);
-                  }
-                  else {
-                    setCount((prevCount) => prevCount + updateCount);
-                    console.log('hahhahahha ');
-                  }
-                  dispatch({type: 'SAVE_USER', value:snapshot.val()})
-                })
-        })
-        //if error
-        .catch(error => {
-            showMessage({
-                message: error.message,
-                type: 'default',
-                backgroundColor: colors.error,
-                color: colors.white,
-            });
-        });
-  }
-
-  const deleteProductConfirmation = (data) => {
-    console.log('Hellooo : ', data);
-    Alert.alert(
-      "Konfirmasi",
-      "Apakah anda ingin menghapus produk ini dari keranjang?",
-      [
-        {
-          text: "Tidak",
-          onPress: () => cancelDelete(data),
-          style: "cancel"
-        },
-        { text: "Ya", onPress: () => deleteProduct(data) }
-      ]
-    );
-  }
-
-  const cancelDelete = (product) => {
-    console.log('helloooo');
-    let updateCount = 0 ;
-    itemCount = 1;
-    updateData(updateCount);
-  }
-
-  const deleteProduct = (product) => {
-      dispatch({type: 'SET_LOADING', value: true});
-      firebase.database()
-      .ref(`users/${user.uid}/cart/${product}/`)
-      .remove()
-      .then(() => {
-      const updateCart = user.cart;
-
-      updateCart.map(item => {
-        if(product < item.id){
-          const data = {
-            category: item.category,
-            detail: item.detail,
-            discount: item.discount,
-            id: item.id - 1,
-            image: item.image,
-            name: item.name,
-            price: item.price,
-            priceAfterDiscount:item.priceAfterDiscount,
-            productUnit: item.productUnit,
-            count: item.count,
-          }
-          // console.log('helooooooouuu');
-          firebase.database()
-          .ref(`users/${user.uid}/cart/`)
-          .child(data.id)
-          .update(data)
+  const updateCartAction = (updateCount) => {
+        const updateCartData = {
+          user_id: user.id,
+          product_id: productId,
+          quantity: '',
+          total: '',
         }
-          // .then(() => {
-                const deleteProductAfterUpdate = user.cart.length - 1;
-                console.log('product to delete after update : ', deleteProductAfterUpdate)
-                
-                firebase.database()
-                .ref(`users/${user.uid}/cart/${deleteProductAfterUpdate}/`)
-                .remove()
-                .then(() => {
 
-                  firebase
-                  .database()
-                  .ref(`users/${user.uid}/`)
-                  .once('value')
-                  .then(snapshot => {
-                    dispatch({type: 'SAVE_USER', value:snapshot.val()})
-                    dispatch({type: 'SET_LOADING', value: false});
-                    showMessage({
-                      message: "Produk berhasil dihapus dari keranjang",
-                      type: 'default',
-                      backgroundColor: colors.primary,
-                      color: colors.white,
-                })
-              })
-            })
-            .catch(error => {
-              dispatch({type: 'SET_LOADING', value: false});
-              showMessage({
-                  message: error.message,
-                  type: 'default',
-                  backgroundColor: colors.error,
-                  color: colors.white,
-              });
-          });
-          // })
-
-        
-    })
-
-      })
-      .catch(error => {
-          showMessage({
-              message: error.message,
-              type: 'default',
-              backgroundColor: colors.error,
-              color: colors.white,
-          });
-      });
-  }
+        updateCartData.quantity = count + updateCount;
+        updateCartData.total = itemPrice * updateCartData.quantity;
+        //update data product dalam database (cart)
+        axios.post(`${API_HOST.url}/cart/${itemId}`, updateCartData, {
+        headers: {
+            'Accept' : 'application/json',
+            'Authorization' : token,
+        }
+        })
+        //update data product dalam database (cart) - jika berhasil
+        .then(resCart => {
+        //ambil data cart terbaru dari database
+        axios.get(`${API_HOST.url}/cart`, {
+            headers: {
+            'Accept' : 'application/json',
+            'Authorization' : token,
+            }
+        })
+        //ambil data cart terbaru dari database - jika berhasil
+        .then(resUpdateCart => {
+            //simpan data CART user ke dalam data reducer
+            dispatch({type: 'SET_CART', value: resUpdateCart.data.data.data});
+            setCount((prevCount) => prevCount + updateCount);
+        })
+        //ambil data cart terbaru dari database - jika tidak berhasil
+        .catch(errUpdateCart => {
+            showMessage('Terjadi kesalahan pada penambahan data');
+        })
+        })
+        //update data product ke database (cart) - jika tidak berhasil
+        .catch((errCart) => {
+            showMessage('Terjadi kesalahan pada penyimpanan data ke API Cart User');
+        })
+}
 
   return (
     <View style={styles.container}>
@@ -215,8 +108,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginLeft: 18,
+    width: 100,
+    maxWidth: 100,
+    
   },
   number: {
-    paddingHorizontal: 16,
+    width:22,
+    paddingHorizontal: 3,
+    marginHorizontal: 5,
   },
 });

@@ -3,11 +3,13 @@ import {StyleSheet, Text, View, TextInput as Input} from 'react-native';
 import {colors, fonts} from '../../../utils';
 
 const TextInput = (props) => {
-  const {label, placeholder, value, onChangeText, secureTextEntry, disable, ...rest} = props;
+  const {label, placeholder, value, onChangeText, secureTextEntry, disable, keyboardType, isRequired, ...rest} = props;
   return (
     <View style={styles.container}>
       <Text style={styles.label}>{label}</Text>
       <Input
+        require={require}
+        keyboardType={keyboardType}
         placeholder={placeholder}
         style={styles.input}
         value={value}

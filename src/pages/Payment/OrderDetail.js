@@ -2,35 +2,34 @@ import React, {useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {colors, fonts} from '../../utils';
 import {FlatList} from 'react-native-gesture-handler';
+import { useSelector } from 'react-redux';
 
-const DATA = [
-  {
-    id: '1',
-    name: 'Brokoli Hijau (500 gr)',
-    price: 'Rp 20.000',
-  },
-  {
-    id: '2',
-    name: 'Jeruk Bali (1.500 gr)',
-    price: 'Rp 105.000',
-  },
-];
-
-const Item = ({item, onPress, style}) => (
+const Item = ({item, status}) => (
+  status == true ?
   <View style={styles.itemContainer}>
-    <Text style={styles.itemName}>{item.name}</Text>
-    <Text style={styles.itemPrice}>{item.price}</Text>
+    <Text style={styles.itemName}>{item.name} x {item.quantity}</Text>
+    <Text style={styles.itemPrice}>{`Rp ${(item.price_after_discount*item.quantity).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`}</Text>
+  </View>
+  : 
+  <View style={styles.itemContainer}>
+    <Text style={styles.itemName}>{item.product.name} x {item.quantity}</Text>
+    <Text style={styles.itemPrice}>{`Rp ${item.total.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`}</Text>
   </View>
 );
 
 const OrderDetail = () => {
+
+  const {orderFromDetail} = useSelector(state => state.orderReducer);
+  const {checkout} = useSelector(state => state.loginReducer);
   const [selectedId, setSelectedId] = useState(null);
 
+  const DATA = checkout;
+  
   const renderItem = ({item}) => {
     const backgroundColor = item.id === selectedId ? '#6e3b6e' : '#f9c2ff';
-
     return (
       <Item
+        status={orderFromDetail}
         item={item}
         onPress={() => setSelectedId(item.id)}
         style={{backgroundColor}}
@@ -69,9 +68,9 @@ const styles = StyleSheet.create({
   tabContainer: {
     flex: 1,
     backgroundColor: colors.white,
-    paddingTop: 22,
+    paddingVertical: 22,
+    paddingBottom: 28
   },
-
   detailTitle: {
     flexDirection: 'row',
   },

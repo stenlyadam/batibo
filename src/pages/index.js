@@ -1,6 +1,7 @@
 import Splash from './Splash';
 import Login from './Login';
 import Register from './Register';
+import RegisterAddress from './RegisterAddress';
 import HomeScreen from './HomeScreen';
 import InCategory from './InCategory';
 import Cart from './Cart';
@@ -24,6 +25,7 @@ export {
   Splash,
   Login,
   Register,
+  RegisterAddress,
   HomeScreen,
   InCategory,
   Cart,

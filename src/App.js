@@ -9,16 +9,16 @@ import {Provider, useSelector} from 'react-redux'
 import { Loading } from './components';
 
 const MainApp = () => {
-  const stateGlobal = useSelector (state => state)
-  LogBox.ignoreLogs(['Setting a timer']);
+  //destructuring isLoading
+  const {isLoading} = useSelector ((state) => state.globalReducer)
+  LogBox.ignoreLogs(['Setting a timer', 'Remote debugger']);
   return (
     <>
         <NavigationContainer>
           <Router />
         </NavigationContainer>
         <FlashMessage position="top" />
-        {stateGlobal.loading && <Loading/>}
-        
+        {isLoading && <Loading/>}
     </>
   );
 };

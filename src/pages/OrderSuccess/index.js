@@ -7,6 +7,7 @@ import {
   Image,
   Dimensions,
 } from 'react-native';
+import { useSelector } from 'react-redux';
 import {IMGOrderSuccess} from '../../assets';
 import {Button, Gap, PageTitle} from '../../components';
 import {colors, fonts} from '../../utils';
@@ -14,11 +15,14 @@ import {colors, fonts} from '../../utils';
 const {width} = Dimensions.get('window');
 
 const OrderSuccess = ({navigation, route}) => {
-  console.log(route.params)
-  const totalPrice = route.params.price;
-  const orderKey = route.params.key;
+  const {orderTemp} = useSelector(state => state.orderReducer);
+  console.log('order tempo: ', orderTemp);
+  // console.log(route.params)
+  // const totalPrice = route.params.price;
+  // const orderKey = route.params.key;
   return (
     <SafeAreaView style={styles.page}>
+      <Gap height={8} />
       <PageTitle title="Order Sukses" onBack={() => navigation.goBack()} />
       <View style={styles.contentWrapper}>
         <View>
@@ -27,10 +31,10 @@ const OrderSuccess = ({navigation, route}) => {
           </View>
           <View style={styles.amountContainer}>
             <Text style={styles.totalAmountText}>Total Tagihan</Text>
-            <Text style={styles.totalAmount}>Rp {totalPrice}</Text>
+            <Text style={styles.totalAmount}>Rp. {orderTemp.total}</Text>
             <Gap height={12} />
             <Text style={styles.orderNumber}>
-              No. Order {orderKey}
+              No. Order : {orderTemp.id}
             </Text>
           </View>
         </View>
