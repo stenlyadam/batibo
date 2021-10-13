@@ -20,6 +20,7 @@ import {
   Address,
   AddAddress,
   EditAddress,
+  OrderSummary,
 } from '../pages';
 import Page from '../pages/OnBoarding/Page';
 import OrderItem from '../pages/Order/OrderItem';
@@ -27,6 +28,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {IconHome, IconCart, IconReceipt, IconProfile} from '../assets';
 import {colors, fonts} from '../utils';
 import { useSelector } from "react-redux";
+import OnProcess from '../pages/Order/OnProcess';
 
 const Tab = createBottomTabNavigator();
 
@@ -195,9 +197,19 @@ const Router = () => {
         component={Page}
         options={{headerShown: false}}
       />
+        <Stack.Screen
+        name="OnProcess"
+        component={OnProcess}
+        options={{headerShown: false}}
+      />
       <Stack.Screen
         name="OrderItem"
         component={OrderItem}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="OrderSummary"
+        component={OrderSummary}
         options={{headerShown: false}}
       />
       <Stack.Screen

@@ -61,17 +61,16 @@ export const getOnProcess = (token) => (dispatch) => {
     
 }
 
-export const getHistory = () => () => {
-    getData('token').then(resToken => {
+export const getHistory = (token) => (dispatch) => {
         axios.all([
             axios.get(`${API_HOST.url}/transaction?status=CANCELLED`, {
                 headers: {
-                    'Authorization' : resToken.value
+                    'Authorization' : token
                 },
             }),
             axios.get(`${API_HOST.url}/transaction?status=DELIVERED`, {
                 headers: {
-                    'Authorization' : resToken.value
+                    'Authorization' : token
                 },
             }),
         ])
@@ -83,13 +82,12 @@ export const getHistory = () => () => {
                 const delivered = res2.data.data.data;
 
                 dispatch({
-                    type: 'SET_IN_PROGRESS', 
+                    type: 'SET_HISTORY', 
                     value: [...cancelled, ...delivered]
                 })
             }
         ))
         .catch(err => {
             console.log('err history on orders: ', err.response);
-        })
-    })
+        }) 
 }

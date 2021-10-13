@@ -6,55 +6,67 @@ import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import OrderItem from './OrderItem';
 import {firebase} from '../../config';
 import { useDispatch, useSelector } from "react-redux";
+import { getHistory, getOrders, setLoading } from '../../redux/action';
 
 const OnProcess = ({navigation, status}) => {
 
-  const user = useSelector(state => state.user);
+  const dispatch = useDispatch();
+  const {token} = useSelector(state => state.loginReducer);
+  const {history} = useSelector(state => state.orderReducer);
 
-  const [listOrder, setListOrder] = useState([]);
+  let i = 0;
 
-  // useEffect(() => {
-  //   setListOrder([])
-
-  //   firebase
-  //     .database()
-  //     .ref(`users/${user.uid}/order/`)
-  //     .once(`value`)
-  //     .then(response => {
-  //       if(response.val()){
-  //         const obj = response.val()
-  //         const status = "Selesai";
-  //         let arr = Object.keys(obj).map((k) => obj[k])
-  //         console.log('order: ', arr)
-  //         arr = arr.filter( i => status.includes( i.status ) );
-  //         console.log("orderFiltered: ", arr)
-  //         setListOrder(arr)
-  //       }
-  //       })
-
-  // }, [])
+  useEffect(() => {
+    dispatch(getOrders(token));
+    dispatch(getHistory(token));
+    history.map(item => {
+      if(item.isOrder == 'false') {
+        dispatch(setLoading(true));
+        axios.delete(`${API_HOST.url}/transaction/${item.id}`, {
+          headers: {
+            'Accept' : 'application/json',
+            'Authorization' : token,
+          },
+        })
+        .then(res => {
+          console.log('berhasil dihapus');
+          dispatch(getOrders(token));
+          dispatch(getHistory(token));
+        })
+        .catch(err => {
+          console.log('terjadi error :', err.response);
+        })
+      }
+    })
+    setTimeout(() => dispatch(setLoading(false)), 2000);
+  }, [history])
 
   return (
-    <View>
-      <Text>Hallo History</Text>
-    </View>
-    // <FlatList style={styles.tabContainer}
-    //   keyExtractor={(item) => item.id}
-    //   data={listOrder}
-    //   renderItem={({item}) => (
-    //       <OrderItem
-    //         id={item.id}
-    //         image={{uri: item.image}}
-    //         title={item.title}
-    //         price={(item.totalPrice + item.deliveryCost)}
-    //         status={item.status}
-    //         deliveryDate="18 Oktober 2020"
-    //         firstItemPrice={item.firstItemPrice}
-    //         firstItemUnit= {item.firstItemUnit}
-    //         press={() => navigation.navigate('Payment')}
-    //       />
-    //     )}
-    // />
+    <ScrollView showsVerticalScrollIndicator={false} >
+    <View styles={styles.tabContainer}>
+      {history.map(item => {
+        //jika i tidak sama dengan id transaksi akan mereturn komponen OrderItem
+        if(i != item.id){
+          console.log('transaction id :', item.id);
+          i = item.id;
+          console.log('i saat dicek dengan transaction id : ', i);
+          return(
+            <OrderItem
+            key={item.id}
+            id={item.id}
+            price={item.total}
+            status={item.status}
+            deliveryDate={item.updated_at}
+            press={() => navigation.navigate('OrderSummary', {
+              transaction : item,
+              status : 'History',
+            })}
+            />
+          )
+        }
+      })}
+    </View> 
+  </ScrollView>
   );
 };
 

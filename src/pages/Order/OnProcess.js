@@ -4,27 +4,45 @@ import {Button, Gap} from '../../components';
 import {colors, fonts} from '../../utils';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import OrderItem from './OrderItem';
-import {firebase} from '../../config';
+import {API_HOST, firebase} from '../../config';
 import { useDispatch, useSelector } from "react-redux";
-import { getOnProcess, getOrders } from '../../redux/action';
+import { getOnProcess, getOrders, setLoading } from '../../redux/action';
+import axios from 'axios';
 
 const OnProcess = ({navigation}) => {
   const dispatch = useDispatch();
   const {token} = useSelector(state => state.loginReducer);
-  const {order} = useSelector(state => state.orderReducer);
-  const {onProcess} = useSelector(state => state.orderReducer)
-  console.log('order : ', order);
-  console.log('onProcess: ', onProcess);
-  
+  const {onProcess} = useSelector(state => state.orderReducer);
+
   let i = 0;
-  
+
   useEffect(() => {
     dispatch(getOrders(token));
     dispatch(getOnProcess(token));
-  }, [])
+      onProcess.map(item => {
+        if(item.isOrder == 'false') {
+          dispatch(setLoading(true));
+          axios.delete(`${API_HOST.url}/transaction/${item.id}`, {
+            headers: {
+              'Accept' : 'application/json',
+              'Authorization' : token,
+            },
+          })
+          .then(res => {
+            console.log('berhasil dihapus');
+            dispatch(getOrders(token));
+            dispatch(getOnProcess(token));
+          })
+          .catch(err => {
+            console.log('terjadi error :', err.response);
+          })
+        }
+      })
+      setTimeout(() => dispatch(setLoading(false)), 2000);
+  }, [onProcess])
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
+    <ScrollView showsVerticalScrollIndicator={false} >
       <View styles={styles.tabContainer}>
         {onProcess.map(item => {
           //jika i tidak sama dengan id transaksi akan mereturn komponen OrderItem
@@ -39,7 +57,10 @@ const OnProcess = ({navigation}) => {
               price={item.total}
               status={item.status}
               deliveryDate={item.updated_at}
-              press={() => navigation.navigate('Payment')}
+              press={() => navigation.navigate('OrderSummary', {
+                transaction : item,
+                status : item.status
+              })}
               />
             )
           }

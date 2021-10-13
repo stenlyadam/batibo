@@ -33,7 +33,6 @@ export const getProductData = (limit, types, navigation) => (dispatch) => {
 export const getProductDataByCategory = (category, navigation) => (dispatch) => {
   axios.get(`${API_HOST.url}/product?category=${category}`)
     .then((res) => {
-
       console.log('response category : ', res.data.data.data);
       dispatch({type: 'SET_INCATEGORY', value: res.data.data.data});
       navigation.navigate('InCategory');

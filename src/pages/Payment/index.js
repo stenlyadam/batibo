@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {StyleSheet, Text, View, SafeAreaView, Dimensions} from 'react-native';
 import {Button, PageTitle} from '../../components';
 import {colors, fonts, showMessage} from '../../utils';
@@ -22,6 +22,12 @@ const Payment = ({navigation}) => {
   const {checkout} = useSelector(state => state.loginReducer);
   const {orderTemp} = useSelector(state => state.orderReducer);
   const [isPaymentOpen, setIsPaymentOpen] = useState(false);
+  console.log('orderTemp : ', orderTemp );
+
+  useEffect(() => {
+    
+
+  }, [])
 
   const checkoutMidtrans = () => {
     setIsPaymentOpen(true);
@@ -31,9 +37,25 @@ const Payment = ({navigation}) => {
     console.log('state: ', state);
     const titleWeb = 'Laravel';
     let orderSuccess = false;
+
+
     if(state.title === titleWeb){
-        if(orderFromDetail){
-          console.log('saya order dari detail loh');
+      const data = {
+        isOrder : 'true'
+      };
+
+      //update isOrder pada transaksi menjadi true 
+      axios.post(`${API_HOST.url}/transaction/${orderTemp.id}`, data , {
+        headers: {
+          'Accept' : 'application/json',
+          'Authorization' : token,
+        },
+        
+      })
+      //update isOrder pada transaksi menjadi true - jika berhasil
+      .then(res => {
+          if(orderFromDetail){
+          // console.log('saya order dari detail loh');
           const orderSubmit = {
             user_id: user.id,
             product_id: checkout[0].id,
@@ -126,11 +148,18 @@ const Payment = ({navigation}) => {
               })
           })
         }
+      })
+      //update isOrder pada transaksi menjadi true - jika tidak berhasil
+      .catch(err => {
+        console.log('terjadi kesalahan pada proses Order : ', err.response);
+      })
+      
       //jika status order berhasil
       if(orderSuccess = true){
         // console.log('hallooo order success');
         navigation.replace('OrderSuccess');
       }
+
     }
   }
 

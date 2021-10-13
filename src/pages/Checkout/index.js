@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Button, CartItem, PageTitle } from '../../components';
 import { API_HOST } from '../../config';
 import { setLoading } from '../../redux/action/global';
-import { colors, fonts } from '../../utils';
+import { colors, fonts, showMessage } from '../../utils';
 
 const Checkout = ({navigation}) => {
 
@@ -43,19 +43,23 @@ const Checkout = ({navigation}) => {
   }, [checkout])
 
   const onCheckout = () => {
-    console.log('haloo bill');
-    Alert.alert(
-      "Konfirmasi",
-      "Apakah anda melakukan checkout? Jika lanjut produk yang ada di keranjang akan hilang.",
-      [
-        {
-          text: "Tidak",
-          onPress: () => console.log('hallo'),
-          style: "cancel"
-        },
-        { text: "Ya", onPress: () => checkoutMidtrans() }
-      ]
-    );
+    if(orderFromDetail){
+      checkoutMidtrans();
+    }
+    else{
+      Alert.alert(
+        "Konfirmasi",
+        "Apakah anda melakukan checkout? Jika lanjut produk yang ada di keranjang akan hilang.",
+        [
+          {
+            text: "Tidak",
+            onPress: () => console.log('hallo'),
+            style: "cancel"
+          },
+          { text: "Ya", onPress: () => checkoutMidtrans() }
+        ]
+      );
+    }
   }
 
   const checkoutMidtrans = () => {
@@ -84,7 +88,7 @@ const Checkout = ({navigation}) => {
     })
     .catch(err => {
       dispatch(setLoading(false));
-      console.log('error checkout : ', err.response);
+      showMessage('Masalah Jaringan : Silahkan Coba Lagi Beberapa Saat');
     })
   }
 
@@ -129,10 +133,13 @@ const Checkout = ({navigation}) => {
                       originalPrice={checkout[0].price}
                       currentPrice={checkout[0].price_after_discount}
                       count={checkout[0].quantity}
+                      checkout
+                      orderFromDetail
+                      detail={checkout[0]}
                       />
                       
                 :  listCheckout.map(item => {
-                  
+
                     return (
                     <CartItem
                     key={item.id}
@@ -144,6 +151,7 @@ const Checkout = ({navigation}) => {
                     originalPrice={item.product.price}
                     currentPrice={item.product.price_after_discount}
                     count={item.quantity}
+                    checkout
                     />
                     )
                 

@@ -3,12 +3,11 @@ import {StyleSheet, Text, View, Alert} from 'react-native';
 import {Button} from '../../atoms';
 import {useDispatch, useSelector} from 'react-redux';
 import { API_HOST, firebase } from '../../../config';
-import {showMessage} from 'react-native-flash-message';
-import {colors} from '../../../utils';
+import {colors, showMessage} from '../../../utils';
 import { updateCartAction } from '../../../redux/action';
 import axios from 'axios';
 
-const Counter = ({itemCount, itemId, productId, itemPrice}) => {
+const Counter = ({itemCount, itemId, productId, itemPrice, checkout, orderFromDetail, detail}) => {
 
   const dispatch = useDispatch();
   const {user} = useSelector(state => state.loginReducer);
@@ -18,13 +17,28 @@ const Counter = ({itemCount, itemId, productId, itemPrice}) => {
 
   const onPressMinus = () => {
     console.log('item id : ',itemId);
-    if (count > 0) {
+    if (count > 1) {
       let updateCount = -1;
       updateCartAction(updateCount);
     } 
     else {
-      let updateCount = 0;
-      updateCartAction(updateCount);
+      if(checkout){
+        showMessage('Anda Tidak Bisa Menghapus Produk Ketika Checkout');
+      }
+      else{
+        Alert.alert(
+          "Konfirmasi",
+          "Apakah anda menghapus produk ini dari keranjang?",
+          [
+            {
+              text: "Tidak",
+              onPress: () => console.log('tidak jadi'),
+              style: "cancel"
+            },
+            { text: "Ya", onPress: () => deleteCartAction()}
+          ]
+        );
+      }
     }
 
 
@@ -33,6 +47,7 @@ const Counter = ({itemCount, itemId, productId, itemPrice}) => {
     let updateCount = 1;
     updateCartAction(updateCount);
   };
+  
 
   const updateCartAction = (updateCount) => {
         const updateCartData = {
@@ -42,39 +57,100 @@ const Counter = ({itemCount, itemId, productId, itemPrice}) => {
           total: '',
         }
 
-        updateCartData.quantity = count + updateCount;
-        updateCartData.total = itemPrice * updateCartData.quantity;
-        //update data product dalam database (cart)
-        axios.post(`${API_HOST.url}/cart/${itemId}`, updateCartData, {
-        headers: {
-            'Accept' : 'application/json',
-            'Authorization' : token,
+        if(orderFromDetail){
+          const productCheckout = {
+            category: detail.category,
+            detail: detail.detail,
+            discount: detail.discount,
+            id: detail.id,
+            name: detail.name,
+            picturePath: detail.picturePath,
+            price: detail.price,
+            price_after_discount: detail.price_after_discount,
+            product_unit: detail.product_unit,
+            quantity: '',
+          }
+
+          let checkout = [productCheckout]; 
+
+          productCheckout.quantity = count + updateCount;
+          dispatch({type: 'SET_CHECKOUT', value: checkout});
+          setCount((prevCount) => prevCount + updateCount);
         }
-        })
-        //update data product dalam database (cart) - jika berhasil
-        .then(resCart => {
-        //ambil data cart terbaru dari database
-        axios.get(`${API_HOST.url}/cart`, {
-            headers: {
-            'Accept' : 'application/json',
-            'Authorization' : token,
-            }
-        })
-        //ambil data cart terbaru dari database - jika berhasil
-        .then(resUpdateCart => {
-            //simpan data CART user ke dalam data reducer
-            dispatch({type: 'SET_CART', value: resUpdateCart.data.data.data});
-            setCount((prevCount) => prevCount + updateCount);
-        })
-        //ambil data cart terbaru dari database - jika tidak berhasil
-        .catch(errUpdateCart => {
+        else{
+          updateCartData.quantity = count + updateCount;
+          updateCartData.total = itemPrice * updateCartData.quantity;
+          //update data product dalam database (cart)
+        axios.post(`${API_HOST.url}/cart/${itemId}`, updateCartData, {
+          headers: {
+              'Accept' : 'application/json',
+              'Authorization' : token,
+          }
+          })
+          //update data product dalam database (cart) - jika berhasil
+          .then(resCart => {
+          //ambil data cart terbaru dari database
+          axios.get(`${API_HOST.url}/cart`, {
+              headers: {
+              'Accept' : 'application/json',
+              'Authorization' : token,
+              }
+          })
+          //ambil data cart terbaru dari database - jika berhasil
+          .then(resUpdateCart => {
+              if(checkout){
+                dispatch({type: 'SET_CHECKOUT', value: resUpdateCart.data.data.data});
+              }
+              //simpan data CART user ke dalam data reducer
+              dispatch({type: 'SET_CART', value: resUpdateCart.data.data.data});
+              setCount((prevCount) => prevCount + updateCount);
+          })
+          //ambil data cart terbaru dari database - jika tidak berhasil
+          .catch(errUpdateCart => {
             showMessage('Terjadi kesalahan pada penambahan data');
-        })
-        })
-        //update data product ke database (cart) - jika tidak berhasil
-        .catch((errCart) => {
-            showMessage('Terjadi kesalahan pada penyimpanan data ke API Cart User');
-        })
+          })
+          })
+          //update data product ke database (cart) - jika tidak berhasil
+          .catch((errCart) => {
+              showMessage('Terjadi kesalahan pada penyimpanan data ke API Cart User');
+          })
+        }
+  }
+
+  const deleteCartAction = () => {
+    //delete data product dalam database (cart)
+    axios.delete(`${API_HOST.url}/cart/${itemId}`, {
+      headers: {
+      'Accept' : 'application/json',
+      'Authorization' : token,
+      }
+    })
+    //delete data product dalam database (cart) - jika berhasil
+    .then(resCart => {
+    //ambil data cart terbaru dari database
+    axios.get(`${API_HOST.url}/cart`, {
+        headers: {
+        'Accept' : 'application/json',
+        'Authorization' : token,
+        }
+    })
+    //ambil data cart terbaru dari database - jika berhasil
+    .then(resUpdateCart => {
+        if(checkout){
+          dispatch({type: 'SET_CHECKOUT', value: resUpdateCart.data.data.data});
+        }
+        //simpan data CART user ke dalam data reducer
+        dispatch({type: 'SET_CART', value: resUpdateCart.data.data.data});
+    })
+    //ambil data cart terbaru dari database - jika tidak berhasil
+    .catch(errUpdateCart => {
+        showMessage('Terjadi kesalahan pada penambahan data');
+    })
+    })
+    //delete data product ke database (cart) - jika tidak berhasil
+    .catch((errCart) => {
+        showMessage('Terjadi kesalahan pada penghapusan data product pada API Cart User');
+    })
 }
 
   return (

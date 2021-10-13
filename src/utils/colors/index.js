@@ -5,6 +5,7 @@ const listColors = {
   green2: '#07AD82',
   green3: '#009B77',
   green4: '#24AD65',
+  green5: 'rgba(40, 190, 100, 0.7)',
   white: 'white',
   orange1: '#FF8C21',
   grey1: '#1C2024',
@@ -17,7 +18,11 @@ const listColors = {
   black: 'black',
   black2: 'rgba(0,0,0, 0.25)',
   blue: '#0045A3',
+  blue2: 'rgba(28, 128, 255, 0.7)',
   red: '#ff1818',
+  red2: 'rgba(255, 40, 40, 0.7)',
+  yellow: '#F9E000',
+  yellow2: 'rgba(255, 224, 40, 0.7)'
 };
 
 export const colors = {
@@ -27,6 +32,7 @@ export const colors = {
   grey: listColors.grey4,
   border: listColors.grey3,
   lightGrey: listColors.grey6,
+  yellow: listColors.yellow,
   button: {
     primary: {
       backgroundColor: listColors.orange1,
@@ -47,6 +53,12 @@ export const colors = {
     grey: listColors.grey5,
     blue: listColors.blue,
     red: listColors.red,
+  },
+  status: {
+    pending: listColors.yellow2,
+    on_delivery: listColors.green5,
+    cancelled: listColors.red2,
+    delivered: listColors.blue2,
   },
   error: listColors.red1,
   loadingBackground: listColors.black2,

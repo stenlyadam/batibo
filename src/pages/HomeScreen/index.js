@@ -16,9 +16,7 @@ const HomeScreen = ({navigation}) => {
   const {token} = useSelector(state => state.loginReducer);
   const {cart} = useSelector(state => state.loginReducer);
   const {product} = useSelector(state => state.homeReducer);
-
-  console.log('user redux : ', user.id);
-
+  
   useEffect(() => {
     getData('userProfile').then((res) => {
       setUserProfile(res);

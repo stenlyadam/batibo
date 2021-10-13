@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import {colors, fonts} from '../../utils';
 import {FlatList} from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
@@ -22,24 +22,9 @@ const OrderDetail = () => {
   const {orderFromDetail} = useSelector(state => state.orderReducer);
   const {checkout} = useSelector(state => state.loginReducer);
   const [selectedId, setSelectedId] = useState(null);
-
-  const DATA = checkout;
   
-  const renderItem = ({item}) => {
-    const backgroundColor = item.id === selectedId ? '#6e3b6e' : '#f9c2ff';
-    return (
-      <Item
-        status={orderFromDetail}
-        item={item}
-        onPress={() => setSelectedId(item.id)}
-        style={{backgroundColor}}
-      />
-    );
-  };
-
   return (
     <View style={styles.tabContainer}>
-      <View>
         <View style={styles.detailTitle}>
           <Text style={styles.itemsTitle}>items</Text>
           <View style={styles.jumlahTitleContainer}>
@@ -47,17 +32,26 @@ const OrderDetail = () => {
           </View>
         </View>
         <View style={styles.lineItem} />
-        <FlatList
-          data={DATA}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-          extraData={selectedId}
-        />
-        <View style={styles.ongkirContainer}>
-          <Text style={styles.itemName}>Ongkos Kirim</Text>
-          <Text style={styles.itemPrice}>Rp 15.000</Text>
-        </View>
-      </View>
+      
+        <ScrollView showsVerticalScrollIndicator={false}>
+          {checkout.map((item, idx) => {
+            const backgroundColor = item.id === selectedId ? '#6e3b6e' : '#f9c2ff';
+              return(
+                <Item
+                key= {idx}
+                status={orderFromDetail}
+                item={item}
+                onPress={() => setSelectedId(item.id)}
+                style={{backgroundColor}}
+              />
+              )
+          })}
+          <View style={styles.ongkirContainer}>
+            <Text style={styles.itemName}>Ongkos Kirim</Text>
+            <Text style={styles.itemPrice}>Rp 15.000</Text>
+          </View>
+        </ScrollView>  
+
     </View>
   );
 };
@@ -68,8 +62,8 @@ const styles = StyleSheet.create({
   tabContainer: {
     flex: 1,
     backgroundColor: colors.white,
-    paddingVertical: 22,
-    paddingBottom: 28
+    paddingTop: 20,
+    paddingBottom: 8,
   },
   detailTitle: {
     flexDirection: 'row',
@@ -119,5 +113,6 @@ const styles = StyleSheet.create({
   ongkirContainer: {
     flexDirection: 'row',
     marginVertical: 16,
+    
   },
 });

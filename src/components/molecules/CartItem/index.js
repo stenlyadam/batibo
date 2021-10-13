@@ -4,7 +4,7 @@ import {colors} from '../../../utils';
 import Counter from '../Counter';
 import {CheckBox} from '../../atoms';
 
-const CartItem = ({image, name, weight, originalPrice, currentPrice, id, productId, count}) => {
+const CartItem = ({image, name, weight, originalPrice, currentPrice, id, productId, count, checkout, orderFromDetail, detail}) => {
   return (
     <View style={styles.container}>
       <View style={styles.productImageContainer}>
@@ -19,7 +19,7 @@ const CartItem = ({image, name, weight, originalPrice, currentPrice, id, product
         </View>
       </View>
       <View style={styles.counterContainer}>
-        <Counter itemCount={count} itemId={id} productId={productId} itemPrice={currentPrice}/>
+        <Counter itemCount={count} itemId={id} productId={productId} itemPrice={currentPrice} checkout={checkout} orderFromDetail={orderFromDetail} detail={detail}/>
       </View>
     </View>
   );

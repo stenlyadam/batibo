@@ -29,7 +29,7 @@ const Cart = ({navigation}) => {
   },[cart])
 
   const chooseCheckOut = () => {
-    if(cart.length > 1){
+    if(cart.length >= 1){
       const checkoutFromDetail = false;
 
       dispatch({type: 'SET_CHECKOUT', value: listCart});

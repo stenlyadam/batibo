@@ -1,14 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {SafeAreaView, StyleSheet, View} from 'react-native';
 import {PageTitle} from '../../components';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {colors, fonts} from '../../utils';
 import OnProcess from './OnProcess';
 import History from './History';
+import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
+import { getOnProcess, getOrders, getHistory, setLoading } from '../../redux/action';
 
 const Tab = createMaterialTopTabNavigator();
 
 const Order = ({navigation}) => {
+
   return (
     <SafeAreaView style={styles.page}>
       <PageTitle title="Order Saya" onBack={() => navigation.goBack()} />
