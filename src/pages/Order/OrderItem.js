@@ -13,7 +13,17 @@ const OrderItem = ({navigation, status, deliveryDate, press, id, image, price, f
   const [statusOrder, setStatusOrder] = useState(status);
   const [colorStatus, setColorStatus] = useState('#FFEEDE');
 
-  const formatedDate = new Date(deliveryDate).toDateString();
+  var a = new Date(deliveryDate * 1000);
+  var months = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+  var year = a.getFullYear();
+  var month = months[a.getMonth()];
+  var date = a.getDate();
+  var hour = a.getHours();
+  var min = a.getMinutes();
+  var sec = a.getSeconds();
+  var formatedDate = date + ' ' + month + ' ' + year;
+
+  console.log("format Date: ", formatedDate);
 
   useEffect(() => {
     if(status == 'PENDING'){
