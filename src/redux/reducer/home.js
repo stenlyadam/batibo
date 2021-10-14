@@ -2,6 +2,7 @@ const initHome = {
         product: [],
         inCategory: [],
         onDiscount: [],
+        onSearch: [],
     };
 
 export const homeReducer = (state = initHome, action) => {
@@ -23,6 +24,12 @@ export const homeReducer = (state = initHome, action) => {
         return {
             ...state,
             onDiscount: action.value,
+        };
+    }
+    if (action.type === 'SET_ONSEARCH') {
+        return {
+            ...state,
+            onSearch: action.value,
         };
     }
 

@@ -18,9 +18,6 @@ const OrderItem = ({navigation, status, deliveryDate, press, id, image, price, f
   var year = a.getFullYear();
   var month = months[a.getMonth()];
   var date = a.getDate();
-  var hour = a.getHours();
-  var min = a.getMinutes();
-  var sec = a.getSeconds();
   var formatedDate = date + ' ' + month + ' ' + year;
 
   console.log("format Date: ", formatedDate);
@@ -47,10 +44,11 @@ const OrderItem = ({navigation, status, deliveryDate, press, id, image, price, f
     }
 
     setListOrder([]);
+    console.log("ORDER ID: ", id)
     order.map(item => {
       if(id == item.transaction_id){
         const data = item;
-        setListOrder(listOrder => [...listOrder, data])
+        setListOrder([...listOrder, data])
       }
     })
     // setTimeout(() => console.log('list order : ', listOrder), 2000);

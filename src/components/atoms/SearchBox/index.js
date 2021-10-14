@@ -1,17 +1,27 @@
-import React from 'react';
-import {StyleSheet, TextInput, View} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import {StyleSheet, TextInput, View, TouchableOpacity} from 'react-native';
 import {IconSearch} from '../../../assets';
 import {colors} from '../../../utils';
+import {useDispatch , useSelector} from 'react-redux';
+import {getProductDataSearch } from '../../../redux/action';
 
-const SearchBox = ({label}) => {
+const SearchBox = ({label, navigation}) => {
+  const dispatch = useDispatch()
+  const [searchValue, setSearchValue] = useState();
+  
+
   return (
     <View style={styles.container}>
       <TextInput
         style={styles.text}
         placeholder={label}
         placeholderTextColor={styles.text.color}
+        onChangeText={e => setSearchValue(e)}
+        onSubmitEditing={() => dispatch(getProductDataSearch(searchValue, navigation))}
       />
-      <IconSearch />
+      <TouchableOpacity onPress={() => dispatch(getProductDataSearch(searchValue, navigation))}>
+        <IconSearch />
+      </TouchableOpacity>
     </View>
   );
 };

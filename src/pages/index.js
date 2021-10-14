@@ -20,6 +20,7 @@ import EditAddress from './EditAddress'
 import Page from './OnBoarding/Page';
 import OrderItem from './Order/OrderItem';
 import OrderSummary from './OrderSummary';
+import Search from './Search';
 
 export {
   Splash,
@@ -43,5 +44,6 @@ export {
   EditAddress,
   Page,
   OrderItem,
-  OrderSummary
+  OrderSummary,
+  Search
 };

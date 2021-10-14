@@ -21,6 +21,7 @@ import {
   AddAddress,
   EditAddress,
   OrderSummary,
+  Search,
 } from '../pages';
 import Page from '../pages/OnBoarding/Page';
 import OrderItem from '../pages/Order/OrderItem';
@@ -210,6 +211,11 @@ const Router = () => {
       <Stack.Screen
         name="OrderSummary"
         component={OrderSummary}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Search"
+        component={Search}
         options={{headerShown: false}}
       />
       <Stack.Screen

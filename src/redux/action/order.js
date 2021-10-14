@@ -10,7 +10,7 @@ export const getOrders = (token) => (dispatch) => {
             }
         })
         .then(res => {
-            console.log('get orders: ', res.data);
+            console.log('get orders: ', res.data.data.data);
             dispatch({type: 'SET_ORDER', value: res.data.data.data})
         })
         .catch(err => {

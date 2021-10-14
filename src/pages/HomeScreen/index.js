@@ -35,7 +35,7 @@ const HomeScreen = ({navigation}) => {
         <Text style={styles.welcomeText}>Halo {userProfile.name}</Text>
         <Text style={styles.welcomeText}>Pilih Sayuran-mu disini</Text>
         <Gap height={5} />
-        <SearchBox label="Cari yang kamu butuhkan" />
+        <SearchBox label="Cari yang kamu butuhkan" navigation={navigation}/>
         {/* <Gap height={32} /> */}
         <Carousel />
       </View>

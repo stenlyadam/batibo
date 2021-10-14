@@ -45,3 +45,14 @@ export const getProductDataByCategory = (category, navigation) => (dispatch) => 
       );
     });
 };
+
+export const getProductDataSearch = (search, navigation) => (dispatch) => {
+  axios.get(`${API_HOST.url}/product?name=${search}`)
+    .then((res) => {
+      dispatch({type: 'SET_ONSEARCH', value: res.data.data.data});
+      navigation.navigate('Search');
+    })
+    .catch((err) => {
+      console.log('response error : ', err.response);
+    });
+};
