@@ -6,6 +6,7 @@ import HomeScreen from './HomeScreen';
 import InCategory from './InCategory';
 import Cart from './Cart';
 import Checkout from './Checkout';
+import CheckoutAddress from './CheckoutAddress';
 import OrderSuccess from './OrderSuccess';
 import Order from './Order';
 import OnBoarding from './OnBoarding';
@@ -31,6 +32,7 @@ export {
   InCategory,
   Cart,
   Checkout,
+  CheckoutAddress,
   OrderSuccess,
   Order,
   OnBoarding,

@@ -4,10 +4,19 @@ import { Carousel, Gap, ProductSearch, SearchBox, Button, CartItem } from '../..
 import { colors, fonts, getData, storeData } from '../../utils';
 import {useDispatch , useSelector} from 'react-redux';
 import {showMessage} from 'react-native-flash-message';
+import {  addCartAction } from '../../redux/action';
 
 const Search = ({navigation}) => {
 
   const {onSearch} = useSelector(state => state.homeReducer);
+  const dispatch = useDispatch();
+  const {user} = useSelector(state => state.loginReducer);
+  const {token} = useSelector(state => state.loginReducer);
+  const {cart} = useSelector(state => state.loginReducer);
+
+  const pushCart = (toCart) => {
+    dispatch(addCartAction(user, token, cart, toCart));
+  }
   
   return (
     <SafeAreaView style={styles.page}>
@@ -20,20 +29,24 @@ const Search = ({navigation}) => {
         </View>
             <View style={styles.productContainer}>
               {onSearch.map(item => {
-                return (
-                  <ProductSearch
-                    key={item.id}
-                    name={item.name}
-                    image={{ uri: item.picturePath }}
-                    category={item.category}
-                    Price={item.price}
-                    PriceAfterDiscount={item.price_after_discount}
-                    productUnit={item.product_unit}
-                    discount={item.discount}
-                    onBuy={() => pushCart(item)}
-                    onDetail={() => navigation.navigate('Detail', item)}
-                  /> 
-                )
+                if(item){
+                  return (
+                    <ProductSearch
+                      key={item.id}
+                      name={item.name}
+                      image={{ uri: item.picturePath }}
+                      category={item.category}
+                      Price={item.price}
+                      PriceAfterDiscount={item.price_after_discount}
+                      productUnit={item.product_unit}
+                      discount={item.discount}
+                      onBuy={() => pushCart(item)}
+                      onDetail={() => navigation.navigate('Detail', item)}
+                    /> 
+                    )
+                } else {
+                  <Text>Test</Text>
+                }
               })}
             </View>
       </ScrollView>

@@ -1,12 +1,14 @@
 import { Picker } from '@react-native-community/picker';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Alert, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, SafeAreaView, ScrollView, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { color } from 'react-native-reanimated';
 import { useDispatch, useSelector } from "react-redux";
-import { Button, CartItem, PageTitle } from '../../components';
+import { Button, CartItem, PageTitle, Gap } from '../../components';
 import { API_HOST } from '../../config';
 import { setLoading } from '../../redux/action/global';
 import { colors, fonts, showMessage } from '../../utils';
+import { getCheckoutAddress } from '../../redux/action';
 
 const Checkout = ({navigation}) => {
 
@@ -16,10 +18,10 @@ const Checkout = ({navigation}) => {
   const {token} = useSelector(state => state.loginReducer);
   const {checkout} = useSelector(state => state.loginReducer);
   const {orderFromDetail} = useSelector(state => state.orderReducer);
+  const {selectedAddress} = useSelector(state => state.orderReducer);
   const [deliveryCost] = useState(15000);
   const [listCheckout, setListCart] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
-  const [selectedValue, setSelectedValue] = useState('Alamat Rumah');
 
   useEffect(() => {
     if (orderFromDetail){
@@ -105,21 +107,31 @@ const Checkout = ({navigation}) => {
           <View style={styles.pageContainer}>
             <View style={styles.deliveryContainer}>
               <Text style={styles.deliver}>Pengiriman</Text>
-              <Text style={styles.subTitle}>Alamat Pengiriman</Text>
-              <View style={styles.pickerContainer}>
-                <Picker
-                  selectedValue={selectedValue}
-                  style={[styles.picker]}
-                  onValueChange={(itemValue, itemIndex) =>
-                    setSelectedValue(itemValue)
-                  }>
-                  <Picker.Item label="Alamat Rumah" value="Alamat Rumah" />
-                  <Picker.Item label="Kantor" value="Kantor" />
-                </Picker>
-                <Button type="icon-only" icon="icon-arrow-right" borderRadius={4}/>
+              <View style={styles.deliverySubContainer}>
+                <Text style={styles.subTitle}>Alamat Pengiriman</Text>
+                <TouchableOpacity onPress={() => dispatch(getCheckoutAddress(token, navigation))}>
+                  <Text style={styles.selectAddress}>Pilih Alamat Lain</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.mainAddress}>
+                {selectedAddress
+                  ?
+                    <View>
+                      <Text style={styles.addressTitle}>{selectedAddress.kategori}</Text>
+                      <Text style={styles.addressDetail}>{user.name} ({user.phone_number})</Text>
+                      <Text style={styles.addressDetail}>{selectedAddress.provinsi} / {selectedAddress.kota_kabupaten} / {selectedAddress.kecamatan} / {selectedAddress.kelurahan}</Text>
+                      <Text style={styles.addressDetail}>{selectedAddress.detail_alamat}</Text>
+                    </View>
+                  :
+                    <View>
+                      <Text style={styles.addressTitle}>Select Address</Text>
+                    </View>
+                  }
+                <View style={styles.borderView}/>
               </View>
             </View>
             <View>
+              <Gap height={10}/>
               <View style={styles.deliverContainer}>
                 <Text style={styles.deliver}>Pesanan</Text>
                 {
@@ -159,6 +171,7 @@ const Checkout = ({navigation}) => {
                 }
 
               </View>
+              <Gap height={10}/>
               <View style={styles.deliverContainer}>
                 <Text style={styles.deliver}>Pembayaran</Text>
                 <Text style={styles.subTitle}>Ringkasan Pembayaran</Text>
@@ -207,11 +220,18 @@ const styles = StyleSheet.create({
   },
   deliveryContainer: {
     paddingHorizontal: 24,
-    paddingBottom: 8,
+  },
+  deliverySubContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between"
+  },
+  borderView: {
+    borderBottomColor: colors.border,
+    borderBottomWidth: 2,
+    marginTop: 10,
   },
   deliver: {
     fontFamily: fonts.nunito.semibold,
-    marginTop: 16,
     fontWeight: 'bold',
     fontSize: 18,
     color: colors.text.quartenary,
@@ -222,6 +242,15 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     fontSize: 16,
     color: 'rgba(0,0,0,0.7)',
+  },
+  selectAddress: {
+    fontFamily: fonts.nunito.bold,
+    marginVertical: 12,
+    fontWeight: '600',
+    fontSize: 16,
+    color: colors.button.green,
+  },
+  mainAddress: {
   },
   pickerContainer: {
     backgroundColor: colors.lightGrey,
@@ -265,6 +294,16 @@ const styles = StyleSheet.create({
     fontFamily: fonts.nunito.semibold,
     fontSize: 16,
     opacity: 0.5,
+  },
+  addressTitle: {
+    fontFamily: fonts.nunito.bold,
+    fontSize: 16,
+    opacity: 1,
+  },
+  addressDetail: {
+    fontFamily: fonts.nunito.normal,
+    fontSize: 14,
+    opacity: 0.6,
   },
   paymentButton: {
     marginHorizontal: 24,

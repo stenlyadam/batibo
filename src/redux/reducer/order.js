@@ -4,6 +4,8 @@ const initOrder = {
     order: [],
     onProcess: [],
     history: [],
+    checkoutAddress: [],
+    selectedAdress: [],
 };
 
 export const orderReducer = (state = initOrder, action) => {
@@ -39,6 +41,20 @@ export const orderReducer = (state = initOrder, action) => {
         return {
             ...state,
             history: action.value,
+            
+        }   
+    }
+    if (action.type === 'SET_CHECKOUTADDRESS'){
+        return {
+            ...state,
+            checkoutAddress: action.value,
+            
+        }   
+    }
+    if (action.type === 'SET_SELECTEDADDRESS'){
+        return {
+            ...state,
+            selectedAddress: action.value,
             
         }   
     }

@@ -1,3 +1,4 @@
+import AddressCheckout from './AddressCheckout';
 import Product from './Product';
 import ProductSearch from './ProductSearch';
 import PageTitle from './PageTitle';
@@ -10,6 +11,7 @@ import OrderItem from '../../pages/Order/OrderItem';
 import Loading from './Loading';
 
 export {
+  AddressCheckout,
   Product,
   ProductSearch,
   PageTitle,

@@ -3,6 +3,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {
   Cart,
   Checkout,
+  CheckoutAddress,
   HomeScreen,
   InCategory,
   Login,
@@ -126,6 +127,11 @@ const Router = () => {
       <Stack.Screen
         name="Checkout"
         component={Checkout}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="CheckoutAddress"
+        component={CheckoutAddress}
         options={{headerShown: false}}
       />
       <Stack.Screen
