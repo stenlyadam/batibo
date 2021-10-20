@@ -190,7 +190,7 @@ const Payment = ({navigation}) => {
           <View style={styles.orderIdContainer}>
             <Text style={styles.idPesananText}>ID Pesanan</Text>
             <View style={styles.idContainer}>
-              <Text style={styles.idText}>{orderTemp.id}</Text>
+              <Text style={styles.idText}>{orderTemp.uid}</Text>
             </View>
           </View>
         </View>

@@ -1,6 +1,6 @@
 import axios from "axios"
 import { API_HOST } from "../../config"
-import { getData } from "../../utils"
+import { getData, showMessage } from "../../utils"
 
 export const getOrders = (token) => (dispatch) => {
 
@@ -18,9 +18,6 @@ export const getOrders = (token) => (dispatch) => {
         })
     
 }
-
-//70012
-//37597477064
 
 export const getOnProcess = (token) => (dispatch) => {
         axios.all([
@@ -98,16 +95,16 @@ export const getCheckoutAddress = (token, navigation) => (dispatch) => {
             'Authorization' : token
         }
     })
-      .then((res) => {
-        dispatch({type: 'SET_CHECKOUTADDRESS', value: res.data.data.data});
+    .then((res) => {
+        dispatch({type: 'SET_CHECKOUT_ADDRESS', value: res.data.data.data});
         navigation.navigate('CheckoutAddress');
-      })
-      .catch((err) => {
+    })
+    .catch((err) => {
+        showMessage(`Error :${err.response.data.message}`);
         console.log('response error : ', err.response);
-      });
-  };
+    });
+};
 
-  export const setSelectedAddress = (item, navigation) => (dispatch) => {
-    dispatch({type: 'SET_SELECTEDADDRESS', value: item});
-    navigation.navigate('Checkout');
-  };
+export const setSelectedAddress = (item, navigation) => (dispatch) => {
+    dispatch({type: 'SET_SELECTED_ADDRESS', value: item});
+};

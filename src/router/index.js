@@ -23,6 +23,7 @@ import {
   EditAddress,
   OrderSummary,
   Search,
+  Midtrans,
 } from '../pages';
 import Page from '../pages/OnBoarding/Page';
 import OrderItem from '../pages/Order/OrderItem';
@@ -225,6 +226,11 @@ const Router = () => {
         options={{headerShown: false}}
       />
       <Stack.Screen
+        name="Midtrans"
+        component={Midtrans}
+        options={{headerShown: false}}
+      />
+        <Stack.Screen
         name="MainApp"
         component={MainApp}
         options={{headerShown: false}}

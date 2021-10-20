@@ -49,7 +49,7 @@ const CheckoutAddress = ({navigation}) => {
                     kelurahan={item.kelurahan}
                     detail_alamat={item.detail_alamat}
                     navigation={navigation}
-                    onPress={() => dispatch(setSelectedAddress(item, navigation))}
+                    onPress={() => (dispatch(setSelectedAddress(item, navigation)), navigation.navigate('Checkout'))}
                   />
                 )
               })

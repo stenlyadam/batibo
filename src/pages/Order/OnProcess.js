@@ -19,6 +19,7 @@ const OnProcess = ({navigation}) => {
   useEffect(() => {
     dispatch(getOrders(token));
     dispatch(getOnProcess(token));
+
       onProcess.map(item => {
         if(item.isOrder == 'false') {
           dispatch(setLoading(true));
@@ -52,6 +53,7 @@ const OnProcess = ({navigation}) => {
             console.log('i saat dicek dengan transaction id : ', i);
             return(
               <OrderItem
+              uid={item.uid}
               key={item.id}
               id={item.id}
               price={item.total}

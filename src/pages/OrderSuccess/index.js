@@ -34,7 +34,7 @@ const OrderSuccess = ({navigation, route}) => {
             <Text style={styles.totalAmount}>Rp. {orderTemp.total}</Text>
             <Gap height={12} />
             <Text style={styles.orderNumber}>
-              No. Order : {orderTemp.id}
+              No. Order : {orderTemp.uid}
             </Text>
           </View>
         </View>

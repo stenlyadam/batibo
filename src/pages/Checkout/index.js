@@ -8,7 +8,7 @@ import { Button, CartItem, PageTitle, Gap } from '../../components';
 import { API_HOST } from '../../config';
 import { setLoading } from '../../redux/action/global';
 import { colors, fonts, showMessage } from '../../utils';
-import { getCheckoutAddress } from '../../redux/action';
+import { getCheckoutAddress, setSelectedAddress } from '../../redux/action';
 
 const Checkout = ({navigation}) => {
 
@@ -24,9 +24,14 @@ const Checkout = ({navigation}) => {
   const [totalPrice, setTotalPrice] = useState(0);
 
   useEffect(() => {
+    //set selected address to null value 
+    dispatch(setSelectedAddress(null));
+
+    //order berasal dari detail - jika ya
     if (orderFromDetail){
       setTotalPrice(checkout[0].price_after_discount * checkout[0].quantity);
     }
+    //order berasal dari detail - jika tidak
     else{
       setListCart([]);
       let tempPrice = 0;
@@ -45,9 +50,12 @@ const Checkout = ({navigation}) => {
   }, [checkout])
 
   const onCheckout = () => {
+    if(selectedAddress){
+         //jika order dari detail
     if(orderFromDetail){
       checkoutMidtrans();
     }
+    //jika order bukan dari detail
     else{
       Alert.alert(
         "Konfirmasi",
@@ -62,12 +70,19 @@ const Checkout = ({navigation}) => {
         ]
       );
     }
+    }
+    else{
+      showMessage('Anda belum memilih alamat pengiriman');
+    }
   }
 
   const checkoutMidtrans = () => {
+    console.log('somo midtrans :', selectedAddress);
     dispatch(setLoading(true));
     const data = {
+      uid : Date.now(),
       user_id : user.id,
+      address_id: selectedAddress.id,
       total : totalPrice + deliveryCost,
       status: 'PENDING'
     };
@@ -79,6 +94,7 @@ const Checkout = ({navigation}) => {
     .then(res => {
       const orderTemp = {
         id : res.data.data.id,
+        uid : res.data.data.uid,
         total : res.data.data.total,
         paymentURL : res.data.data.payment_url
       }
@@ -102,7 +118,6 @@ const Checkout = ({navigation}) => {
           onBack={() => navigation.goBack()}
         />
         </View>
-        
         <ScrollView>
           <View style={styles.pageContainer}>
             <View style={styles.deliveryContainer}>
@@ -110,28 +125,28 @@ const Checkout = ({navigation}) => {
               <View style={styles.deliverySubContainer}>
                 <Text style={styles.subTitle}>Alamat Pengiriman</Text>
                 <TouchableOpacity onPress={() => dispatch(getCheckoutAddress(token, navigation))}>
-                  <Text style={styles.selectAddress}>Pilih Alamat Lain</Text>
+                  {selectedAddress ? <Text style={styles.selectAddress}>Pilih Alamat Lain</Text> : <Text style={styles.selectAddress}>Pilih Alamat</Text> }
                 </TouchableOpacity>
               </View>
               <View style={styles.mainAddress}>
                 {selectedAddress
                   ?
                     <View>
-                      <Text style={styles.addressTitle}>{selectedAddress.kategori}</Text>
+                      <Text style={styles.addressTitle(selectedAddress)}>{selectedAddress.kategori}</Text>
                       <Text style={styles.addressDetail}>{user.name} ({user.phone_number})</Text>
                       <Text style={styles.addressDetail}>{selectedAddress.provinsi} / {selectedAddress.kota_kabupaten} / {selectedAddress.kecamatan} / {selectedAddress.kelurahan}</Text>
                       <Text style={styles.addressDetail}>{selectedAddress.detail_alamat}</Text>
                     </View>
                   :
                     <View>
-                      <Text style={styles.addressTitle}>Select Address</Text>
+                      <Text style={styles.addressTitle()}>No Selected Address</Text>
                     </View>
                   }
                 <View style={styles.borderView}/>
               </View>
             </View>
             <View>
-              <Gap height={10}/>
+              <Gap height={15}/>
               <View style={styles.deliverContainer}>
                 <Text style={styles.deliver}>Pesanan</Text>
                 {
@@ -171,7 +186,7 @@ const Checkout = ({navigation}) => {
                 }
 
               </View>
-              <Gap height={10}/>
+              <Gap height={15}/>
               <View style={styles.deliverContainer}>
                 <Text style={styles.deliver}>Pembayaran</Text>
                 <Text style={styles.subTitle}>Ringkasan Pembayaran</Text>
@@ -295,11 +310,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     opacity: 0.5,
   },
-  addressTitle: {
+  addressTitle: (selectedAddress) => ({
     fontFamily: fonts.nunito.bold,
     fontSize: 16,
     opacity: 1,
-  },
+    color: selectedAddress ? colors.black : colors.error,
+  }),
   addressDetail: {
     fontFamily: fonts.nunito.normal,
     fontSize: 14,

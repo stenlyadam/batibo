@@ -25,7 +25,7 @@ const Search = ({navigation}) => {
             <Text style={styles.welcomeText}> </Text>
             <Text style={styles.welcomeText}>Cari yang kamu butuhkan</Text>
             <Gap height={5} />
-            <SearchBox label="Search" onPress={()=>{}} onChange={(e) => handleSearch(e)}/>
+            <SearchBox label="Search" onChange={(e) => handleSearch(e)}/>
         </View>
             <View style={styles.productContainer}>
               {onSearch.map(item => {
@@ -65,8 +65,7 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: colors.button.green,
     paddingHorizontal: 24,
-    paddingTop: 25,
-    paddingBottom: 40,
+    paddingBottom: 25,
     
   },
   backButtonContainer: {

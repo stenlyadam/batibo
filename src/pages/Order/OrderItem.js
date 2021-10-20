@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { Button, Gap } from '../../components';
 import { colors, fonts } from '../../utils';
 
-const OrderItem = ({navigation, status, deliveryDate, press, id, image, price, firstItemPrice, firstItemUnit, title}) => {
+const OrderItem = ({navigation, status, deliveryDate, press, id, image, price, firstItemPrice, firstItemUnit, title, uid}) => {
 
   const {order} = useSelector(state => state.orderReducer);
   const [listOrder, setListOrder] = useState([]);
@@ -13,14 +13,7 @@ const OrderItem = ({navigation, status, deliveryDate, press, id, image, price, f
   const [statusOrder, setStatusOrder] = useState(status);
   const [colorStatus, setColorStatus] = useState('#FFEEDE');
 
-  var a = new Date(deliveryDate * 1000);
-  var months = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
-  var year = a.getFullYear();
-  var month = months[a.getMonth()];
-  var date = a.getDate();
-  var formatedDate = date + ' ' + month + ' ' + year;
-
-  console.log("format Date: ", formatedDate);
+  const formatedDate = new Date(deliveryDate).toDateString();
 
   useEffect(() => {
     if(status == 'PENDING'){
@@ -44,11 +37,10 @@ const OrderItem = ({navigation, status, deliveryDate, press, id, image, price, f
     }
 
     setListOrder([]);
-    console.log("ORDER ID: ", id)
     order.map(item => {
       if(id == item.transaction_id){
         const data = item;
-        setListOrder([...listOrder, data])
+        setListOrder(listOrder => [...listOrder, data])
       }
     })
     // setTimeout(() => console.log('list order : ', listOrder), 2000);
@@ -78,7 +70,7 @@ const OrderItem = ({navigation, status, deliveryDate, press, id, image, price, f
           </View>
           <View>
             <Text style={styles.subTitleText}>ID Pesanan</Text>
-            <Text style={styles.orderNumber}>{id}</Text>
+            <Text style={styles.orderNumber}>{uid}</Text>
           </View>
         </View>
         <TouchableOpacity onPress = {press}>  

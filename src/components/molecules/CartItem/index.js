@@ -45,6 +45,7 @@ const styles = StyleSheet.create({
   productName: {
     fontWeight: '700',
     fontSize: 16,
+    width: 115,
   },
   productWeight: {
     fontWeight: '400',

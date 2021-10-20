@@ -6,6 +6,7 @@ import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs
 import {colors, fonts} from '../../utils';
 import OrderDetail from '../Payment/OrderDetail';
 import DeliveryDetail from '../Payment/DeliveryDetail';
+import WebView from 'react-native-webview';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -46,8 +47,10 @@ const OrderSummary = ({navigation, route}) => {
 
     useEffect(() => {
         dispatch({type: 'SET_CHECKOUT', value: listOrder})
+        dispatch({type: 'SET_SELECTED_ADDRESS', value: transaction.address})
     },[checkout])
 
+    console.log('checkout kut', transaction);
     return (
         <SafeAreaView style={styles.container}>
         <PageTitle title="Ringkasan Pesanan" onBack={() => navigation.goBack()} />
@@ -65,7 +68,7 @@ const OrderSummary = ({navigation, route}) => {
             <View style={styles.orderIdContainer}>
             <Text style={styles.idPesananText}>ID Pesanan</Text>
             <View style={styles.idContainer}>
-                <Text style={styles.idText}>{transaction.id}</Text>
+                <Text style={styles.idText}>{transaction.uid}</Text>
             </View>
             </View>
             <View style={styles.orderIdContainer}>
@@ -102,11 +105,20 @@ const OrderSummary = ({navigation, route}) => {
             </Tab.Navigator>
         </View>
         <View style={styles.bottomWrapper}>
+            {status == 'PENDING' 
+            ? 
             <View style={styles.nextContainer}>
-            <View style={styles.next}>
-                <Button title="Lakukan Pembayaran" borderRadius={4} onPress={() => console.log('lakukan pembayaran')}/>
+                <View style={styles.next}>
+                    <Button 
+                        title="Lakukan Pembayaran" 
+                        borderRadius={4} 
+                        onPress={() => navigation.navigate('Midtrans', transaction.payment_url)}
+                    /> 
+                </View>
             </View>
-            </View>
+            : 
+            console.log('sudah dibayar / masa berlaku pembayaran sudah habis')
+            }
         </View>
         </SafeAreaView>
     );

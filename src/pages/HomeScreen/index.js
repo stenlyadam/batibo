@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView, ScrollView, StyleSheet, Text, View, TouchableOpacity , RefreshControl} from 'react-native';
 import { Carousel, Gap, Product, SearchBox, Button, CartItem } from '../../components';
 import Category from '../../components/molecules/Category';
 import { API_HOST, firebase } from '../../config';
@@ -10,6 +10,7 @@ import { getProductData, getProductDataByCategory, addCartAction } from '../../r
 
 const HomeScreen = ({navigation}) => {
 
+  const [refreshing, setRefreshing] = React.useState(false);
   const [userProfile, setUserProfile] = useState({});
   const dispatch = useDispatch();
   const {user} = useSelector(state => state.loginReducer);
@@ -28,14 +29,31 @@ const HomeScreen = ({navigation}) => {
     dispatch(addCartAction(user, token, cart, toCart));
   }
 
+  const wait = (timeout) => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+  }
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    wait(1000).then(() => setRefreshing(false));
+  }, []);
+
   return (
     <SafeAreaView style={styles.page}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView 
+      showsVerticalScrollIndicator={false}
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+        />
+      }
+      >
       <View style={styles.headerContainer}>
         <Text style={styles.welcomeText}>Halo {userProfile.name}</Text>
         <Text style={styles.welcomeText}>Pilih Sayuran-mu disini</Text>
         <Gap height={5} />
-        <SearchBox label="Cari yang kamu butuhkan" navigation={navigation}/>
+        <SearchBox label="Cari yang kamu butuhkan" navigation={navigation} homescreen/>
         {/* <Gap height={32} /> */}
         <Carousel />
       </View>

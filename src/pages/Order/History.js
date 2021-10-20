@@ -52,6 +52,7 @@ const OnProcess = ({navigation, status}) => {
           console.log('i saat dicek dengan transaction id : ', i);
           return(
             <OrderItem
+            uid={item.uid}
             key={item.id}
             id={item.id}
             price={item.total}

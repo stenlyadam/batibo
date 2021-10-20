@@ -22,6 +22,7 @@ import Page from './OnBoarding/Page';
 import OrderItem from './Order/OrderItem';
 import OrderSummary from './OrderSummary';
 import Search from './Search';
+import Midtrans from './Midtrans';
 
 export {
   Splash,
@@ -47,5 +48,6 @@ export {
   Page,
   OrderItem,
   OrderSummary,
-  Search
+  Search,
+  Midtrans
 };

@@ -9,8 +9,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {Button, Gap} from '../../../components';
-import {useNavigation} from '@react-navigation/native';
-import { color } from 'react-native-reanimated';
+import { colors } from '../../../utils';
 
 const {width} = Dimensions.get('window');
 
@@ -42,12 +41,12 @@ const ProductSearch = ({
         <Text style={styles.originalPriceStyle}>Rp{Price.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</Text>
         <View style={styles.productPrice}>
           {/* <Text style={styles.sellPrice}>Rp{(Price - (Price*(discount/100))).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</Text> */}
-          <Text style={styles.sellPrice}>Rp{PriceAfterDiscount.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</Text>
+          <Text style={styles.sellPrice}>Rp{PriceAfterDiscount.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")} </Text>
           <Text style={styles.productUnit}>/ {productUnit}</Text>
         </View>
       </View>
       <View style={styles.buyButtonContainer}>
-        <Button title="Beli" size={16} height={8} space={60} onPress={onBuy} borderRadius={4} style={styles.buyButton}/>
+        <Button title="Beli" size={14} height={15} space={50} onPress={onBuy} borderRadius={4} style={styles.buyButton}/>
       </View>
     </View>
   );
@@ -65,6 +64,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     marginVertical: 12,
     flexDirection: "row",
+    alignContent:"space-between",
   },
   imageContainer: {
     padding: 8,
@@ -94,32 +94,30 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   productDetails: {
+    width: 115,
+    maxWidth: 115,
     marginHorizontal: 8,
-    marginLeft: 25,
-    marginTop: 5,
+    marginLeft: 20,
     justifyContent: "center",
   },
   buyButtonContainer: { 
-    marginHorizontal: 8,
-    marginLeft: 20,
-    marginTop: 5,
+    marginHorizontal: 4,
+    // marginLeft: 20,
+    marginVertical: 5,
     justifyContent: "center",
-  },
-  buyButton: {
-    padding: 10,
-    marginLeft: 20,
   },
   productName: {
     fontSize: 14,
     marginTop: 4,
   },
   category: {
-    fontSize: 11,
+    fontSize: 10,
     color: '#49494959',
-    marginBottom: 0,
+    marginTop: -2,
   },
   originalPriceStyle: {
-    fontSize: 8,
+    marginTop: 4,
+    fontSize: 10,
     color: '#00000093',
     textDecorationLine: 'line-through',
   },
@@ -130,9 +128,9 @@ const styles = StyleSheet.create({
   sellPrice: {
     fontSize: 12,
     color: '#FF7D1F',
-    marginRight: 6,
   },
   productUnit: {
+    color: colors.grey,
     fontSize: 12,
   },
 });
