@@ -40,7 +40,13 @@ export const colors = {
     },
     secondary: {
       backgroundColor: listColors.white,
+      borderColor: listColors.orange1,
       text: listColors.orange1,
+    },
+    tertiary: {
+      backgroundColor: listColors.white,
+      borderColor: listColors.grey5,
+      text: listColors.grey5,
     },
     red: listColors.red1,
     green: listColors.green4,

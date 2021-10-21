@@ -7,6 +7,7 @@ import { colors, fonts, getData, showMessage, storeData } from '../../utils';
 import {useDispatch , useSelector} from 'react-redux';
 import axios from 'axios';
 import { getProductData, getProductDataByCategory, addCartAction } from '../../redux/action';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 const HomeScreen = ({navigation}) => {
 
@@ -89,8 +90,11 @@ const HomeScreen = ({navigation}) => {
             size={16} 
             height={10} 
             space={317} 
-            color={"secondary"}
+            buttonColor={colors.button.secondary.backgroundColor}
+            borderColor={colors.button.secondary.borderColor}
+            borderWidth={2}
             borderRadius={4}
+            textColor={colors.button.secondary.text}
             onPress={() => dispatch(getProductData(50, 'onDiscount', navigation))}
             />
         </View>

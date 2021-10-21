@@ -1,169 +1,81 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, View, Text, ScrollView} from 'react-native';
+import {StyleSheet, View, Text, ScrollView, Alert} from 'react-native';
 import {Button, Gap} from '../../components';
 import {colors, fonts, getData, storeData} from '../../utils';
 import AddressItem from './AddressItem';
-import { firebase } from '../../config';
+import { API_HOST, firebase } from '../../config';
 import {useDispatch , useSelector} from 'react-redux';
 import {showMessage} from 'react-native-flash-message';
+import axios from 'axios';
 
 const Address = ({navigation}) => {
 
-  const user = useSelector(state => state.user);
-  console.log('user selector address: ', user.address);
   const dispatch = useDispatch();
-
-  // const [form, setForm] = useState({
-  //   username: '',
-  //   email: '',
-  //   password: '',
-  //   uid: '',
-  //   address: [],
-  // },[]);
-
+  const {address} = useSelector(state => state.loginReducer);
+  const {token} = useSelector(state => state.loginReducer);
   const [listAddress, setListAddress] = useState([]);
-  const [totalAddress, setTotalAddress] = useState('');
 
-  // useEffect(() => {
-  //   getData('user').then(response => {
-  //     const data = response;
-  //     setForm(data);
-  //         });
-  //       }, []);
-        
   useEffect(() => {
-    setListAddress(user.address);
-    let tempAddress = 0;
-
-    listAddress.map(item => {
-      if(item != null && item.id != 0 ){
-        tempAddress = tempAddress + 1;
+    setListAddress([]);
+    address.map(item => {
+      if(item){
+        const data = item;
+        setListAddress(listAddress => [...listAddress, data])
       }
-      console.log('temp address length :', tempAddress);
     })
+  }, [address])
 
-    // userCart.map(item => {
-    //   //taru proses untuk mapping cart dari user(redux) untuk ditampilkan pada flat list menggantikan cart map dibawah  
-    //   if(item && item.id != 0){
-    //     console.log('user cart mapping : ', item);
-    //     const data = item;
-    //     data["count"] = item.count;
-    //     setListCart(listCart => [...listCart, data])
-    //   }
-    //   console.log('temp price : ', tempPrice);
-    //   tempPrice += (item.price * item.count);
-    // })
+  const onDelete = (addressId) => {
+    Alert.alert(
+      "Konfirmasi",
+      "Apakah anda menghapus alamat ini?.",
+      [
+        {
+          text: "Tidak",
+          onPress: () => console.log('hallo'),
+          style: "cancel"
+        },
+        { text: "Ya", onPress: () => deleteAddress(addressId) }
+      ]
+    );
+  }
 
-    setTotalAddress(user.address.length);
-    console.log('total address ', totalAddress);
-
-
-  },[user.address])
-  
-  const deleteAddress = (address) => {
-    // firebase.database()
-    // .ref(`users/${user.uid}/address/${item}/`)
-    // .remove()
-    // .then(() => {
-    //     firebase
-    //     .database()
-    //     .ref('users/' + user.uid)
-    //     .once('value')
-    //     .then(snapshot => {
-    //         dispatch({type: 'SAVE_USER', value:snapshot.val()})
-    //         const totalAlamat = listAddress.length - 1 ;
-    //         setTotalAddress(totalAlamat);
-    // })
-    // })
-    // .catch(error => {
-    //     showMessage({
-    //         message: error.message,
-    //         type: 'default',
-    //         backgroundColor: colors.error,
-    //         color: colors.white,
-    //     });
-    // });
-    // console.log('deleted data Address successfully');
-    // console.log('jumlah address: ', totalAddress);
-    
-
-    dispatch({type: 'SET_LOADING', value: true});
-    firebase.database()
-      .ref(`users/${user.uid}/address/${address}/`)
-      .remove()
-      .then(() => {
-      const updateAddress = user.address;
-
-      updateAddress.map(item => {
-        if(address < item.id){
-          const data = {
-            alamat: item.alamat,
-            id: item.id - 1,
-            kategori: item.kategori,
-            kecamatan: item.kecamatan,
-            kelurahan: item.kelurahan,
-            kota_kabupaten:item.kota_kabupaten,
-            provinsi: item.provinsi,
-          }
-          // console.log('helooooooouuu');
-          firebase.database()
-          .ref(`users/${user.uid}/address/`)
-          .child(data.id)
-          .update(data)
+  const deleteAddress = (addressId) => {
+    //delete address dalam database (addresses)
+    axios.delete(`${API_HOST.url}/address/${addressId}`, {
+      headers: {
+      'Accept' : 'application/json',
+      'Authorization' : token,
+      }
+    })
+    //delete data address dalam database (addresses) - jika berhasil
+    .then(resAddress => {
+    //ambil data address terbaru dari database
+    axios.get(`${API_HOST.url}/address`, {
+        headers: {
+        'Accept' : 'application/json',
+        'Authorization' : token,
         }
-          // .then(() => {
-                const deleteAddressAfterUpdate = user.address.length - 1;
-                console.log('product to delete after update : ', deleteAddressAfterUpdate)
-                
-                firebase.database()
-                .ref(`users/${user.uid}/address/${deleteAddressAfterUpdate}/`)
-                .remove()
-                .then(() => {
-
-                  firebase
-                  .database()
-                  .ref(`users/${user.uid}/`)
-                  .once('value')
-                  .then(snapshot => {
-                    dispatch({type: 'SET_LOADING', value: false});
-                    dispatch({type: 'SAVE_USER', value:snapshot.val()})
-                    const totalAlamat = listAddress.length - 1 ;
-                    setTotalAddress(totalAlamat);
-                    showMessage({
-                      message: "Alamat yang dipilih berhasil dihapus",
-                      type: 'default',
-                      backgroundColor: colors.primary,
-                      color: colors.white,
-                })
-              })
-            })
-            .catch(error => {
-              dispatch({type: 'SET_LOADING', value: false});
-              showMessage({
-                  message: error.message,
-                  type: 'default',
-                  backgroundColor: colors.error,
-                  color: colors.white,
-              });
-          });
-          setListAddress(user.address);
     })
-
-      })
-      .catch(error => {
-          showMessage({
-              message: error.message,
-              type: 'default',
-              backgroundColor: colors.error,
-              color: colors.white,
-          });
-      });
-    
+    //ambil data address terbaru dari database - jika berhasil
+    .then(resUpdateAddress => {
+        //simpan data ADDRESS user ke dalam data reducer
+        dispatch({type: 'SET_ADDRESS', value: resUpdateAddress.data.data.data});
+        
+    })
+    //ambil data address terbaru dari database - jika tidak berhasil
+    .catch(errUpdateAddress => {
+        showMessage('Terjadi kesalahan pada penambahan data');
+    })
+    })
+    //delete data address ke database (addresses) - jika tidak berhasil
+    .catch((errAddress) => {
+        showMessage('Terjadi kesalahan pada penghapusan data product pada API Address User');
+    })
   } 
 
 
   return (
-
     <View style={styles.container}>
       <View style={styles.headerContainer}>
         <View style={styles.backButtonContainer}>
@@ -182,36 +94,38 @@ const Address = ({navigation}) => {
       
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.addressListContainer}>
-          
         {listAddress.map(item => {
-        return item != null && item.id != 0 ? (
+        return (
           <AddressItem
-          key={item.id}
-          title={item.kategori}
-          onDelete={() => deleteAddress(item.id)}
-          address={`${item.kelurahan}, ${item.alamat}, ${item.kecamatan}, ${item.kota_kabupaten}, ${item.provinsi}`}
-          onPress={() => navigation.navigate('EditAddress', item)}
-        /> 
+            key={item.id}
+            title={item.kategori}
+            onDelete={() => onDelete(item.id)}
+            detail={`${item.kelurahan}, ${item.detail_alamat}, ${item.kecamatan}, ${item.kota_kabupaten}, ${item.provinsi}`}
+            onPress={() => navigation.navigate('EditAddress', {
+              id : item.id,
+              detail_alamat : item.detail_alamat,
+              kategori : item.kategori,
+              kecamatan : item.kecamatan,
+              kelurahan : item.kelurahan,
+              kota_kabupaten : item.kota_kabupaten,
+              provinsi : item.provinsi,
+            })}
+          /> 
         )
-        : console.log('totalAddress : ', totalAddress - 1);
-      })}
+        })} 
         </View>
-
         <View style = {styles.buttonExpand}>
-              <Button 
-              title="Tambah Alamat" 
-              size={16} 
-              height={10} 
-              space={318} 
-              color={"secondary"}
-              borderRadius={4}
-              onPress={() => navigation.navigate('AddAddress', totalAddress)}
-              />
+          <Button 
+            title="Tambah Alamat" 
+            size={14} 
+            height={11} 
+            space={310}
+            borderRadius={4}
+            onPress={() => navigation.navigate('AddAddress')}
+          />
         </View>
         <Gap height={32} />
       </ScrollView>
-      
-
     </View>
     
   );

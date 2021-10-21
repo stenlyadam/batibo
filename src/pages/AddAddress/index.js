@@ -1,16 +1,18 @@
 import React, {useState, useEffect} from 'react'
 import { StyleSheet, Text, View, ScrollView } from 'react-native'
 import {Button, TextInput, Gap} from '../../components';
-import {colors, fonts, getData, storeData} from '../../utils';
-import {showMessage} from 'react-native-flash-message';
-import { firebase } from '../../config';
+import {colors, fonts, getData, storeData, useForm, showMessage} from '../../utils';
+import { API_HOST, firebase } from '../../config';
 import { useDispatch, useSelector } from "react-redux";
+import axios from 'axios';
+import { setLoading } from '../../redux/action';
 
 const AddAddress = ({navigation}) => {
 
     const dispatch = useDispatch();
-    const user = useSelector(state => state.user);
-    // console.log('address length for id database address : ', user.address);
+    const {user} = useSelector(state => state.loginReducer);
+    const {token} = useSelector(state => state.loginReducer);
+     console.log('user : ', user.id);
     const [form, setForm] = useState({
         address: [],
     }, [])
@@ -23,49 +25,74 @@ const AddAddress = ({navigation}) => {
     };
 
     const addAddress = () => {
-
-        console.log('form length yg telah di cek: ', form.address.length);
         const data = {
-            alamat: form.alamat,
+            user_id: user.id,
+            detail_alamat: form.detail,
             kategori: form.kategori,
             kecamatan: form.kecamatan,
             kelurahan: form.kelurahan,
             kota_kabupaten: form.kota_kabupaten,
-            provinsi: form.provinsi,
-            id: user.address.length,
+            provinsi: 'Sulawesi Utara',
         }
-    
-        firebase.database()
-        .ref(`users/${user.uid}/address/`)
-        .child(user.address.length)
-        .set(data)
-        .then(() => {
-            firebase
-            .database()
-            .ref('users/' + user.uid)
-            .once('value')
-            .then(snapshot => {
-                dispatch({type: 'SAVE_USER', value:snapshot.val()})
-                setForm('reset');
-                navigation.goBack();
 
-                showMessage({
-                    message: "Data Alamat Anda berhasil ditambahkan",
-                    type: 'default',
-                    backgroundColor: colors.primary,
-                    color: colors.white,
+        console.log('data: ',data);
+        //jika detail alamat belum diisi
+        if(data.detail_alamat == null || data.detail_alamat == ''){
+            showMessage('Anda belum mengisi detail alamat');
+        }
+        //jika kategori alamat belum diisi
+        else if(data.kategori == null || data.kategori == ''){
+            showMessage('Anda belum mengisi kategori');
+        }
+        //jika kecamatan belum diisi
+        else if(data.kecamatan == null || data.kecamatan == ''){
+            showMessage('Anda belum mengisi kecamatan');
+        }
+        //jika kelurahan belum diisi
+        else if(data.kelurahan == null || data.kelurahan == ''){
+            showMessage('Anda belum mengisi kelurahan');
+        }
+        //jika kota/kabupaten belum diisi
+        else if(data.kota_kabupaten == null || data.kota_kabupaten == ''){
+            showMessage('Anda belum mengisi kota/kabupaten');
+        }
+        //jika semua data telah diisi
+        else{
+            axios.post(`${API_HOST.url}/address/add`, data, {
+                headers: {
+                    'Accept' : 'application/json',
+                    'Authorization' : token
+                }
+            })
+            //add address for user - jika berhasil
+            .then(resAddress => {
+                //tarik data address terbaru
+                axios.get(`${API_HOST.url}/address`, {
+                    headers: {
+                        'Accept' : 'application/json',
+                        'Authorization' : token
+                    }
                 })
-        })
-        })
-        .catch(error => {
-            showMessage({
-                message: error.message,
-                type: 'default',
-                backgroundColor: colors.error,
-                color: colors.white,
-            });
-        });
-        
+                //tarik data address terbaru - jika berhasil
+                .then(resAddressUpdate => {
+                    //simpan data address user ke dalam data reducer
+                    dispatch({type: 'SET_ADDRESS', value: resAddressUpdate.data.data.data});
+                    navigation.goBack();
+                    
+                })
+                //tarik data address terbaru - jika tidak berhasil
+                .catch((errAddressUpdate) => {
+                    dispatch(setLoading(false));
+                    // console.log('tambah alamat berhasil : ', errAddress.response);
+                    showMessage('Terjadi kesalahan pada API Address User');
+                })
+            })
+            //add address for user - jika tidak berhasil
+            .catch((errAddress) => {
+                console.log('tambah alamat berhasil : ', errAddress.response);
+                showMessage('error : ', errAddress.response);
+            })
+        }
     }
 
     return (
@@ -89,9 +116,9 @@ const AddAddress = ({navigation}) => {
                 <View style={styles.contentWrapper}>
                     <TextInput
                         label="Alamat"
-                        placeholder="Masukkan Alamat"
-                        value={form.alamat}
-                        onChangeText={value => changeText('alamat', value)}
+                        placeholder="Masukkan Detail Alamat"
+                        value={form.detail}
+                        onChangeText={value => changeText('detail', value)}
                     />
                     <Gap height={14} />
                     <TextInput
@@ -120,13 +147,6 @@ const AddAddress = ({navigation}) => {
                         placeholder="Masukkan Kota/Kabupaten"
                         value={form.kota_kabupaten}
                         onChangeText={value => changeText('kota_kabupaten', value)}
-                    />
-                    <Gap height={14} />
-                    <TextInput
-                        label="Provinsi"
-                        placeholder="Masukkan Provinsi"
-                        value={form.provinsi}
-                        onChangeText={value => changeText('provinsi', value)}
                     />
                     <Gap height={22} />
                     <Button title="Simpan Alamat" borderRadius={8}  onPress={addAddress}/>    

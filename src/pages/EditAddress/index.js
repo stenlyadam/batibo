@@ -1,33 +1,25 @@
 import React, {useState, useEffect} from 'react'
 import { StyleSheet, Text, View, ScrollView } from 'react-native'
 import {Button, TextInput, Gap} from '../../components';
-import {colors, fonts, getData, storeData} from '../../utils';
-import {showMessage} from 'react-native-flash-message';
-import { firebase } from '../../config';
+import {colors, fonts, getData, storeData, showMessage} from '../../utils';
+import { API_HOST, firebase } from '../../config';
 import { useDispatch, useSelector } from "react-redux";
+import axios from 'axios';
 
 const EditAddress = ({navigation, route}) => {
 
-    const item = route.params;
-    // console.log('item id : ', item.id);
-    const user = useSelector(state => state.user);
-    
+    const item = route.params; 
+    console.log('item : ', item);
     const dispatch = useDispatch();
+    const {token} = useSelector(state => state.loginReducer);
 
     const [form, setForm] = useState({
-        address: [],
+        detail_alamat: item.detail_alamat,
+        kategori : item.kategori,
+        kecamatan : item.kecamatan,
+        kelurahan : item.kelurahan,
+        kota_kabupaten : item.kota_kabupaten,
     }, [])
-
-    useEffect(() => {
-        // getData('user').then(response => {
-        //     const data = response;
-        //     setIdUser(data.uid);
-        //     console.log('profile id: ' + idUser);
-        // });
-        setForm(item);
-    },[]);
-
-
 
     const changeText = (key, value) => {
         setForm({
@@ -37,37 +29,73 @@ const EditAddress = ({navigation, route}) => {
     };
 
     const updateAddressData = () => {
-        const data = form;
-        console.log('id user: ', user.uid);
-        firebase
-        .database()
-        .ref('users/' + user.uid + '/address/' + item.id)
-        .update(data)
-        .then(() => {
-            firebase
-            .database()
-            .ref('users/' + user.uid)
-            .once('value')
-            .then(snapshot => {
-                storeData('user', snapshot.val());
-                dispatch({type: 'SAVE_USER', value:snapshot.val()})
-                navigation.goBack();
-                showMessage({
-                    message: "Data Alamat Anda berhasil diubah",
-                    type: 'default',
-                    backgroundColor: colors.primary,
-                    color: colors.white,
-                })
+        const data = {
+            id : item.id,
+            detail_alamat: form.detail_alamat,
+            kategori : form.kategori,
+            kecamatan : form.kecamatan,
+            kelurahan : form.kelurahan,
+            kota_kabupaten : form.kota_kabupaten,
+            provinsi : item.provinsi,
+        };
+        console.log('to update address: ', data);
+
+        //jika detail alamat belum diisi
+        if(data.detail_alamat == null || data.detail_alamat == ''){
+            showMessage('Anda belum mengisi detail alamat');
+        }
+        //jika kategori alamat belum diisi
+        else if(data.kategori == null || data.kategori == ''){
+            showMessage('Anda belum mengisi kategori');
+        }
+        //jika kecamatan belum diisi
+        else if(data.kecamatan == null || data.kecamatan == ''){
+            showMessage('Anda belum mengisi kecamatan');
+        }
+        //jika kelurahan belum diisi
+        else if(data.kelurahan == null || data.kelurahan == ''){
+            showMessage('Anda belum mengisi kelurahan');
+        }
+        //jika kota/kabupaten belum diisi
+        else if(data.kota_kabupaten == null || data.kota_kabupaten == ''){
+            showMessage('Anda belum mengisi kota/kabupaten');
+        }
+        //jika semua data telah diisi
+        else{
+        
+        //update address dalam database (addresses)
+        axios.post(`${API_HOST.url}/address/${data.id}`, data, {
+            headers: {
+                'Accept' : 'application/json',
+                'Authorization' : token,
+            }
+        })
+        //update data address dalam database (addresses) - jika berhasil
+        .then(resAddress => {
+        //ambil data address terbaru dari database
+        axios.get(`${API_HOST.url}/address`, {
+            headers: {
+            'Accept' : 'application/json',
+            'Authorization' : token,
+            }
+        })
+        //ambil data address terbaru dari database - jika berhasil
+        .then(resUpdateAddress => {
+            //simpan data ADDRESS user ke dalam data reducer
+            dispatch({type: 'SET_ADDRESS', value: resUpdateAddress.data.data.data});
+            navigation.goBack();
+            showMessage('Alamat Berhasil Di Update', 'success');
+        })
+        //ambil data address terbaru dari database - jika tidak berhasil
+        .catch(errUpdateAddress => {
+            showMessage('Terjadi kesalahan pada penambahan data');
         })
         })
-        .catch(error => {
-            showMessage({
-                message: error.message,
-                type: 'default',
-                backgroundColor: colors.error,
-                color: colors.white,
-            });
-        });
+        //update data address ke database (addresses) - jika tidak berhasil
+        .catch((errAddress) => {
+            showMessage('Terjadi kesalahan pada penghapusan data product pada API Address User');
+        })
+        }
     };
 
     return (
@@ -91,8 +119,8 @@ const EditAddress = ({navigation, route}) => {
                 <View style={styles.contentWrapper}>
                     <TextInput
                         label="Alamat"
-                        value={form.alamat}
-                        onChangeText={value => changeText('alamat', value)}
+                        value={form.detail_alamat}
+                        onChangeText={value => changeText('detail_alamat', value)}
                     />
                     <Gap height={14} />
                     <TextInput
@@ -117,12 +145,6 @@ const EditAddress = ({navigation, route}) => {
                         label="Kota/Kabupaten"
                         value={form.kota_kabupaten}
                         onChangeText={value => changeText('kota_kabupaten', value)}
-                    />
-                    <Gap height={14} />
-                    <TextInput
-                        label="Provinsi"
-                        value={form.provinsi}
-                        onChangeText={value => changeText('provinsi', value)}
                     />
                     <Gap height={22} />
                     <Button title="Simpan Alamat" borderRadius={8}  onPress={updateAddressData}/>    

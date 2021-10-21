@@ -1,19 +1,36 @@
 import React from 'react';
-import {StyleSheet, View, Text} from 'react-native';
-import {Button} from '../../components';
-import {colors, fonts} from '../../utils';
+import { StyleSheet, Text, View } from 'react-native';
+import { useSelector } from 'react-redux';
+import { Button } from '../../components';
+import { colors, fonts } from '../../utils';
 
-const AddressItem = ({title, address, onPress, onDelete}) => {
+const AddressItem = ({title, detail, onPress, onDelete}) => {
+
+  const {address} = useSelector(state => state.loginReducer);
+  console.log('address : ', address);
+
   return (
     <View style={styles.addressContainer}>
       <View style={styles.iconRemoveContainer}>
-        <Button type="icon-only" icon="icon-remove" onPress={onDelete}/>
+        {address.length > 1 && <Button type="icon-only" icon="icon-remove" onPress={onDelete}/>}
       </View>  
-      <Text style={styles.subTitle}>{title}</Text>
+      <Text style={styles.title}>{title}</Text>
+      <Text style={styles.title}>Amir Mahfudi</Text>
+      <Text style={styles.phone}>62 811 7812 0012</Text>
       <View style={styles.textWrapper}>
-        <Text style={styles.text}>{address}</Text>
+        <Text style={styles.text}>{detail}</Text>
       </View>
-      <Button title="Ubah Alamat" onPress={onPress}/>
+      <Button 
+          title="Ubah Alamat" 
+          onPress={onPress} 
+          borderRadius={5}
+          buttonColor={colors.button.tertiary.backgroundColor}
+          borderColor={colors.button.tertiary.borderColor}
+          borderWidth={1}
+          textColor={colors.button.tertiary.text}
+          size={14} 
+          height={9} 
+      />
     </View>
   );
 };
@@ -32,8 +49,11 @@ const styles = StyleSheet.create({
   },
   iconRemoveContainer: {
     position: 'absolute',
-    right: 14,
-    top: 14,
+    right: 8,
+    top: 8,
+    width: 32,
+    height: 32,
+    justifyContent:'center'
   },
   textWrapper:{
     maxWidth: 320,
@@ -41,10 +61,16 @@ const styles = StyleSheet.create({
   text: {
     fontFamily: fonts.nunito.normal,
     fontSize: 12,
-    color: colors.text.secondary,
+    color: colors.text.grey,
+    marginBottom: 6,
+  },
+  phone: {
+    fontFamily: fonts.nunito.normal,
+    fontSize: 12,
+    color: colors.text.grey,
     marginBottom: 5,
   },
-  subTitle: {
+  title: {
     fontFamily: fonts.nunito.semibold,
     fontSize: 14,
     color: colors.text.primary,

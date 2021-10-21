@@ -13,9 +13,11 @@ const Button = ({
   height,
   space,
   size,
-  color,
+  buttonColor,
+  textColor,
   borderRadius,
   borderColor,
+  borderWidth,
   marginTop,
   onSelected
 }) => {
@@ -32,8 +34,8 @@ const Button = ({
   else{
     return (
       <TouchableOpacity onPress={onPress}>
-        <View style={styles.container(space, height, color, borderRadius, borderColor, marginTop)}>
-          <Text style={styles.text(size, color)}>{title}</Text>
+        <View style={styles.container(space, height, borderColor, borderWidth, borderRadius, marginTop, buttonColor)}>
+          <Text style={styles.text(size, textColor)}>{title}</Text>
         </View>
       </TouchableOpacity>
     );
@@ -44,17 +46,17 @@ const Button = ({
 export default Button;
 
 const styles = StyleSheet.create({
-  container: (space, height, color, borderRadius, marginTop) => ({
-    backgroundColor: color === "secondary" ? colors.button.secondary.backgroundColor : colors.button.primary.backgroundColor,
+  container: (space, height, borderColor, borderWidth, borderRadius, marginTop, buttonColor) => ({
+    backgroundColor: buttonColor ? buttonColor : colors.button.primary.backgroundColor,
     width: space,
     paddingVertical: height ? height : 14,
     borderRadius: borderRadius,
-    borderColor: color === "secondary" ? colors.button.primary.backgroundColor: colors.button.primary.backgroundColor,
-    borderWidth: color === 'secondary' ? 2 : 0,
+    borderColor: borderColor ? borderColor : colors.button.primary.backgroundColor,
+    borderWidth: borderWidth ? borderWidth : 0,
     marginTop: marginTop
   }),
-  text: (size, color) => ({
-    color: color === "secondary" ? colors.button.secondary.text : colors.button.primary.text,
+  text: (size, textColor) => ({
+    color: textColor ? textColor : colors.button.primary.text,
     textAlign: 'center',
     fontSize: size,
     fontWeight: '700',
