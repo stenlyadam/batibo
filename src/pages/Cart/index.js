@@ -103,13 +103,13 @@ const styles = StyleSheet.create({
     marginTop: 18
   },
   pesananContainer: {
-    paddingHorizontal: 12,
+    paddingHorizontal: 24,
     flex: 1,
   },
   cartSummaryContainer: {
-    maxWidth: 420,
     flexDirection: 'row',
     flexWrap: 'wrap',
+    justifyContent: 'center',
     alignItems: 'center',
   },
 });

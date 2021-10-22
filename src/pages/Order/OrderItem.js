@@ -13,7 +13,14 @@ const OrderItem = ({navigation, status, deliveryDate, press, id, image, price, f
   const [statusOrder, setStatusOrder] = useState(status);
   const [colorStatus, setColorStatus] = useState('#FFEEDE');
 
-  const formatedDate = new Date(deliveryDate).toDateString();
+  var a = new Date(deliveryDate * 1000);
+  var months = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+  var year = a.getFullYear();
+  var month = months[a.getMonth()];
+  var date = a.getDate();
+  var formatedDate = date + ' ' + month + ' ' + year;
+
+  console.log("format Date: ", formatedDate);
 
   useEffect(() => {
     if(status == 'PENDING'){
@@ -200,6 +207,7 @@ const styles = StyleSheet.create({
   },
   itemContainer: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
     paddingVertical: 24,
     paddingHorizontal: 16,
     borderColor: colors.border,
@@ -214,7 +222,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 5,
-    marginRight: 17,
   },
   image: {
     height: 40,
@@ -224,7 +231,7 @@ const styles = StyleSheet.create({
     width: 100,
     maxWidth: 100,
     height: 50,
-    marginRight: 28,
+    marginLeft: -50,
     justifyContent: 'center'
   },
   titleText: {

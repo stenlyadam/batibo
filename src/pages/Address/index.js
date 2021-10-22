@@ -119,7 +119,7 @@ const Address = ({navigation}) => {
             title="Tambah Alamat" 
             size={14} 
             height={11} 
-            space={310}
+            space={358}
             borderRadius={4}
             onPress={() => navigation.navigate('AddAddress')}
           />
@@ -171,9 +171,8 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   buttonExpand: {
-    marginHorizontal:24 ,
-    maxWidth:328,
-    marginTop: 10,
-    alignItems: 'center',
+    marginTop: 18,
+    marginBottom: 32,
+    alignItems: 'center'
   }
 });

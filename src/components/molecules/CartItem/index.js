@@ -33,6 +33,7 @@ const styles = StyleSheet.create({
     paddingVertical: 24,
     borderBottomColor: colors.border,
     borderBottomWidth: 2,
+    justifyContent: 'space-between'
   },
   productImageContainer: {
     justifyContent: 'center',

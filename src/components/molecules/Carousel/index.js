@@ -31,16 +31,19 @@ export default Carousel;
 
 const styles = StyleSheet.create({
   carouselWrapper: {
+    
   },
   slide1: {
-    paddingTop: 22,
     flex: 1,
     alignItems: 'center',
+    justifyContent: 'center',
     maxWidth: 360,
   },
   carouselPicture: {
+    alignItems: 'center',
+    justifyContent: 'center',
     height: 132,
-    width: 310,
+    width: 340,
     borderRadius: 8,
   },
 });

@@ -29,8 +29,8 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     paddingVertical: 17,
-    paddingHorizontal: 26,
-    justifyContent:'center',
+    paddingHorizontal: 24,
+    justifyContent: 'space-between',
     borderTopColor: colors.black,
     shadowColor: colors.black,
     shadowOffset: {
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 6,
     elevation: 1,
-    maxWidth: 400, 
+    width: 410, 
   },
   cartIcon: {
     justifyContent: 'center',
@@ -59,10 +59,8 @@ const styles = StyleSheet.create({
     height: 38,
     width: 134,
     justifyContent: 'center',
-    paddingRight: 20
   },
   totalBelanjaText: {
-    
     color: colors.text.secondary,
   },
   totalPrice: {

@@ -87,9 +87,9 @@ const HomeScreen = ({navigation}) => {
         <View style = {styles.buttonExpand}>
             <Button 
             title="Lihat Semua" 
-            size={16} 
+            size={14} 
             height={10} 
-            space={317} 
+            space={358} 
             buttonColor={colors.button.secondary.backgroundColor}
             borderColor={colors.button.secondary.borderColor}
             borderWidth={2}
@@ -142,13 +142,10 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   buttonExpand: {
-    maxWidth: 340,
-    marginHorizontal:22,
-    marginTop: 22,
-    marginBottom: 38,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    marginTop: 18,
+    marginBottom: 32,
     alignItems: 'center',
-    // justifyContent: 'space-between',
+    flexDirection:'row',
+    justifyContent: 'center'
   }
 });

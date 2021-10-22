@@ -16,6 +16,7 @@ import {
   IconSettings,
   IconRemove,
   IconArrowBottom,
+  IconAdd,
 } from '../../../assets';
 import {colors} from '../../../utils';
 
@@ -67,6 +68,13 @@ const IconOnly = ({icon, onPress, width, height, color = colors.grey}) => {
       return (
         <View style={styles.iconContainer(width, height, colors.button.black)}>
           <IconCross />
+        </View>
+      );
+    }
+    if (icon === 'icon-add') {
+      return (
+        <View style={styles.iconContainer(width, height, colors.button.black)}>
+          <IconAdd />
         </View>
       );
     }

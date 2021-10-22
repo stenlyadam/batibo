@@ -16,6 +16,13 @@ const Profile = ({navigation}) => {
   const {user} = useSelector(state => state.loginReducer);
   const [photo, setPhoto] = useState(DummyUserPhoto);
 
+  useEffect(() => {
+    console.log('user photo ', user);
+    if(user.profile_photo_url != undefined){
+      setPhoto({uri : user.profile_photo_url})
+    }
+}, [user]);
+
   const signOut = () => {
     dispatch(setLoading(true));
     AsyncStorage.multiRemove(['userProfile', 'token'])
