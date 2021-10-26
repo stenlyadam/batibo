@@ -99,6 +99,8 @@ const Address = ({navigation}) => {
           <AddressItem
             key={item.id}
             title={item.kategori}
+            nama_penerima={item.nama_penerima}
+            nomor_handphone={item.nomor_handphone}
             onDelete={() => onDelete(item.id)}
             detail={`${item.kelurahan}, ${item.detail_alamat}, ${item.kecamatan}, ${item.kota_kabupaten}, ${item.provinsi}`}
             onPress={() => navigation.navigate('EditAddress', {

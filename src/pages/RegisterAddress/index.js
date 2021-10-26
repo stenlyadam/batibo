@@ -16,9 +16,15 @@ import { API_HOST } from '../../config';
 import { setLoading, signUpAction } from '../../redux/action';
 import {Picker} from '@react-native-community/picker';
 
-const RegisterAddress = ({navigation}) => {
+const RegisterAddress = ({navigation, route}) => {
+    const user = route.params;
+    console.log('user for address :', user);
+
     const [form, setForm] = useForm({
         user_id: "",
+        nama_penerima: user.name,
+        nomor_handphone: user.phone_number,
+        email: user.email,
         kategori: "Alamat Utama",
         kelurahan: "Paal Dua",
         detail_alamat : "",
@@ -29,34 +35,9 @@ const RegisterAddress = ({navigation}) => {
 
     const dispatch = useDispatch();
     const registerReducer = useSelector((state) => state.registerReducer);
-  // const [defaultAddress] = useForm({
-  //   id: 0,
-  //   kategori: ' ',
-  //   kelurahan: ' ',
-  //   alamat: ' ',
-  //   kecamatan: ' ',
-  //   kota_kabupaten: ' ',
-  //   provinsi: ' ',
-  // })
-
-  // const [defaultCart] = useForm({
-  //   id: 0,
-  //   category: ' ',
-  //   count: ' ',
-  //   detail: ' ',
-  //   discount: ' ',
-  //   image: ' ',
-  //   name: ' ',
-  //   price: ' ',
-  //   priceAfterDiscount: ' ',
-  //   productUnit: ' ',
-  // })
-
 
     const onSubmit = () => {
         dispatch(setLoading(true));
-        // console.log('form data: ', registerReducer);
-        // console.log('form address : ', form);
         if(form.detail_alamat === ""){
             dispatch(setLoading(false));
             showMessage('Data Anda belum lengkap');

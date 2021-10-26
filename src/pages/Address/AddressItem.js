@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { Button } from '../../components';
 import { colors, fonts } from '../../utils';
 
-const AddressItem = ({title, detail, onPress, onDelete}) => {
+const AddressItem = ({title, nama_penerima, nomor_handphone, detail, onPress, onDelete}) => {
 
   const {address} = useSelector(state => state.loginReducer);
   console.log('address : ', address);
@@ -15,8 +15,8 @@ const AddressItem = ({title, detail, onPress, onDelete}) => {
         {address.length > 1 && <Button type="icon-only" icon="icon-remove" onPress={onDelete}/>}
       </View>  
       <Text style={styles.title}>{title}</Text>
-      <Text style={styles.title}>Amir Mahfudi</Text>
-      <Text style={styles.phone}>62 811 7812 0012</Text>
+      <Text style={styles.title}>{nama_penerima}</Text>
+      <Text style={styles.phone}>{nomor_handphone}</Text>
       <View style={styles.textWrapper}>
         <Text style={styles.text}>{detail}</Text>
       </View>

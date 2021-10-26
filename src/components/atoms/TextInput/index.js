@@ -3,7 +3,7 @@ import {StyleSheet, Text, View, TextInput as Input} from 'react-native';
 import {colors, fonts} from '../../../utils';
 
 const TextInput = (props) => {
-  const {label, placeholder, value, onChangeText, secureTextEntry, disable, keyboardType, isRequired, ...rest} = props;
+  const {label, placeholder, value, onChangeText, height, secureTextEntry, disable, keyboardType, isRequired, ...rest} = props;
   return (
     <View style={styles.container}>
       <Text style={styles.label}>{label}</Text>
@@ -11,7 +11,7 @@ const TextInput = (props) => {
         require={require}
         keyboardType={keyboardType}
         placeholder={placeholder}
-        style={styles.input}
+        style={styles.input(height)}
         value={value}
         onChangeText={onChangeText}
         secureTextEntry={secureTextEntry}
@@ -31,12 +31,12 @@ const styles = StyleSheet.create({
     fontFamily: fonts.primary[700],
     marginBottom: 8,
   },
-  input: {
+  input: (height) => ({
     borderWidth: 1,
     borderColor: colors.border,
     borderRadius: 8,
-    paddingVertical: 12,
+    paddingVertical: height ? height : 12,
     paddingHorizontal: 16,
-  },
+  }),
   container: {width: '100%'},
 });

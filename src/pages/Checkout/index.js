@@ -133,9 +133,8 @@ const Checkout = ({navigation}) => {
                   ?
                     <View>
                       <Text style={styles.addressTitle(selectedAddress)}>{selectedAddress.kategori}</Text>
-                      <Text style={styles.addressDetail}>{user.name} ({user.phone_number})</Text>
-                      <Text style={styles.addressDetail}>{selectedAddress.provinsi} / {selectedAddress.kota_kabupaten} / {selectedAddress.kecamatan} / {selectedAddress.kelurahan}</Text>
-                      <Text style={styles.addressDetail}>{selectedAddress.detail_alamat}</Text>
+                      <Text style={styles.addressDetail}>{selectedAddress.nama_penerima} ({selectedAddress.nomor_handphone})</Text>
+                      <Text style={styles.addressDetail}>{selectedAddress.detail_alamat} / {selectedAddress.provinsi} / {selectedAddress.kota_kabupaten} / {selectedAddress.kecamatan} / {selectedAddress.kelurahan}</Text>
                     </View>
                   :
                     <View>
@@ -315,11 +314,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
     opacity: 1,
     color: selectedAddress ? colors.black : colors.error,
+    marginBottom : 4,
   }),
   addressDetail: {
     fontFamily: fonts.nunito.normal,
     fontSize: 14,
     opacity: 0.6,
+    marginBottom : 2,
   },
   paymentButton: {
     marginHorizontal: 24,

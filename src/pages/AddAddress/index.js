@@ -12,7 +12,7 @@ const AddAddress = ({navigation}) => {
     const dispatch = useDispatch();
     const {user} = useSelector(state => state.loginReducer);
     const {token} = useSelector(state => state.loginReducer);
-     console.log('user : ', user.id);
+    console.log('user : ', user.id);
     const [form, setForm] = useState({
         address: [],
     }, [])
@@ -27,6 +27,9 @@ const AddAddress = ({navigation}) => {
     const addAddress = () => {
         const data = {
             user_id: user.id,
+            nama_penerima: form.nama_penerima,
+            nomor_handphone: form.nomor_handphone,
+            email: form.email,
             detail_alamat: form.detail,
             kategori: form.kategori,
             kecamatan: form.kecamatan,
@@ -39,6 +42,18 @@ const AddAddress = ({navigation}) => {
         //jika detail alamat belum diisi
         if(data.detail_alamat == null || data.detail_alamat == ''){
             showMessage('Anda belum mengisi detail alamat');
+        }
+         //jika nama penerima belum diisi
+        else if(data.nama_penerima == null || data.nama_penerima == ''){
+            showMessage('Anda belum mengisi nama penerima');
+        }
+         //jika nomor_handphone belum diisi
+        else if(data.nomor_handphone == null || data.nomor_handphone == ''){
+            showMessage('Anda belum mengisi nomor handphone');
+        }
+         //jika email belum diisi
+        else if(data.email == null || data.email == ''){
+            showMessage('Anda belum mengisi email');
         }
         //jika kategori alamat belum diisi
         else if(data.kategori == null || data.kategori == ''){
@@ -115,40 +130,70 @@ const AddAddress = ({navigation}) => {
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={styles.contentWrapper}>
                     <TextInput
+                        height={8}
                         label="Alamat"
                         placeholder="Masukkan Detail Alamat"
                         value={form.detail}
                         onChangeText={value => changeText('detail', value)}
                     />
-                    <Gap height={14} />
+                    <Gap height={12} />
                     <TextInput
+                        height={8}
+                        label="Nama Penerima"
+                        placeholder="Masukkan Nama Penerima"
+                        value={form.nama_penerima}
+                        onChangeText={value => changeText('nama_penerima', value)}
+                    />
+                    <Gap height={12} />
+                    <TextInput
+                        height={8}
+                        keyboardType="numeric"
+                        label="Nomor Handphone"
+                        placeholder="Masukkan Nomor Handphone Penerima"
+                        value={form.nomor_handphone}
+                        onChangeText={value => changeText('nomor_handphone', value)}
+                    />
+                    <Gap height={12} />
+                    <TextInput
+                        height={8}
+                        label="Email"
+                        placeholder="Masukkan Email"
+                        value={form.email}
+                        onChangeText={value => changeText('email', value)}
+                    />
+                    <Gap height={12} />
+                    <TextInput
+                        height={8}
                         label="Kategori"
                         placeholder="Masukkan Kategori Alamat"
                         value={form.kategori}
                         onChangeText={value => changeText('kategori', value)}
                     />
-                    <Gap height={14} />
+                    <Gap height={12} />
                     <TextInput
+                        height={8}
                         label="Kecamatan"
                         placeholder="Masukkan Kecamatan"
                         value={form.kecamatan}
                         onChangeText={value => changeText('kecamatan', value)}
                     />
-                    <Gap height={14} />
+                    <Gap height={12} />
                     <TextInput
+                        height={8}
                         label="Kelurahan"
                         placeholder="Masukkan Kelurahan"
                         value={form.kelurahan}
                         onChangeText={value => changeText('kelurahan', value)}
                     />
-                    <Gap height={14} />
+                    <Gap height={12} />
                     <TextInput
+                        height={8}
                         label="Kota/Kabupaten"
                         placeholder="Masukkan Kota/Kabupaten"
                         value={form.kota_kabupaten}
                         onChangeText={value => changeText('kota_kabupaten', value)}
                     />
-                    <Gap height={22} />
+                    <Gap height={20} />
                     <Button title="Simpan Alamat" borderRadius={8}  onPress={addAddress}/>    
                 </View>
             </ScrollView>
@@ -166,6 +211,7 @@ const styles = StyleSheet.create({
     headerContainer: {
         backgroundColor: 'white',
         flexDirection: 'row',
+        paddingBottom: 18
     },
     backButtonContainer: {
         backgroundColor: colors.button.primary.backgroundColor,
@@ -181,7 +227,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
     },
     contentWrapper: {
-        marginVertical: 38,
+        marginVertical: 14,
         marginHorizontal: 24,
     },
     titleTextContainer: {

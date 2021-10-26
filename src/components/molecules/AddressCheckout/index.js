@@ -5,27 +5,23 @@ import {
   View,
   TouchableOpacity,
 } from 'react-native';
+import { colors, fonts } from '../../../utils';
 
 const AddressCheckout = ({
   id,
   kategori,
-  provinsi,
-  kota_kabupaten,
-  kelurahan,
-  kecamatan,
-  detail_alamat,
-  navigation,
+  nama_penerima,
+  nomor_handphone,
+  detail,
   onPress
 }) => {
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={styles.addressContainer}>
         <Text style={styles.addressTitle}>{kategori}</Text>
-        <Text style={styles.addressProvinsi}>{provinsi}</Text>
-        <Text style={styles.addressKotaKabupaten}>{kota_kabupaten}</Text>
-        <Text style={styles.addressKelurahan}>{kelurahan}</Text>
-        <Text style={styles.addressKecamatan}>{kecamatan}</Text>
-        <Text style={styles.addressDetail}>{detail_alamat}</Text>
+        <Text style={styles.addressNamaPenerima}>{nama_penerima}</Text>
+        <Text style={styles.addressSubTitle}>{nomor_handphone}</Text>
+        <Text style={styles.addressSubTitle}>{detail}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -44,9 +40,22 @@ const styles = StyleSheet.create({
     flexDirection: "column",
   },
   addressTitle: {
-    marginBottom: 12,
-    fontWeight: '600',
-    fontSize: 16,
+    marginBottom: 4,
+    fontFamily: fonts.nunito.semibold,
+    fontSize: 14,
     color: 'rgba(0,0,0,0.7)',
   },
+  addressNamaPenerima: {
+    fontFamily: fonts.nunito.bold,
+    fontSize: 16,
+    color: colors.text.primary,
+    marginBottom: 5,
+  },
+  addressSubTitle: {
+    fontFamily: fonts.nunito.normal,
+    fontSize: 12,
+    color: colors.text.primary,
+    marginBottom: 5,
+    maxWidth: 320,
+  }
 });

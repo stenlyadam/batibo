@@ -13,11 +13,11 @@ const DeliveryDetail = () => {
       <View style={styles.deliveryDetailContainer}>
         <View style={styles.deliveryLeftContainer}>
           <Text style={styles.deliveryTitle}>Nama</Text>
-          <Text style={styles.deliveryText}>{user.name}</Text>
+          <Text style={styles.deliveryText}>{selectedAddress.nama_penerima}</Text>
           <Text style={styles.deliveryTitle}>Nomor Handphone</Text>
-          <Text style={styles.deliveryText}>{user.phone_number}</Text>
+          <Text style={styles.deliveryText}>{selectedAddress.nomor_handphone}</Text>
           <Text style={styles.deliveryTitle}>Email</Text>
-          <Text style={styles.deliveryText}>{user.email}</Text>
+          <Text style={styles.deliveryText}>{selectedAddress.email}</Text>
         </View>
         <View style={styles.deliveryRightContainer}>
           <Text style={styles.deliveryTitle}>Alamat</Text>

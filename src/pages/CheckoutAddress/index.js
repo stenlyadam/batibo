@@ -43,11 +43,9 @@ const CheckoutAddress = ({navigation}) => {
                     key={item.id}
                     id={item.id}
                     kategori={item.kategori}
-                    provinsi={item.provinsi}
-                    kota_kabupaten={item.kota_kabupaten}
-                    kecamatan={item.kecamatan}
-                    kelurahan={item.kelurahan}
-                    detail_alamat={item.detail_alamat}
+                    nama_penerima={item.nama_penerima}
+                    nomor_handphone={item.nomor_handphone}
+                    detail={`${item.detail_alamat}, ${item.kelurahan}, ${item.kecamatan}, ${item.kota_kabupaten}, ${item.provinsi}`}
                     navigation={navigation}
                     onPress={() => (dispatch(setSelectedAddress(item, navigation)), navigation.navigate('Checkout'))}
                   />

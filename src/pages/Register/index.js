@@ -43,7 +43,7 @@ const Register = ({navigation}) => {
           //bila password sesuai
           if(form.password.length >= 8){
             dispatch({type: 'SET_REGISTER', value: form});
-            navigation.navigate('RegisterAddress');
+            navigation.navigate('RegisterAddress', form);
           }
           //bila password tidak sesuai
           else{

@@ -113,61 +113,73 @@ export const signUpAction = (dataRegister, addressRegister, navigation) => (disp
             }
         })
         //add address for user - jika berhasil
-        .then(resAddress => {
-            dispatch(setLoading(false));
-            //simpan data address user ke dalam data reducer
-            dispatch({type: 'SET_ADDRESS', value: resAddress.data.data.data});
-
-            axios.get(`${API_HOST.url}/cart`, {
+        .then(resAddAddress => {
+            //tarik data address(update)
+            axios.get(`${API_HOST.url}/address`, {
                 headers: {
                     'Accept' : 'application/json',
                     'Authorization' : token
                 }
             })
-            //tarik data cart dari user - jika berhasil
-            .then(resCart => {
+            //tarik data address(update) - jika berhasil
+            .then(resAddress => {
                 dispatch(setLoading(false));
-                //simpan data CART user ke dalam data reducer
-                dispatch({type: 'SET_CART', value: resCart.data.data.data});
-                
-                    //ambil data order
-                    axios.get(`${API_HOST.url}/order`, {
+                //simpan data address user ke dalam data reducer
+                dispatch({type: 'SET_ADDRESS', value: resAddress.data.data.data});
+                //tarik data cart dari user
+                axios.get(`${API_HOST.url}/cart`, {
                     headers: {
                         'Accept' : 'application/json',
                         'Authorization' : token
                     }
-                    })
-                    //ambil data order - jika berhasil
-                    .then(resOrder => {
-                        //simpan data Order user ke dalam data reducer
-                        dispatch({type: 'SET_ORDER', value: resOrder.data.data.data})
-                        //pergi ke halaman utama aplikasi
-                        showMessage('Register Success', 'success');
-                        setTimeout(() => dispatch(setLoading(true)), 1000);
-                        setTimeout(() => navigation.reset({index: 0, routes: [{name: 'MainApp'}]}), 4000);
-                        setTimeout(() => dispatch(setLoading(false)), 4000);
-                    })
-                    //ambil data order - jika tidak berhasil
-                    .catch(errOrder => {
-                        dispatch(setLoading(false));
-                        showMessage('Terjadi kesalahan pada API Order User');
-                    })
-
-                
+                })
+                //tarik data cart dari user - jika berhasil
+                .then(resCart => {
+                    dispatch(setLoading(false));
+                    //simpan data CART user ke dalam data reducer
+                    dispatch({type: 'SET_CART', value: resCart.data.data.data});
+                    
+                        //ambil data order
+                        axios.get(`${API_HOST.url}/order`, {
+                        headers: {
+                            'Accept' : 'application/json',
+                            'Authorization' : token
+                        }
+                        })
+                        //ambil data order - jika berhasil
+                        .then(resOrder => {
+                            //simpan data Order user ke dalam data reducer
+                            dispatch({type: 'SET_ORDER', value: resOrder.data.data.data})
+                            //pergi ke halaman utama aplikasi
+                            showMessage('Register Success', 'success');
+                            setTimeout(() => dispatch(setLoading(true)), 1000);
+                            setTimeout(() => navigation.reset({index: 0, routes: [{name: 'MainApp'}]}), 4000);
+                            setTimeout(() => dispatch(setLoading(false)), 4000);
+                        })
+                        //ambil data order - jika tidak berhasil
+                        .catch(errOrder => {
+                            dispatch(setLoading(false));
+                            showMessage('Terjadi kesalahan pada API Order User');
+                        })
+                    
+                })
+                //tarik data cart dari user - jika tidak berhasil
+                .catch((errCart) => {
+                    dispatch(setLoading(false));
+                    // console.log('tambah alamat berhasil : ', errAddress.response);
+                    showMessage('Terjadi kesalahan pada API Cart User');
+                })
             })
-            //tarik data cart dari user - jika tidak berhasil
-            .catch((errCart) => {
-                dispatch(setLoading(false));
-                // console.log('tambah alamat berhasil : ', errAddress.response);
-                showMessage('Terjadi kesalahan pada API Cart User');
+            //tarik data address(update) - jika tidak berhasil
+            .catch(errAddress => {
+                console.log('Terjadi kesalahan : Harap dicoba beberapa saat lagi');
             })
-            
         })
         //add address for user - jika tidak berhasil
-        .catch((errAddress) => {
+        .catch((errAddAddress) => {
             dispatch(setLoading(false));
             // console.log('tambah alamat berhasil : ', errAddress.response);
-            showMessage('Terjadi kesalahan pada API Address User');
+            showMessage('Terjadi kesalahan : Harap dicoba beberapa saat lagi');
         })
         
     })

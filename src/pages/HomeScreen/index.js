@@ -51,7 +51,7 @@ const HomeScreen = ({navigation}) => {
       }
       >
       <View style={styles.headerContainer}>
-        <Text style={styles.welcomeText}>Halo {userProfile.name}</Text>
+        <Text style={styles.welcomeText}>Halo {user.name}</Text>
         <Text style={styles.welcomeText}>Pilih Sayuran-mu disini</Text>
         <Gap height={5} />
         <SearchBox label="Cari yang kamu butuhkan" navigation={navigation} homescreen/>
