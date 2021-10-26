@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingVertical: 17,
     paddingHorizontal: 24,
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     borderTopColor: colors.black,
     shadowColor: colors.black,
     shadowOffset: {
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 6,
     elevation: 1,
-    width: 410, 
+    flex : 1,
   },
   cartIcon: {
     justifyContent: 'center',
@@ -51,8 +51,7 @@ const styles = StyleSheet.create({
     paddingRight: 10
   },
   description: {
-    marginLeft: 12,
-    width: 147,
+    width: 100,
   },
   buttonContainer: {
     position: 'relative',

@@ -53,7 +53,8 @@ const styles = StyleSheet.create({
     borderRadius: borderRadius,
     borderColor: borderColor ? borderColor : colors.button.primary.backgroundColor,
     borderWidth: borderWidth ? borderWidth : 0,
-    marginTop: marginTop
+    marginTop: marginTop,
+    maxWidth: '100%'
   }),
   text: (size, textColor) => ({
     color: textColor ? textColor : colors.button.primary.text,

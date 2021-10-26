@@ -65,8 +65,8 @@ const HomeScreen = ({navigation}) => {
         <Category title="lainnya" onPress={() => dispatch(getProductDataByCategory('Lainnya', navigation))}/>
       </View>
       <Text style={styles.titleText}>Sedang Diskon</Text>
-      
-        <View style={styles.productContainer}>
+      <View style={styles.container}>
+      <View style={styles.productContainer}>
           {product.map(item => {
             return (
               <Product
@@ -89,7 +89,7 @@ const HomeScreen = ({navigation}) => {
             title="Lihat Semua" 
             size={14} 
             height={10} 
-            space={358} 
+            space={358}
             buttonColor={colors.button.secondary.backgroundColor}
             borderColor={colors.button.secondary.borderColor}
             borderWidth={2}
@@ -98,6 +98,7 @@ const HomeScreen = ({navigation}) => {
             onPress={() => dispatch(getProductData(50, 'onDiscount', navigation))}
             />
         </View>
+      </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -109,6 +110,9 @@ const styles = StyleSheet.create({
   page: {
     flex: 1,
     backgroundColor: colors.white,
+  },
+  container: {
+    marginHorizontal: 24,
   },
   headerContainer: {
     width: '100%',
@@ -129,7 +133,7 @@ const styles = StyleSheet.create({
     marginLeft: 24,
   },
   productContainer: {
-    paddingHorizontal: 24,
+    // paddingHorizontal: 24,
     flexDirection: 'row',
     flexWrap: 'wrap',
     alignItems: 'center',
@@ -142,10 +146,10 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   buttonExpand: {
+    width:'100%',
     marginTop: 18,
     marginBottom: 32,
     alignItems: 'center',
-    flexDirection:'row',
-    justifyContent: 'center'
+    justifyContent: 'space-between'
   }
 });

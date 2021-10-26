@@ -92,7 +92,7 @@ const Address = ({navigation}) => {
         </View>
       </View>
       
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView showsVerticalScrollIndicator={false} style={styles.addressContainer}>
         <View style={styles.addressListContainer}>
         {listAddress.map(item => {
         return (
@@ -168,8 +168,10 @@ const styles = StyleSheet.create({
     fontSize: 22,
     opacity: 0.7,
   },
-  addressListContainer: {
+  addressContainer: {
     marginHorizontal: 24,
+  },
+  addressListContainer: {
     marginTop: 30,
   },
   buttonExpand: {
