@@ -17,7 +17,7 @@ const OnProcess = ({navigation}) => {
   let i = 0;
 
   useEffect(() => {
-    dispatch(getOrders(token));
+    // dispatch(getOrders(token));
     dispatch(getOnProcess(token));
 
       onProcess.map(item => {
@@ -31,7 +31,7 @@ const OnProcess = ({navigation}) => {
           })
           .then(res => {
             console.log('berhasil dihapus');
-            dispatch(getOrders(token));
+            // dispatch(getOrders(token));
             dispatch(getOnProcess(token));
           })
           .catch(err => {

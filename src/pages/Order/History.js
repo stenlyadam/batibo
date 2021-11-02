@@ -17,7 +17,7 @@ const OnProcess = ({navigation, status}) => {
   let i = 0;
 
   useEffect(() => {
-    dispatch(getOrders(token));
+    // dispatch(getOrders(token));
     dispatch(getHistory(token));
     history.map(item => {
       if(item.isOrder == 'false') {
@@ -30,7 +30,7 @@ const OnProcess = ({navigation, status}) => {
         })
         .then(res => {
           console.log('berhasil dihapus');
-          dispatch(getOrders(token));
+          // dispatch(getOrders(token));
           dispatch(getHistory(token));
         })
         .catch(err => {

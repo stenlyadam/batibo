@@ -64,7 +64,8 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     marginVertical: 12,
     flexDirection: "row",
-    alignContent:"space-between",
+    alignContent:"center",
+    justifyContent:'space-around'
   },
   imageContainer: {
     padding: 8,
@@ -72,12 +73,15 @@ const styles = StyleSheet.create({
     height: 62.5,
   },
   imageStyle: {
+    marginLeft:-8,
     width: width / 3.5,
     height: 62.5,
     resizeMode: 'cover',
+    borderRadius: 4,
   },
   discountContainer: {
-    width: 42,
+    marginTop:8,
+    width: 32,
     height: 25,
     position: 'absolute',
     backgroundColor: 'green',
@@ -91,18 +95,13 @@ const styles = StyleSheet.create({
   discountText: {
     fontSize: 12,
     color: '#FFFFFF',
-    fontWeight: 'bold',
   },
   productDetails: {
     width: 115,
     maxWidth: 115,
-    marginHorizontal: 8,
-    marginLeft: 20,
     justifyContent: "center",
   },
   buyButtonContainer: { 
-    marginHorizontal: 4,
-    // marginLeft: 20,
     marginVertical: 5,
     justifyContent: "center",
   },

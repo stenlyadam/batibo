@@ -89,21 +89,21 @@ export const getHistory = (token) => (dispatch) => {
         }) 
 }
 
-export const getCheckoutAddress = (token, navigation) => (dispatch) => {
-    axios.get(`${API_HOST.url}/address`, {
-        headers: {
-            'Authorization' : token
-        }
-    })
-    .then((res) => {
-        dispatch({type: 'SET_CHECKOUT_ADDRESS', value: res.data.data.data});
-        navigation.navigate('CheckoutAddress');
-    })
-    .catch((err) => {
-        showMessage(`Error :${err.response.data.message}`);
-        console.log('response error : ', err.response);
-    });
-};
+// export const getCheckoutAddress = (token, navigation) => (dispatch) => {
+//     axios.get(`${API_HOST.url}/address`, {
+//         headers: {
+//             'Authorization' : token
+//         }
+//     })
+//     .then((res) => {
+//         dispatch({type: 'SET_CHECKOUT_ADDRESS', value: res.data.data.data});
+//         navigation.navigate('CheckoutAddress');
+//     })
+//     .catch((err) => {
+//         showMessage(`Error : ${err.response.data.message}`);
+//         console.log('response error : ', err.response);
+//     });
+// };
 
 export const setSelectedAddress = (item, navigation) => (dispatch) => {
     dispatch({type: 'SET_SELECTED_ADDRESS', value: item});

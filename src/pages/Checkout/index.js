@@ -22,11 +22,9 @@ const Checkout = ({navigation}) => {
   const [deliveryCost] = useState(15000);
   const [listCheckout, setListCart] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
-
+  console.log('selected ', selectedAddress);
+  
   useEffect(() => {
-    //set selected address to null value 
-    dispatch(setSelectedAddress(null));
-
     //order berasal dari detail - jika ya
     if (orderFromDetail){
       setTotalPrice(checkout[0].price_after_discount * checkout[0].quantity);
@@ -77,7 +75,6 @@ const Checkout = ({navigation}) => {
   }
 
   const checkoutMidtrans = () => {
-    console.log('somo midtrans :', selectedAddress);
     dispatch(setLoading(true));
     const data = {
       uid : Date.now(),
@@ -98,7 +95,6 @@ const Checkout = ({navigation}) => {
         total : res.data.data.total,
         paymentURL : res.data.data.payment_url
       }
-      
       dispatch({type: 'SET_ORDER_TEMP', value: orderTemp});
       dispatch(setLoading(false));
       navigation.replace('Payment');
@@ -124,7 +120,7 @@ const Checkout = ({navigation}) => {
               <Text style={styles.deliver}>Pengiriman</Text>
               <View style={styles.deliverySubContainer}>
                 <Text style={styles.subTitle}>Alamat Pengiriman</Text>
-                <TouchableOpacity onPress={() => dispatch(getCheckoutAddress(token, navigation))}>
+                <TouchableOpacity onPress={() => navigation.navigate('CheckoutAddress')}>
                   {selectedAddress ? <Text style={styles.selectAddress}>Pilih Alamat Lain</Text> : <Text style={styles.selectAddress}>Pilih Alamat</Text> }
                 </TouchableOpacity>
               </View>

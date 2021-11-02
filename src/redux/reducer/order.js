@@ -4,7 +4,7 @@ const initOrder = {
     order: [],
     onProcess: [],
     history: [],
-    checkoutAddress: [],
+    // checkoutAddress: [],
     selectedAddress: [],
 };
 
@@ -44,13 +44,13 @@ export const orderReducer = (state = initOrder, action) => {
             
         }   
     }
-    if (action.type === 'SET_CHECKOUT_ADDRESS'){
-        return {
-            ...state,
-            checkoutAddress: action.value,
+    // if (action.type === 'SET_CHECKOUT_ADDRESS'){
+    //     return {
+    //         ...state,
+    //         checkoutAddress: action.value,
             
-        }   
-    }
+    //     }   
+    // }
     if (action.type === 'SET_SELECTED_ADDRESS'){
         return {
             ...state,

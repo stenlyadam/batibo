@@ -6,7 +6,7 @@ import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import {firebase} from '../../config';
 import {useDispatch , useSelector} from 'react-redux';
 import {showMessage} from 'react-native-flash-message';
-import { addCartAction } from '../../redux/action';
+import { addCartAction, setSelectedAddress } from '../../redux/action';
 
 const Detail = ({navigation, route}) => {
 
@@ -15,7 +15,6 @@ const Detail = ({navigation, route}) => {
   const {user} = useSelector(state => state.loginReducer);
   const {token} = useSelector(state => state.loginReducer);
   const {cart} = useSelector(state => state.loginReducer);
-  const {checkout} = useSelector(state => state.loginReducer);
 
   const pushCart = (toCart) => {
     dispatch(addCartAction(user, token, cart, toCart));
@@ -38,6 +37,7 @@ const Detail = ({navigation, route}) => {
 
     let checkout = [productCheckout]; 
     // console.log('product : ', checkout);
+    dispatch(setSelectedAddress(null));
     dispatch({type: 'SET_CHECKOUT', value: checkout});
     dispatch({type: 'SET_ORDER_FROM_DETAIL', value: checkoutFromDetail});
     navigation.navigate('Checkout');

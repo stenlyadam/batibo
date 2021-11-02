@@ -9,7 +9,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { WebView } from 'react-native-webview';
 import axios from 'axios';
 import { API_HOST } from '../../config';
-import { setLoading } from '../../redux/action';
+import { getOrders, setLoading } from '../../redux/action';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -70,8 +70,9 @@ const Payment = ({navigation}) => {
             })
             //tambah data product dalam database (order) - jika berhasil
             .then(resOrder => {
-            //ambil data order terbaru dari database
-            axios.get(`${API_HOST.url}/order`, {
+              orderSuccess = true;
+              //ambil data order terbaru dari database
+              axios.get(`${API_HOST.url}/order`, {
                 headers: {
                 'Accept' : 'application/json',
                 'Authorization' : token,
@@ -109,7 +110,7 @@ const Payment = ({navigation}) => {
               transaction_id: orderTemp.id,
               quantity: item.quantity,
             }
-            axios.post(`${API_HOST.url}/order/add`, orderSubmit, {
+              axios.post(`${API_HOST.url}/order/add`, orderSubmit, {
               headers: {
                   'Accept' : 'application/json',
                   'Authorization' : token,
@@ -118,6 +119,7 @@ const Payment = ({navigation}) => {
               //tambah data product dalam database (order) - jika berhasil
               .then(resOrder => {
               //ambil data order terbaru dari database
+              orderSuccess = true;
               axios.get(`${API_HOST.url}/order`, {
                   headers: {
                   'Accept' : 'application/json',

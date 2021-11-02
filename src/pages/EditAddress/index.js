@@ -15,6 +15,9 @@ const EditAddress = ({navigation, route}) => {
 
     const [form, setForm] = useState({
         detail_alamat: item.detail_alamat,
+        nama_penerima: item.nama_penerima,
+        nomor_handphone: item.nomor_handphone,
+        email: item.email,
         kategori : item.kategori,
         kecamatan : item.kecamatan,
         kelurahan : item.kelurahan,
@@ -32,6 +35,9 @@ const EditAddress = ({navigation, route}) => {
         const data = {
             id : item.id,
             detail_alamat: form.detail_alamat,
+            nama_penerima: form.nama_penerima,
+            nomor_handphone: form.nomor_handphone,
+            email: form.email,
             kategori : form.kategori,
             kecamatan : form.kecamatan,
             kelurahan : form.kelurahan,
@@ -43,6 +49,18 @@ const EditAddress = ({navigation, route}) => {
         //jika detail alamat belum diisi
         if(data.detail_alamat == null || data.detail_alamat == ''){
             showMessage('Anda belum mengisi detail alamat');
+        }
+        //jika nama penerima belum diisi
+        else if(data.nama_penerima == null || data.nama_penerima == ''){
+            showMessage('Anda belum mengisi nama penerima');
+        }
+            //jika nomor_handphone belum diisi
+        else if(data.nomor_handphone == null || data.nomor_handphone == ''){
+            showMessage('Anda belum mengisi nomor handphone');
+        }
+            //jika email belum diisi
+        else if(data.email == null || data.email == ''){
+            showMessage('Anda belum mengisi email');
         }
         //jika kategori alamat belum diisi
         else if(data.kategori == null || data.kategori == ''){
@@ -121,6 +139,31 @@ const EditAddress = ({navigation, route}) => {
                         label="Alamat"
                         value={form.detail_alamat}
                         onChangeText={value => changeText('detail_alamat', value)}
+                    />
+                    <Gap height={12} />
+                    <TextInput
+                        height={8}
+                        label="Nama Penerima"
+                        placeholder="Masukkan Nama Penerima"
+                        value={form.nama_penerima}
+                        onChangeText={value => changeText('nama_penerima', value)}
+                    />
+                    <Gap height={12} />
+                    <TextInput
+                        height={8}
+                        keyboardType="numeric"
+                        label="Nomor Handphone"
+                        placeholder="Masukkan Nomor Handphone Penerima"
+                        value={form.nomor_handphone}
+                        onChangeText={value => changeText('nomor_handphone', value)}
+                    />
+                    <Gap height={12} />
+                    <TextInput
+                        height={8}
+                        label="Email"
+                        placeholder="Masukkan Email"
+                        value={form.email}
+                        onChangeText={value => changeText('email', value)}
                     />
                     <Gap height={14} />
                     <TextInput

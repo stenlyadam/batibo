@@ -3,6 +3,7 @@ import { Dimensions, SafeAreaView, ScrollView, StyleSheet, View } from 'react-na
 import { showMessage } from 'react-native-flash-message';
 import { useDispatch, useSelector } from "react-redux";
 import { CartItem, CartSummary, PageTitle } from '../../components';
+import { setSelectedAddress } from '../../redux/action';
 import { colors } from '../../utils';
 
 const Cart = ({navigation}) => {
@@ -34,6 +35,7 @@ const Cart = ({navigation}) => {
 
       dispatch({type: 'SET_CHECKOUT', value: listCart});
       dispatch({type: 'SET_ORDER_FROM_DETAIL', value: checkoutFromDetail});
+      dispatch(setSelectedAddress(null));
       navigation.navigate('Checkout');
     }
     else{

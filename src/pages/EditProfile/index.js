@@ -87,7 +87,7 @@ const EditProfile = ({navigation}) => {
             .then((resUpload) => {
               
               console.log('upload berhasil : ', resUpload.data);
-                    //simpan data user terbaru
+              //simpan data user terbaru
               axios.post(`${API_HOST.url}/user`, dataUpdate, {
                 headers: {
                     'Accept' : 'application/json',
@@ -111,7 +111,26 @@ const EditProfile = ({navigation}) => {
               console.log('upload berhasil : ', errUpload.response);
             });
         }
-  
+        else {
+          //simpan data user terbaru
+          axios.post(`${API_HOST.url}/user`, dataUpdate, {
+            headers: {
+                'Accept' : 'application/json',
+                'Authorization' : token
+            }
+          })
+          //simpan data user terbaru - jika berhasil
+          .then(res => {
+            user.profile_photo_url = `${API_HOST.storage}/${resUpload.data.data[0]}`
+            dispatch({type: 'SET_USER', value: res.data.data});
+            showMessage('Update profile berhasil', 'success');               
+            navigation.goBack();
+          })
+          //simpan data user terbaru - jika tidak berhasil
+          .catch((err) => {
+            showMessage('Update belum berhasil. Silahkan coba lagi beberapa saat');
+          })
+        }
       }
       //bila nomor tidak sesuai
       else{

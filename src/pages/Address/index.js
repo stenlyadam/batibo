@@ -106,6 +106,9 @@ const Address = ({navigation}) => {
             onPress={() => navigation.navigate('EditAddress', {
               id : item.id,
               detail_alamat : item.detail_alamat,
+              nama_penerima : item.nama_penerima,
+              nomor_handphone: item.nomor_handphone,
+              email : item.email,
               kategori : item.kategori,
               kecamatan : item.kecamatan,
               kelurahan : item.kelurahan,

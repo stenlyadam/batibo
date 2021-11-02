@@ -22,7 +22,7 @@ const CheckoutAddress = ({navigation}) => {
   const {user} = useSelector(state => state.loginReducer);
   const {token} = useSelector(state => state.loginReducer);
   const {checkout} = useSelector(state => state.loginReducer);
-  const {checkoutAddress} = useSelector(state => state.orderReducer);
+  const {address} = useSelector(state => state.loginReducer);
   const {orderFromDetail} = useSelector(state => state.orderReducer);
 
     return (
@@ -37,7 +37,7 @@ const CheckoutAddress = ({navigation}) => {
         <ScrollView>
           <View style={styles.pageContainer}>
             {
-              checkoutAddress.map(item => {
+              address.map(item => {
                 return(
                   <AddressCheckout
                     key={item.id}
