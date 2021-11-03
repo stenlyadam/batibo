@@ -30,11 +30,11 @@ const Cart = ({navigation}) => {
   },[cart])
 
   const chooseCheckOut = () => {
+    console.log('list cart : ', listCart);
     if(cart.length >= 1){
-      const checkoutFromDetail = false;
 
       dispatch({type: 'SET_CHECKOUT', value: listCart});
-      dispatch({type: 'SET_ORDER_FROM_DETAIL', value: checkoutFromDetail});
+      dispatch({type: 'SET_ORDER_FROM_DETAIL', value: undefined});
       dispatch(setSelectedAddress(null));
       navigation.navigate('Checkout');
     }

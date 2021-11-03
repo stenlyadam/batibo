@@ -9,7 +9,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { WebView } from 'react-native-webview';
 import axios from 'axios';
 import { API_HOST } from '../../config';
-import { getOrders, setLoading } from '../../redux/action';
+import { getOnProcess, getOrders, setLoading } from '../../redux/action';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -22,13 +22,10 @@ const Payment = ({navigation}) => {
   const {checkout} = useSelector(state => state.loginReducer);
   const {orderTemp} = useSelector(state => state.orderReducer);
   const [isPaymentOpen, setIsPaymentOpen] = useState(false);
-  console.log('orderTemp : ', orderTemp );
+  const [limitTransaction, setLimitTransaction] = useState(1);
 
-  useEffect(() => {
-    
-
-  }, [])
-
+  console.log('limit transaction : ', limitTransaction);
+  
   const checkoutMidtrans = () => {
     setIsPaymentOpen(true);
   }
@@ -38,12 +35,17 @@ const Payment = ({navigation}) => {
     const titleWeb = 'Laravel';
     let orderSuccess = false;
 
-
+    
+    
     if(state.title === titleWeb){
+      if(limitTransaction == 1){
+        setLimitTransaction(2);
+        console.log('limit transactio update : ', limitTransaction);
+
       const data = {
         isOrder : 'true'
       };
-
+      Promise.all(
       //update isOrder pada transaksi menjadi true 
       axios.post(`${API_HOST.url}/transaction/${orderTemp.id}`, data , {
         headers: {
@@ -53,7 +55,7 @@ const Payment = ({navigation}) => {
         
       })
       //update isOrder pada transaksi menjadi true - jika berhasil
-      .then(res => {
+      .then(async (res) => {
           if(orderFromDetail){
           // console.log('saya order dari detail loh');
           const orderSubmit = {
@@ -62,106 +64,73 @@ const Payment = ({navigation}) => {
             transaction_id: orderTemp.id,
             quantity: checkout[0].quantity,
           }
-          axios.post(`${API_HOST.url}/order/add`, orderSubmit, {
+          console.log('orderSubmit : ', orderSubmit);
+          await axios.post(`${API_HOST.url}/order/add`, orderSubmit, {
             headers: {
                 'Accept' : 'application/json',
                 'Authorization' : token,
             }
             })
             //tambah data product dalam database (order) - jika berhasil
-            .then(resOrder => {
-              orderSuccess = true;
-              //ambil data order terbaru dari database
-              axios.get(`${API_HOST.url}/order`, {
-                headers: {
-                'Accept' : 'application/json',
-                'Authorization' : token,
-                }
-            })
-            //ambil data order terbaru dari database - jika berhasil
-            .then(resUpdateOrder => {
-                dispatch(setLoading(false));
-                //simpan data ORDER user ke dalam data reducer
-                dispatch({type: 'SET_ORDER', value: resUpdateOrder.data.data.data});
-                orderSuccess = true;
-            })
-            //ambil data order terbaru dari database - jika tidak berhasil
-            .catch(errUpdateOrder => {
-                orderSuccess = false;
-                dispatch(setLoading(false));
-                // console.log('Terjadi pengambilan data order user');
-                showMessage('Terjadi pengambilan data order user');
-            })
+            .then(async (resOrder) => {
+            orderSuccess = true;
+            await navigation.replace('OrderSuccess', orderSuccess);
             })
             //tambah data product ke database (order) - jika tidak berhasil
-            .catch((errOrder) => {
-                orderSuccess = false;
-                dispatch(setLoading(false));
-                // console.log('Terjadi kesalahan pada penyimpanan data ke API Order');
+            .catch(errOrder => {
                 showMessage('Terjadi kesalahan pada penyimpanan data ke API Order');
             }) 
         }
         else{
-          checkout.map(item => {
-            console.log('checkout mapping: ', item);
-            const orderSubmit = {
-              user_id: user.id,
-              product_id: item.product_id,
-              transaction_id: orderTemp.id,
-              quantity: item.quantity,
-            }
-              axios.post(`${API_HOST.url}/order/add`, orderSubmit, {
-              headers: {
-                  'Accept' : 'application/json',
-                  'Authorization' : token,
+            checkout.map(async (item) => {
+              console.log('checkout mapping: ', item);
+              const orderSubmit = {
+                user_id: user.id,
+                product_id: item.product_id,
+                transaction_id: orderTemp.id,
+                quantity: item.quantity,
               }
-              })
-              //tambah data product dalam database (order) - jika berhasil
-              .then(resOrder => {
-              //ambil data order terbaru dari database
-              orderSuccess = true;
-              axios.get(`${API_HOST.url}/order`, {
-                  headers: {
-                  'Accept' : 'application/json',
-                  'Authorization' : token,
-                  }
-              })
-              //ambil data order terbaru dari database - jika berhasil
-              .then(resUpdateOrder => {
-                  dispatch(setLoading(false));
-                  //simpan data ORDER user ke dalam data reducer
-                  dispatch({type: 'SET_ORDER', value: resUpdateOrder.data.data.data});
-                  orderSuccess = true;
-              })
-              //ambil data order terbaru dari database - jika tidak berhasil
-              .catch(errUpdateOrder => {
-                  orderSuccess = false;
-                  dispatch(setLoading(false));
-                  // console.log('Terjadi pengambilan data order user');
-                  showMessage('Terjadi pengambilan data order user');
-              })
-              })
-              //tambah data product ke database (order) - jika tidak berhasil
-              .catch((errOrder) => {
-                  orderSuccess = false;
-                  dispatch(setLoading(false));
-                  // console.log('Terjadi kesalahan pada penyimpanan data ke API Order');
-                  showMessage('Terjadi kesalahan pada penyimpanan data ke API Order');
-              })
-          })
+                await axios.post(`${API_HOST.url}/order/add`, orderSubmit, {
+                headers: {
+                    'Accept' : 'application/json',
+                    'Authorization' : token,
+                }
+                })
+                //tambah data product dalam database (order) - jika berhasil
+                .then(async (resOrder) => {
+                      //hapus data cart di database user
+                      await axios.delete(`${API_HOST.url}/cart/${item.id}`, {
+                        headers: {
+                          'Accept' : 'application/json',
+                          'Authorization' : token,
+                        }
+                      })
+                      //hapus data cart di database user - jika berhasil
+                      .then ((resCart) => {
+                
+                      })
+                      //hapus data cart di database user - jika tidak berhasil
+                      .catch((errCart) => {
+                        console.log(`produk tidak berhasil dihapus : id ${item.id}`);
+                      })
+                })
+                //tambah data product ke database (order) - jika tidak berhasil
+                .catch((errOrder) => {
+                    showMessage('Terjadi kesalahan pada penyimpanan data ke API Order');
+                })
+            })
+            orderSuccess = true;
+            setTimeout(async () => {
+              await navigation.replace('OrderSuccess', orderSuccess);
+            }, 1000);
         }
       })
       //update isOrder pada transaksi menjadi true - jika tidak berhasil
       .catch(err => {
         console.log('terjadi kesalahan pada proses Order : ', err.response);
       })
-      
-      //jika status order berhasil
-      if(orderSuccess = true){
-        // console.log('hallooo order success');
-        navigation.replace('OrderSuccess');
+      )
       }
-
     }
   }
 

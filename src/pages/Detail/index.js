@@ -21,25 +21,36 @@ const Detail = ({navigation, route}) => {
   }
   
   const onBuy = () => {
-    const checkoutFromDetail = true;
     const productCheckout = {
-      category: item.category,
-      detail: item.detail,
-      discount: item.discount,
-      id: item.id,
-      name: item.name,
-      picturePath: item.picturePath,
-      price: item.price,
-      price_after_discount: item.price_after_discount,
-      product_unit: item.product_unit,
+      created_at : item.created_at,
+      deleted_at : item.deleted_at,
+      id : item.id,
+      product: {
+        category: item.category,
+        created_at : item.created_at,
+        deleted_at : item.deleted_at,
+        detail: item.detail,
+        discount: item.discount,
+        id: item.id,
+        name: item.name,
+        picturePath: item.picturePath,
+        price: item.price,
+        price_after_discount: item.price_after_discount,
+        product_unit: item.product_unit,
+        updated_at: item.updated_at
+      },
+      product_id: item.id,
       quantity: 1,
+      total: item.price_after_discount,
+      updated_at: item.updated_at,
+      user_id: user.id
     }
 
     let checkout = [productCheckout]; 
-    // console.log('product : ', checkout);
+    console.log('product : ', checkout);
     dispatch(setSelectedAddress(null));
     dispatch({type: 'SET_CHECKOUT', value: checkout});
-    dispatch({type: 'SET_ORDER_FROM_DETAIL', value: checkoutFromDetail});
+    dispatch({type: 'SET_ORDER_FROM_DETAIL', value: true});
     navigation.navigate('Checkout');
   }
 

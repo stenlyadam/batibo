@@ -1,5 +1,5 @@
 const initOrder = {
-    orderFromDetail:{},
+    orderFromDetail:false,
     orderTemp: {},
     order: [],
     onProcess: [],

@@ -19,7 +19,10 @@ const OrderSummary = ({navigation, route}) => {
     const [listOrder, setListOrder] = useState([]);
     const [statusOrder, setStatusOrder] = useState(transaction.status);
     const [statusText, setStatusText] = useState(colors.text.secondary);
+    const {orderFromDetail} = useSelector(state => state.orderReducer);
 
+    console.log('checkout : ', checkout);
+    console.log('order from detail : ', orderFromDetail)
     useEffect(() => {
         if(status == 'PENDING'){
             setStatusText(colors.status.pending);
@@ -36,7 +39,7 @@ const OrderSummary = ({navigation, route}) => {
         else if(status == 'DELIVERED'){
             setStatusText(colors.status.delivered);
         }
-
+        setListOrder([]);
         order.map(item => {
             if(transaction.id == item.transaction_id){
                 const data = item;

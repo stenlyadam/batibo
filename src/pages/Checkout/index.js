@@ -27,7 +27,7 @@ const Checkout = ({navigation}) => {
   useEffect(() => {
     //order berasal dari detail - jika ya
     if (orderFromDetail){
-      setTotalPrice(checkout[0].price_after_discount * checkout[0].quantity);
+      setTotalPrice(checkout[0].total * checkout[0].quantity);
     }
     //order berasal dari detail - jika tidak
     else{
@@ -56,15 +56,15 @@ const Checkout = ({navigation}) => {
     //jika order bukan dari detail
     else{
       Alert.alert(
-        "Konfirmasi",
-        "Apakah anda melakukan checkout? Jika lanjut produk yang ada di keranjang akan hilang.",
+        "Perhatian",
+        "Setelah melewati proses pembayaran, produk yang ada di keranjang Anda akan hilang.",
         [
           {
-            text: "Tidak",
+            text: "Kembali",
             onPress: () => console.log('hallo'),
             style: "cancel"
           },
-          { text: "Ya", onPress: () => checkoutMidtrans() }
+          { text: "Ok", onPress: () => checkoutMidtrans() }
         ]
       );
     }
@@ -148,19 +148,20 @@ const Checkout = ({navigation}) => {
                   orderFromDetail ?
                       <CartItem
                       id={checkout[0].id}
-                      productId={checkout[0].id}
-                      image={{uri: checkout[0].picturePath}}
-                      name={checkout[0].name}
-                      weight={checkout[0].product_unit}
-                      originalPrice={checkout[0].price}
-                      currentPrice={checkout[0].price_after_discount}
+                      productId={checkout[0].product_id}
+                      image={{uri: checkout[0].product.picturePath}}
+                      name={checkout[0].product.name}
+                      weight={checkout[0].product.product_unit}
+                      originalPrice={checkout[0].product.price}
+                      currentPrice={checkout[0].product.price_after_discount}
                       count={checkout[0].quantity}
                       checkout
                       orderFromDetail
                       detail={checkout[0]}
                       />
                       
-                :  listCheckout.map(item => {
+                :  
+                listCheckout.map(item => {
 
                     return (
                     <CartItem
