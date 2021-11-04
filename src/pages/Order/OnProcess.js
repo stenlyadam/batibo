@@ -16,31 +16,31 @@ const OnProcess = ({navigation}) => {
 
   let i = 0;
 
-  useEffect(() => {
-    // dispatch(getOrders(token));
-    dispatch(getOnProcess(token));
-
-      onProcess.map(item => {
-        if(item.isOrder == 'false') {
-          dispatch(setLoading(true));
-          axios.delete(`${API_HOST.url}/transaction/${item.id}`, {
-            headers: {
-              'Accept' : 'application/json',
-              'Authorization' : token,
-            },
-          })
-          .then(res => {
-            console.log('berhasil dihapus');
-            // dispatch(getOrders(token));
-            dispatch(getOnProcess(token));
-          })
-          .catch(err => {
-            console.log('terjadi error :', err.response);
-          })
-        }
-      })
-      setTimeout(() => dispatch(setLoading(false)), 2000);
-  }, [onProcess])
+  // useEffect(() => {
+  //   // dispatch(getOrders(token));
+  //     dispatch(getOnProcess(token));
+  //     onProcess.map(item => {
+  //       if(item.isOrder == 'false') {
+  //         dispatch(setLoading(true));
+  //         axios.delete(`${API_HOST.url}/transaction/${item.id}`, {
+  //           headers: {
+  //             'Accept' : 'application/json',
+  //             'Authorization' : token,
+  //           },
+  //         })
+  //         .then(res => {
+  //           console.log('berhasil dihapus');
+  //           // dispatch(getOrders(token));
+            
+  //         })
+  //         .catch(err => {
+  //           console.log('terjadi error :', err.response);
+  //         })
+  //       }
+  //     })
+  //     dispatch(getOnProcess(token));
+  //     setTimeout(() => dispatch(setLoading(false)), 2000);
+  // }, [])
 
   return (
     <ScrollView showsVerticalScrollIndicator={false} >
@@ -48,9 +48,9 @@ const OnProcess = ({navigation}) => {
         {onProcess.map(item => {
           //jika i tidak sama dengan id transaksi akan mereturn komponen OrderItem
           if(i != item.id){
-            console.log('transaction id :', item.id);
+            // console.log('transaction id :', item.id);
             i = item.id;
-            console.log('i saat dicek dengan transaction id : ', i);
+            // console.log('i saat dicek dengan transaction id : ', i);
             return(
               <OrderItem
               uid={item.uid}

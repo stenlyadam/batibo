@@ -2,8 +2,8 @@ import axios from "axios"
 import { API_HOST } from "../../config"
 import { getData, showMessage } from "../../utils"
 
-export const getOrders = (token) => (dispatch) => {
-
+export const getOrders = (token, successOrder, navigation) => (dispatch) => {
+        console.log('saya get On Process');
         axios.get(`${API_HOST.url}/order`, {
             headers: {
                 'Authorization' : token
@@ -12,6 +12,26 @@ export const getOrders = (token) => (dispatch) => {
         .then(res => {
             console.log('get orders: ', res.data.data.data);
             dispatch({type: 'SET_ORDER', value: res.data.data.data})
+            //jika order success
+            if(successOrder == true){
+                axios.get(`${API_HOST.url}/cart`, {
+                    headers: {
+                    'Accept' : 'application/json',
+                    'Authorization' : token,
+                    }
+                })
+                //ambil data cart terbaru dari database - jika berhasil
+                .then(resUpdateCart => {
+                    console.log('berhasil coy')
+                    //simpan data CART user ke dalam data reducer
+                    dispatch({type: 'SET_CART', value: resUpdateCart.data.data.data});
+                })
+                //ambil data cart terbaru dari database - jika tidak berhasil
+                .catch(errUpdateCart => {
+                    console.log('error from order to updated cart data')
+                })
+            }
+            
         })
         .catch(err => {
             console.log('err get orders: ', err.response);
@@ -20,18 +40,19 @@ export const getOrders = (token) => (dispatch) => {
 }
 
 export const getOnProcess = (token) => (dispatch) => {
+        console.log('saya get On Process');
         axios.all([
-            axios.get(`${API_HOST.url}/transaction?status=PENDING`, {
+            axios.get(`${API_HOST.url}/transaction?status=PENDING&isOrder=true`, {
                 headers: {
                     'Authorization' : token
                 },
             }),
-            axios.get(`${API_HOST.url}/transaction?status=SUCCESS`, {
+            axios.get(`${API_HOST.url}/transaction?status=SUCCESS&isOrder=true`, {
                 headers: {
                     'Authorization' : token
                 },
             }),
-            axios.get(`${API_HOST.url}/transaction?status=ON_DELIVERY`, {
+            axios.get(`${API_HOST.url}/transaction?status=ON_DELIVERY&isOrder=true`, {
                 headers: {
                     'Authorization' : token
                 },
@@ -60,12 +81,12 @@ export const getOnProcess = (token) => (dispatch) => {
 
 export const getHistory = (token) => (dispatch) => {
         axios.all([
-            axios.get(`${API_HOST.url}/transaction?status=CANCELLED`, {
+            axios.get(`${API_HOST.url}/transaction?status=CANCELLED&isOrder=true`, {
                 headers: {
                     'Authorization' : token
                 },
             }),
-            axios.get(`${API_HOST.url}/transaction?status=DELIVERED`, {
+            axios.get(`${API_HOST.url}/transaction?status=DELIVERED&isOrder=true`, {
                 headers: {
                     'Authorization' : token
                 },

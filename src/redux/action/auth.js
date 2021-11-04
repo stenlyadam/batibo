@@ -38,19 +38,60 @@ export const userAuthAction = (resToken, navigation) => (dispatch) => {
                     'Authorization' : token
                 },
             }),
+            //get data transaction(OnProcess)
+            axios.get(`${API_HOST.url}/transaction?status=PENDING&isOrder=true`, {
+                headers: {
+                    'Authorization' : token
+                },
+            }),
+            axios.get(`${API_HOST.url}/transaction?status=SUCCESS&isOrder=true`, {
+                headers: {
+                    'Authorization' : token
+                },
+            }),
+            axios.get(`${API_HOST.url}/transaction?status=ON_DELIVERY&isOrder=true`, {
+                headers: {
+                    'Authorization' : token
+                },
+            }),
+            //get data transaction(History)
+            axios.get(`${API_HOST.url}/transaction?status=CANCELLED&isOrder=true`, {
+                headers: {
+                    'Authorization' : token
+                },
+            }),
+            axios.get(`${API_HOST.url}/transaction?status=DELIVERED&isOrder=true`, {
+                headers: {
+                    'Authorization' : token
+                },
+            }),
         ])
         //request API untuk data address, cart, order dari pengguna - jika berhasil
-        .then(axios.spread((resAddress, resCart, resOrder) => {
+        .then(axios.spread((resAddress, resCart, resOrder, transactionPending, transactionSuccess, transactionOnDelivery, transactionCancelled, transactionDelivered) => {
                 // console.log('get in progress address: ', resAddress.data.data.data);
                 // console.log('get in progress cart: ', resCart.data.data.data);
                 // console.log('get in progress order: ', resOrder.data.data.data);
-    
+                const pending = transactionPending.data.data.data;
+                const success = transactionSuccess.data.data.data;
+                const onDelivery = transactionOnDelivery.data.data.data;
+                const cancelled = transactionCancelled.data.data.data;
+                const delivered = transactionDelivered.data.data.data;
+
                 //simpan data address user ke dalam data reducer
                 dispatch({type: 'SET_ADDRESS', value: resAddress.data.data.data});
                 //simpan data CART user ke dalam data reducer
                 dispatch({type: 'SET_CART', value: resCart.data.data.data});
                 //simpan data Order user ke dalam data reducer
                 dispatch({type: 'SET_ORDER', value: resOrder.data.data.data})
+
+                dispatch({
+                    type: 'SET_ON_PROCESS', 
+                    value: [...pending, ...success, ...onDelivery]
+                })
+                dispatch({
+                    type: 'SET_HISTORY', 
+                    value: [...cancelled, ...delivered]
+                })
             }
         ))
         //request API untuk data address, cart, order dari pengguna - jika tidak berhasil
@@ -61,7 +102,7 @@ export const userAuthAction = (resToken, navigation) => (dispatch) => {
         //pergi ke halaman utama aplikasi
         setTimeout(() => {
             navigation.reset({index: 0, routes: [{name: 'MainApp'}]})
-        }, 2000)
+        }, 1000)
     })
     .catch(err => {
         // console.log('error auth : ', err.response);
@@ -121,19 +162,60 @@ export const signUpAction = (dataRegister, addressRegister, navigation) => (disp
                     'Authorization' : token
                 },
             }),
+            //get data transaction(OnProcess)
+            axios.get(`${API_HOST.url}/transaction?status=PENDING`, {
+            headers: {
+                'Authorization' : token
+            },
+            }),
+            axios.get(`${API_HOST.url}/transaction?status=SUCCESS`, {
+                headers: {
+                    'Authorization' : token
+                },
+            }),
+            axios.get(`${API_HOST.url}/transaction?status=ON_DELIVERY`, {
+                headers: {
+                    'Authorization' : token
+                },
+            }),
+            //get data transaction(History)
+            axios.get(`${API_HOST.url}/transaction?status=CANCELLED`, {
+                headers: {
+                    'Authorization' : token
+                },
+            }),
+            axios.get(`${API_HOST.url}/transaction?status=DELIVERED`, {
+                headers: {
+                    'Authorization' : token
+                },
+            }),
         ])
         //request API untuk data address, cart, order dari pengguna - jika berhasil
-        .then(axios.spread((resAddress, resCart, resOrder) => {
+        .then(axios.spread((resAddress, resCart, resOrder, transactionPending, transactionSuccess, transactionOnDelivery, transactionCancelled, transactionDelivered) => {
                 // console.log('get in progress address: ', resAddress.data.data.data);
                 // console.log('get in progress cart: ', resCart.data.data.data);
                 // console.log('get in progress order: ', resOrder.data.data.data);
+                const pending = transactionPending.data.data.data;
+                const success = transactionSuccess.data.data.data;
+                const onDelivery = transactionOnDelivery.data.data.data;
+                const cancelled = transactionCancelled.data.data.data;
+                const delivered = transactionDelivered.data.data.data;
 
                 //simpan data address user ke dalam data reducer
                 dispatch({type: 'SET_ADDRESS', value: resAddress.data.data.data});
                 //simpan data CART user ke dalam data reducer
                 dispatch({type: 'SET_CART', value: resCart.data.data.data});
                 //simpan data Order user ke dalam data reducer
-                dispatch({type: 'SET_ORDER', value: resOrder.data.data.data})
+                dispatch({type: 'SET_ORDER', value: resOrder.data.data.data});
+
+                dispatch({
+                    type: 'SET_ON_PROCESS', 
+                    value: [...pending, ...success, ...onDelivery]
+                })
+                dispatch({
+                    type: 'SET_HISTORY', 
+                    value: [...cancelled, ...delivered]
+                })
             }
         ))
         //request API untuk data address, cart, order dari pengguna - jika tidak berhasil

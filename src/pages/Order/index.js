@@ -13,6 +13,13 @@ const Tab = createMaterialTopTabNavigator();
 
 const Order = ({navigation}) => {
 
+  const dispatch = useDispatch();
+  const {order} = useSelector(state => state.orderReducer);
+
+  useEffect(() => {
+    dispatch({type: 'SET_ORDER_FROM_DETAIL', value: undefined});
+  }, [order])
+
   return (
     <SafeAreaView style={styles.page}>
       <PageTitle title="Order Saya" onBack={() => navigation.goBack()} />

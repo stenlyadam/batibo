@@ -16,7 +16,7 @@ const Counter = ({itemCount, itemId, productId, itemPrice, checkout, orderFromDe
 
 
   const onPressMinus = () => {
-    console.log('item id : ',itemId);
+    console.log('item id : ', itemId);
     if (count > 1) {
       let updateCount = -1;
       updateCartAction(updateCount);
@@ -59,20 +59,30 @@ const Counter = ({itemCount, itemId, productId, itemPrice, checkout, orderFromDe
 
         if(orderFromDetail){
           const productCheckout = {
-            category: detail.category,
-            detail: detail.detail,
-            discount: detail.discount,
-            id: detail.id,
-            name: detail.name,
-            picturePath: detail.picturePath,
-            price: detail.price,
-            price_after_discount: detail.price_after_discount,
-            product_unit: detail.product_unit,
+            created_at : detail.created_at,
+            id : detail.id,
+            product: {
+              category: detail.product.category,
+              created_at : detail.product.created_at,
+              detail: detail.product.detail,
+              discount: detail.product.discount,
+              id: detail.product.id,
+              name: detail.product.name,
+              picturePath: detail.product.picturePath,
+              price: detail.product.price,
+              price_after_discount: detail.product.price_after_discount,
+              product_unit: detail.product.product_unit,
+              updated_at: detail.product.updated_at
+            },
+            product_id: detail.id,
             quantity: '',
+            total: detail.product.price_after_discount,
+            updated_at: detail.updated_at,
+            user_id: user.id
           }
 
           let checkout = [productCheckout]; 
-
+          console.log(' checkout from count : ', checkout);
           productCheckout.quantity = count + updateCount;
           dispatch({type: 'SET_CHECKOUT', value: checkout});
           setCount((prevCount) => prevCount + updateCount);

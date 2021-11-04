@@ -5,12 +5,12 @@ import {FlatList} from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
 
 const Item = ({item, status}) => (
-  status == true ?
-  <View style={styles.itemContainer}>
-    <Text style={styles.itemName}>{item.name} x {item.quantity}</Text>
-    <Text style={styles.itemPrice}>{`Rp ${(item.price_after_discount*item.quantity).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`}</Text>
-  </View>
-  : 
+  // status == true ?
+  // <View style={styles.itemContainer}>
+  //   <Text style={styles.itemName}>{item.name} x {item.quantity}</Text>
+  //   <Text style={styles.itemPrice}>{`Rp ${(item.price_after_discount*item.quantity).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`}</Text>
+  // </View>
+  // : 
   <View style={styles.itemContainer}>
     <Text style={styles.itemName}>{item.product.name} x {item.quantity}</Text>
     <Text style={styles.itemPrice}>{`Rp ${item.total.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`}</Text>

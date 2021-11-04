@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,19 +7,30 @@ import {
   Image,
   Dimensions,
 } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import {IMGOrderSuccess} from '../../assets';
 import {Button, Gap, PageTitle} from '../../components';
+import { getOnProcess, getOrders } from '../../redux/action';
 import {colors, fonts} from '../../utils';
 
 const {width} = Dimensions.get('window');
 
 const OrderSuccess = ({navigation, route}) => {
+  const successOrder = route.params;
+  console.log('successOrder : ', successOrder);
+
+  const dispatch = useDispatch();
+  const {token} = useSelector(state => state.loginReducer);
   const {orderTemp} = useSelector(state => state.orderReducer);
-  console.log('order tempo: ', orderTemp);
-  // console.log(route.params)
-  // const totalPrice = route.params.price;
-  // const orderKey = route.params.key;
+  
+    
+  useEffect(() => {
+    if(successOrder == true){
+      dispatch(getOnProcess(token));
+      dispatch(getOrders(token, successOrder, navigation));
+    }
+  }, [])
+
   return (
     <SafeAreaView style={styles.page}>
       <Gap height={8} />
