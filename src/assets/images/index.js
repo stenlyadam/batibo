@@ -11,6 +11,7 @@ import IMGBuah from './img-buah.png';
 import IMGRempah from './img-rempah.png';
 import IMGLainnya from './img-lainnya.png';
 import IMGBackground from './img-login-header-background.png';
+import IMGMapPin from './img-mapPin.png';
 
 export {
   IMGLogoBatibo,
@@ -26,4 +27,5 @@ export {
   IMGRempah,
   IMGLainnya,
   IMGBackground,
+  IMGMapPin,
 };

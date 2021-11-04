@@ -10,6 +10,7 @@ import {
   Register,
   RegisterAddress,
   Splash,
+  Map,
   OrderSuccess,
   Order,
   OnBoarding,
@@ -171,6 +172,11 @@ const Router = () => {
         options={{headerShown: false}}
       />
       <Stack.Screen
+        name="Map"
+        component={Map}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
         name="Payment"
         component={Payment}
         options={{headerShown: false}}
@@ -195,7 +201,7 @@ const Router = () => {
         component={AddAddress}
         options={{headerShown: false}}
       />
-        <Stack.Screen
+      <Stack.Screen
         name="EditAddress"
         component={EditAddress}
         options={{headerShown: false}}

@@ -4,6 +4,8 @@ import {Button, TextInput, Gap} from '../../components';
 import {colors, fonts, getData, storeData, showMessage} from '../../utils';
 import { API_HOST, firebase } from '../../config';
 import { useDispatch, useSelector } from "react-redux";
+import MapView from 'react-native-maps';
+import GetLocation from 'react-native-get-location';
 import axios from 'axios';
 
 const EditAddress = ({navigation, route}) => {
@@ -12,6 +14,7 @@ const EditAddress = ({navigation, route}) => {
     console.log('item : ', item);
     const dispatch = useDispatch();
     const {token} = useSelector(state => state.loginReducer);
+    const {coordinates} = useSelector(state => state.orderReducer);
 
     const [form, setForm] = useState({
         detail_alamat: item.detail_alamat,
@@ -44,6 +47,8 @@ const EditAddress = ({navigation, route}) => {
             kota_kabupaten : form.kota_kabupaten,
             provinsi : item.provinsi,
         };
+
+        
         console.log('to update address: ', data);
 
         //jika detail alamat belum diisi
@@ -135,6 +140,10 @@ const EditAddress = ({navigation, route}) => {
 
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={styles.contentWrapper}>
+                    <Button title={"Map"}  onPress={() => navigation.navigate("Map")}/>
+                    <Text>Latitude: {coordinates.latitude}</Text>
+                    <Text>Longitude: {coordinates.longitude}</Text>
+                    <Text>Distance: {coordinates.distance} m</Text>
                     <TextInput
                         label="Alamat"
                         value={form.detail_alamat}

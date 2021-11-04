@@ -6,6 +6,7 @@ const initOrder = {
     history: [],
     // checkoutAddress: [],
     selectedAddress: [],
+    coordinates: {latitude: 0, longitude: 0, distance: 0},
 };
 
 export const orderReducer = (state = initOrder, action) => {
@@ -55,6 +56,13 @@ export const orderReducer = (state = initOrder, action) => {
         return {
             ...state,
             selectedAddress: action.value,
+            
+        }   
+    }
+    if (action.type === 'SET_COORDINATES'){
+        return {
+            ...state,
+            coordinates: action.value,
             
         }   
     }

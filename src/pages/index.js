@@ -7,6 +7,7 @@ import InCategory from './InCategory';
 import Cart from './Cart';
 import Checkout from './Checkout';
 import CheckoutAddress from './CheckoutAddress';
+import Map from './Map';
 import OrderSuccess from './OrderSuccess';
 import Order from './Order';
 import OnBoarding from './OnBoarding';
@@ -34,6 +35,7 @@ export {
   Cart,
   Checkout,
   CheckoutAddress,
+  Map,
   OrderSuccess,
   Order,
   OnBoarding,
