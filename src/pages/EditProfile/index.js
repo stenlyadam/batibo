@@ -73,7 +73,7 @@ const EditProfile = ({navigation}) => {
     if(form.name.length >= 5){
       //bila nomor sesuai
       if(form.phone_number.length >= 10){
-
+        
         if(photoReducer.isUploadPhoto){
           const photoForUpload = new FormData();
           photoForUpload.append('file', photoReducer);
@@ -112,6 +112,7 @@ const EditProfile = ({navigation}) => {
             });
         }
         else {
+          console.log('asdgasgdas');
           //simpan data user terbaru
           axios.post(`${API_HOST.url}/user`, dataUpdate, {
             headers: {
@@ -121,7 +122,6 @@ const EditProfile = ({navigation}) => {
           })
           //simpan data user terbaru - jika berhasil
           .then(res => {
-            user.profile_photo_url = `${API_HOST.storage}/${resUpload.data.data[0]}`
             dispatch({type: 'SET_USER', value: res.data.data});
             showMessage('Update profile berhasil', 'success');               
             navigation.goBack();

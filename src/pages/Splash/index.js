@@ -16,14 +16,23 @@ const dispatch = useDispatch();
 
   useEffect(() => {
     setTimeout(() => {
-      getData('token').then((res) => {
-        console.log('token : ', res);
-        if (res) {
-          dispatch(userAuthAction(res, navigation));
-        } else {
-          navigation.replace('Login');
+      getData('oldApp').then((res) => {
+        //jika aplikasi baru diinstal
+        if(res == null){
+          navigation.replace('OnBoarding');
         }
-      });
+        //jika tidak
+        else{
+          getData('token').then((resToken) => {
+            console.log('token : ', resToken);
+            if (resToken) {
+              dispatch(userAuthAction(resToken, navigation));
+            } else {
+              navigation.replace('Login');
+            }
+          })
+        }
+      })
     }, 2000);
   }, []);
   

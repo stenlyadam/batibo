@@ -12,10 +12,10 @@ import {IMGMapPin} from '../../assets';
 import axios from 'axios';
 
 const initialState = {
-  latitude: 0,
-  longitude: 0,
-  latitudeDelta: 0.0922,
-  longitudeDelta: 0.0421,
+    latitude: 0,
+    longitude: 0,
+    latitudeDelta: 0.005,
+    longitudeDelta: 0.005,
 }
 
 const sellerCoords = {
@@ -34,8 +34,8 @@ const Map = ({navigation, route}) => {
         setCurrentPosition({
             latitude: location.latitude, 
             longitude: location.longitude, 
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
+            latitudeDelta: 0.005,
+            longitudeDelta: 0.005,
         })
         console.log("location: ", location)
     }
@@ -55,8 +55,8 @@ const Map = ({navigation, route}) => {
       setCurrentPosition({
         latitude: latitude,
         longitude: longitude,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421,
+        latitudeDelta: 0.005,
+        longitudeDelta: 0.005,
       });
     },
     (error) => {

@@ -26,10 +26,10 @@ const RegisterAddress = ({navigation, route}) => {
         nomor_handphone: user.phone_number,
         email: user.email,
         kategori: "Alamat Utama",
-        kelurahan: "Paal Dua",
+        kelurahan: "",
         detail_alamat : "",
-        kecamatan : "Paal Dua",
-        kota_kabupaten : "Manado",
+        kecamatan : "",
+        kota_kabupaten : "",
         provinsi : "Sulawesi Utara",
     });
 
@@ -38,14 +38,14 @@ const RegisterAddress = ({navigation, route}) => {
 
     const onSubmit = () => {
         dispatch(setLoading(true));
-        if(form.detail_alamat === ""){
+        if(form.detail_alamat === "" || form.kecamatan === "" || form.kelurahan === "" || form.kota_kabupaten === ""){
             dispatch(setLoading(false));
             showMessage('Data Anda belum lengkap');
         }
         else{
             //jika format alamat sesuai
             if(form.detail_alamat.length >= 20){
-                console.log('form user: ', registerReducer);
+                console.log('form user: ', form);
                 //register user
                 dispatch(signUpAction(registerReducer, form, navigation));
             }
@@ -67,54 +67,31 @@ const RegisterAddress = ({navigation, route}) => {
             <ScrollView showsVerticalScrollIndicator={false}>
                 <TextInput
                     label="Alamat"
-                    placeholder="Masukan Alamat"
+                    placeholder="Masukkan Alamat (Cth : Jln. Wolter Monginsidi 1)"
                     value={form.detail_alamat}
                     onChangeText={(value) => setForm('detail_alamat', value)}
                 />
                 <Gap height={18} />
-                <View style={styles.container}>
-                    <Text style={styles.label}>Kecamatan</Text>
-                    <View style={styles.input}>
-                        <Picker
-                        selectedValue={form.kecamatan}
-                        onValueChange={(itemValue) => setForm('kecamatan', itemValue)}>
-                        <Picker.Item label="Paal Dua" value="Paal Dua" />
-                        <Picker.Item label="Sario" value="Sario" />
-                        <Picker.Item label="Airmadidi" value="Airmadidi" />
-                        <Picker.Item label="Girian" value="Girian" />
-                        </Picker>
-                    </View>
-                </View>
+                <TextInput
+                    label="Kecamatan"
+                    placeholder="Masukan Kecamatan"
+                    value={form.kecamatan}
+                    onChangeText={(value) => setForm('kecamatan', value)}
+                />
                 <Gap height={18} />
-                <View style={styles.container}>
-                    <Text style={styles.label}>Kelurahan</Text>
-                    <View style={styles.input}>
-                        <Picker
-                        selectedValue= {form.kelurahan}
-                        onValueChange={(itemValue) => setForm('kelurahan', itemValue)}>
-                        <Picker.Item label='Paal Dua' value='Paal Dua' />
-                        <Picker.Item label='Sario' value='Sario' />
-                        <Picker.Item label='Airmadidi Atas' value='Airmadidi Atas' />
-                        <Picker.Item label='Airmadidi Bawah' value='Airmadidi Bawah' />
-                        <Picker.Item label='Girian Atas' value='Girian Atas' />
-                        <Picker.Item label='Girian Bawah' value='Girian Bawah' />
-                        </Picker>
-                    </View>
-                </View>
+                <TextInput
+                    label="Kelurahan"
+                    placeholder="Masukan Kelurahan"
+                    value={form.kelurahan}
+                    onChangeText={(value) => setForm('kelurahan', value)}
+                />
                 <Gap height={18} />
-                <View style={styles.container}>
-                    <Text style={styles.label}>Kota/Kabupaten</Text>
-                    <View style={styles.input}>
-                        <Picker
-                        
-                        selectedValue={form.kota_kabupaten}
-                        onValueChange={(itemValue) => setForm('kota_kabupaten', itemValue)}>
-                        <Picker.Item label="Manado" value="Manado" />
-                        <Picker.Item label="Minahasa Utara" value="Minahasa Utara" />
-                        <Picker.Item label="Bitung" value="Bitung" />
-                        </Picker>
-                    </View>
-                </View>
+                <TextInput
+                    label="Kota/Kabupaten"
+                    placeholder="Masukan Kota/Kabupaten"
+                    value={form.kota_kabupaten}
+                    onChangeText={(value) => setForm('kota_kabupaten', value)}
+                />
                 <Gap height={32} />
                 <Button title="Sign Up" onPress={onSubmit} borderRadius={10}/>
                 <Gap height={4} />

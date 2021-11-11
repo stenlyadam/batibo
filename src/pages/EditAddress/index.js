@@ -140,10 +140,10 @@ const EditAddress = ({navigation, route}) => {
 
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={styles.contentWrapper}>
-                    <Button title={"Map"}  onPress={() => navigation.navigate("Map")}/>
+                    {/* <Button title={"Map"}  onPress={() => navigation.navigate("Map")}/>
                     <Text>Latitude: {coordinates.latitude}</Text>
                     <Text>Longitude: {coordinates.longitude}</Text>
-                    <Text>Distance: {coordinates.distance} m</Text>
+                    <Text>Distance: {coordinates.distance} m</Text> */}
                     <TextInput
                         label="Alamat"
                         value={form.detail_alamat}

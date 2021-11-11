@@ -1,17 +1,26 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {IMGOnBoarding1, IMGOnBoarding2, IMGOnBoarding3} from '../../assets';
-import {colors, fonts} from '../../utils';
+import {colors, storeData} from '../../utils';
 import Swiper from 'react-native-swiper';
 import Page from './Page';
 
 const OnBoarding = ({navigation}) => {
   const swiper = React.useRef(null);
+  
   const handleNext = () => {
     if (swiper && swiper.current) {
       swiper.current.scrollBy(1);
     }
   };
+
+  const toLoginPage = () => {
+    //simpan data oldApp ke localstorage
+    storeData('oldApp', {value: true});
+    //berpindah ke halaman Login
+    navigation.replace('Login');
+  }
+
   return (
     <Swiper
       ref={swiper}
@@ -41,7 +50,7 @@ const OnBoarding = ({navigation}) => {
           kamu dapat belanja dengan mudah, petani bahagia."
           image={IMGOnBoarding1}
           press={() => handleNext()}
-          lewati={() => navigation.replace('Login')}
+          lewati={toLoginPage}
         />
       </View>
 
@@ -53,7 +62,7 @@ const OnBoarding = ({navigation}) => {
           tersedia juga."
           image={IMGOnBoarding2}
           press={() => handleNext()}
-          lewati={() => navigation.replace('Login')}
+          lewati={toLoginPage}
         />
       </View>
 
@@ -65,7 +74,7 @@ const OnBoarding = ({navigation}) => {
           image={IMGOnBoarding3}
           topButton=""
           bottomButton="Selesai"
-          press={() => navigation.replace('Login')}
+          press={toLoginPage}
         />
       </View>
     </Swiper>
