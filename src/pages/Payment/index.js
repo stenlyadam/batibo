@@ -1,31 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import {StyleSheet, Text, View, SafeAreaView, Dimensions} from 'react-native';
-import {Button, PageTitle} from '../../components';
-import {colors, fonts, showMessage} from '../../utils';
-import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import OrderDetail from './OrderDetail';
-import DeliveryDetail from './DeliveryDetail';
-import { useSelector, useDispatch } from 'react-redux';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import React, { useState } from 'react';
+import { Dimensions, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import { WebView } from 'react-native-webview';
-import axios from 'axios';
-import { API_HOST } from '../../config';
-import { getOnProcess, getOrders, setLoading } from '../../redux/action';
+import { useSelector } from 'react-redux';
+import { Button, PageTitle } from '../../components';
+import { colors, fonts } from '../../utils';
+import DeliveryDetail from './DeliveryDetail';
+import OrderDetail from './OrderDetail';
 
 const Tab = createMaterialTopTabNavigator();
 
 const Payment = ({navigation}) => {
 
-  const dispatch = useDispatch();
-  const {orderFromDetail} = useSelector(state => state.orderReducer);
-  const {user} = useSelector(state => state.loginReducer);
-  const {token} = useSelector(state => state.loginReducer);
-  const {checkout} = useSelector(state => state.loginReducer);
   const {orderTemp} = useSelector(state => state.orderReducer);
   const [isPaymentOpen, setIsPaymentOpen] = useState(false);
-  const [limitTransaction, setLimitTransaction] = useState(1);
 
-  console.log('limit transaction : ', limitTransaction);
-  
   const checkoutMidtrans = () => {
     setIsPaymentOpen(true);
   }
@@ -33,104 +22,10 @@ const Payment = ({navigation}) => {
   const onNavChange = (state) => {
     console.log('state: ', state);
     const titleWeb = 'Laravel';
-    let orderSuccess = false;
+    let orderSuccess = true;
 
-    
-    
     if(state.title === titleWeb){
-      if(limitTransaction == 1){
-        setLimitTransaction(2);
-        console.log('limit transactio update : ', limitTransaction);
-
-      const data = {
-        isOrder : 'true'
-      };
-      Promise.all(
-      //update isOrder pada transaksi menjadi true 
-      axios.post(`${API_HOST.url}/transaction/${orderTemp.id}`, data , {
-        headers: {
-          'Accept' : 'application/json',
-          'Authorization' : token,
-        },
-        
-      })
-      //update isOrder pada transaksi menjadi true - jika berhasil
-      .then(async (res) => {
-          if(orderFromDetail){
-          // console.log('saya order dari detail loh');
-          const orderSubmit = {
-            user_id: user.id,
-            product_id: checkout[0].id,
-            transaction_id: orderTemp.id,
-            quantity: checkout[0].quantity,
-          }
-          console.log('orderSubmit : ', orderSubmit);
-          await axios.post(`${API_HOST.url}/order/add`, orderSubmit, {
-            headers: {
-                'Accept' : 'application/json',
-                'Authorization' : token,
-            }
-            })
-            //tambah data product dalam database (order) - jika berhasil
-            .then(async (resOrder) => {
-            orderSuccess = true;
-            await navigation.replace('OrderSuccess', orderSuccess);
-            })
-            //tambah data product ke database (order) - jika tidak berhasil
-            .catch(errOrder => {
-                showMessage('Terjadi kesalahan pada penyimpanan data ke API Order');
-            }) 
-        }
-        else{
-            checkout.map(async (item) => {
-              console.log('checkout mapping: ', item);
-              const orderSubmit = {
-                user_id: user.id,
-                product_id: item.product_id,
-                transaction_id: orderTemp.id,
-                quantity: item.quantity,
-              }
-                await axios.post(`${API_HOST.url}/order/add`, orderSubmit, {
-                headers: {
-                    'Accept' : 'application/json',
-                    'Authorization' : token,
-                }
-                })
-                //tambah data product dalam database (order) - jika berhasil
-                .then(async (resOrder) => {
-                      //hapus data cart di database user
-                      await axios.delete(`${API_HOST.url}/cart/${item.id}`, {
-                        headers: {
-                          'Accept' : 'application/json',
-                          'Authorization' : token,
-                        }
-                      })
-                      //hapus data cart di database user - jika berhasil
-                      .then ((resCart) => {
-                
-                      })
-                      //hapus data cart di database user - jika tidak berhasil
-                      .catch((errCart) => {
-                        console.log(`produk tidak berhasil dihapus : id ${item.id}`);
-                      })
-                })
-                //tambah data product ke database (order) - jika tidak berhasil
-                .catch((errOrder) => {
-                    showMessage('Terjadi kesalahan pada penyimpanan data ke API Order');
-                })
-            })
-            orderSuccess = true;
-            setTimeout(async () => {
-              await navigation.replace('OrderSuccess', orderSuccess);
-            }, 1000);
-        }
-      })
-      //update isOrder pada transaksi menjadi true - jika tidak berhasil
-      .catch(err => {
-        console.log('terjadi kesalahan pada proses Order : ', err.response);
-      })
-      )
-      }
+      navigation.replace('OrderSuccess', orderSuccess);
     }
   }
 

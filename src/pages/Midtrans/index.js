@@ -1,5 +1,5 @@
-import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import React from 'react';
+import { StyleSheet } from 'react-native';
 import WebView from 'react-native-webview';
 
 const Midtrans = ({navigation, route}) => {
@@ -8,11 +8,11 @@ const Midtrans = ({navigation, route}) => {
     console.log('link : ', paymentLink);
 
     const onNavChange = (state) => {
-        console.log('state: ', state);
-        const titleWeb = 'Example Domain';
-
-        if(state.title == titleWeb){
-            navigation.goBack();
+        if(state.title == 'Example Domain'){
+            navigation.navigate('OrderSummary');
+        }
+        if(state.title == 'Laravel'){
+            navigation.navigate('OrderSummary');
         }
     }
 

@@ -1,14 +1,12 @@
-import { Picker } from '@react-native-community/picker';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Alert, SafeAreaView, ScrollView, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import { color } from 'react-native-reanimated';
+import { Alert, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from "react-redux";
-import { Button, CartItem, PageTitle, Gap } from '../../components';
+import { Button, CartItem, Gap, PageTitle } from '../../components';
 import { API_HOST } from '../../config';
+import { getOnProcess, getOrders } from '../../redux/action';
 import { setLoading } from '../../redux/action/global';
 import { colors, fonts, showMessage } from '../../utils';
-import { getCheckoutAddress, setSelectedAddress } from '../../redux/action';
 
 const Checkout = ({navigation}) => {
 
@@ -22,6 +20,7 @@ const Checkout = ({navigation}) => {
   const [deliveryCost] = useState(15000);
   const [listCheckout, setListCart] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [limitTransaction, setLimitTransaction] = useState(1);
   console.log('selected ', selectedAddress);
   
   useEffect(() => {
@@ -81,7 +80,8 @@ const Checkout = ({navigation}) => {
       user_id : user.id,
       address_id: selectedAddress.id,
       total : totalPrice + deliveryCost,
-      status: 'PENDING'
+      status: 'PENDING',
+      isOrder : 'true'
     };
     axios.post(`${API_HOST.url}/checkout`, data, {
       headers: {
@@ -89,6 +89,7 @@ const Checkout = ({navigation}) => {
       }
     })
     .then(res => {
+      let orderSuccess = false;
       const orderTemp = {
         id : res.data.data.id,
         uid : res.data.data.uid,
@@ -97,11 +98,92 @@ const Checkout = ({navigation}) => {
       }
       dispatch({type: 'SET_ORDER_TEMP', value: orderTemp});
       dispatch(setLoading(false));
-      navigation.replace('Payment');
-    
+      if(limitTransaction == 1){
+        setLimitTransaction(2);
+        console.log('limit transactio update : ', limitTransaction);
+          if(orderFromDetail){
+            
+            // console.log('saya order dari detail loh');
+            const orderSubmit = {
+              user_id: user.id,
+              product_id: checkout[0].id,
+              transaction_id: res.data.data.id,
+              quantity: checkout[0].quantity,
+            }
+            console.log('orderSubmit : ', orderSubmit);
+            Promise.all(
+            axios.post(`${API_HOST.url}/order/add`, orderSubmit, {
+              headers: {
+                  'Accept' : 'application/json',
+                  'Authorization' : token,
+              }
+              })
+              //tambah data product dalam database (order) - jika berhasil
+              .then(async (resOrder) => {
+              orderSuccess = true;
+              dispatch(getOnProcess(token));
+              dispatch(getOrders(token, orderSuccess, navigation)); 
+              await navigation.replace('Payment', orderSuccess);
+              showMessage('Checkout Success', 'success');
+              })
+              //tambah data product ke database (order) - jika tidak berhasil
+              .catch(errOrder => {
+                  console.log('Terjadi kesalahan pada penyimpanan data ke API Order : ',errOrder);
+              })
+            ) 
+          }
+          else{
+            Promise.all(
+              checkout.map(async (item) => {
+                console.log('checkout mapping: ', item);
+                const orderSubmit = {
+                  user_id: user.id,
+                  product_id: item.product_id,
+                  transaction_id: res.data.data.id,
+                  quantity: item.quantity,
+                }
+                  await axios.post(`${API_HOST.url}/order/add`, orderSubmit, {
+                  headers: {
+                      'Accept' : 'application/json',
+                      'Authorization' : token,
+                  }
+                  })
+                  //tambah data product dalam database (order) - jika berhasil
+                  .then(async (resOrder) => {
+                        //hapus data cart di database user
+                        await axios.delete(`${API_HOST.url}/cart/${item.id}`, {
+                          headers: {
+                            'Accept' : 'application/json',
+                            'Authorization' : token,
+                          }
+                        })
+                        //hapus data cart di database user - jika berhasil
+                        .then ((resCart) => {
+                            orderSuccess = true;
+                            dispatch(getOnProcess(token));
+                            dispatch(getOrders(token, orderSuccess, navigation));
+                            showMessage('Checkout Success', 'success');
+                        })
+                        //hapus data cart di database user - jika tidak berhasil
+                        .catch((errCart) => {
+                          console.log(`produk tidak berhasil dihapus : id ${item.id}`);
+                        })
+                  })
+                  //tambah data product ke database (order) - jika tidak berhasil
+                  .catch((errOrder) => {
+                      showMessage('Terjadi kesalahan pada penyimpanan data ke API Order');
+                  })
+              })
+            )
+            setTimeout(async () => {
+              await navigation.replace('Payment', orderSuccess);
+            }, 1000);
+          }
+    }
     })
     .catch(err => {
       dispatch(setLoading(false));
+      console.log('err response :', err)
       showMessage('Masalah Jaringan : Silahkan Coba Lagi Beberapa Saat');
     })
   }
