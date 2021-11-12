@@ -56,7 +56,7 @@ const Checkout = ({navigation}) => {
     else{
       Alert.alert(
         "Perhatian",
-        "Setelah melewati proses pembayaran, produk yang ada di keranjang Anda akan hilang.",
+        "Jika lanjut proses checkout, anda akan kehilangan produk dari keranjang anda.",
         [
           {
             text: "Kembali",
