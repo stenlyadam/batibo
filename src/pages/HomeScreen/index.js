@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, ScrollView, StyleSheet, Text, View, TouchableOpacity , RefreshControl} from 'react-native';
+import { SafeAreaView, ScrollView, StyleSheet, Text, View, TouchableOpacity , RefreshControl, TouchableWithoutFeedbackComponent} from 'react-native';
 import { Carousel, Gap, Product, SearchBox, Button, CartItem } from '../../components';
 import Category from '../../components/molecules/Category';
 import { API_HOST, firebase } from '../../config';
 import { colors, fonts, getData, showMessage, storeData } from '../../utils';
 import {useDispatch , useSelector} from 'react-redux';
 import axios from 'axios';
-import { getProductData, getProductDataByCategory, addCartAction } from '../../redux/action';
+import { getProductData, getProductDataByCategory, addCartAction, getOnProcess, getOrders } from '../../redux/action';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 const HomeScreen = ({navigation}) => {
@@ -36,6 +36,8 @@ const HomeScreen = ({navigation}) => {
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
+    dispatch(getOnProcess(token));
+    dispatch(getOrders(token)); 
     wait(1000).then(() => setRefreshing(false));
   }, []);
 
