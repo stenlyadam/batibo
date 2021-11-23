@@ -47,7 +47,7 @@ const CheckoutAddress = ({navigation}) => {
                     nomor_handphone={item.nomor_handphone}
                     detail={`${item.detail_alamat}, ${item.kelurahan}, ${item.kecamatan}, ${item.kota_kabupaten}, ${item.provinsi}`}
                     navigation={navigation}
-                    onPress={() => (dispatch(setSelectedAddress(item, navigation)), navigation.navigate('Checkout'))}
+                    onPress={() => (dispatch(setSelectedAddress(item)), navigation.navigate('Checkout'))}
                   />
                 )
               })

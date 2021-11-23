@@ -48,7 +48,7 @@ const Detail = ({navigation, route}) => {
 
     let checkout = [productCheckout]; 
     console.log('product : ', checkout);
-    dispatch(setSelectedAddress(null));
+    dispatch({type: 'SET_SELECTED_ADDRESS', value: null});
     dispatch({type: 'SET_CHECKOUT', value: checkout});
     dispatch({type: 'SET_ORDER_FROM_DETAIL', value: true});
     navigation.navigate('Checkout');

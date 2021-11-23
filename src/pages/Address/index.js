@@ -114,6 +114,8 @@ const Address = ({navigation}) => {
               kelurahan : item.kelurahan,
               kota_kabupaten : item.kota_kabupaten,
               provinsi : item.provinsi,
+              latitude : item.latitude,
+              longitude : item.longitude,
             })}
           /> 
         )

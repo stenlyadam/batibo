@@ -6,7 +6,7 @@ import { API_HOST, firebase } from '../../config';
 import { colors, fonts, getData, showMessage, storeData } from '../../utils';
 import {useDispatch , useSelector} from 'react-redux';
 import axios from 'axios';
-import { getProductData, getProductDataByCategory, addCartAction, getOnProcess, getOrders } from '../../redux/action';
+import { getProductData, getProductDataByCategory, addCartAction, getOnProcess, getOrders, getHistory } from '../../redux/action';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 const HomeScreen = ({navigation}) => {
@@ -37,6 +37,7 @@ const HomeScreen = ({navigation}) => {
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     dispatch(getOnProcess(token));
+    dispatch(getHistory(token));
     dispatch(getOrders(token)); 
     wait(1000).then(() => setRefreshing(false));
   }, []);

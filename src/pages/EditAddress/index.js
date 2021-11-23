@@ -27,6 +27,15 @@ const EditAddress = ({navigation, route}) => {
         kota_kabupaten : item.kota_kabupaten,
     }, [])
 
+    const [initCoordinates] = useState({
+        latitude: item.latitude,
+        longitude: item.longitude,
+    })
+
+    useEffect(() => {
+        dispatch({type: 'SET_COORDINATES', value: initCoordinates});
+    }, [])
+
     const changeText = (key, value) => {
         setForm({
             ...form,
@@ -126,11 +135,11 @@ const EditAddress = ({navigation, route}) => {
             <View style={styles.headerContainer}>
                 <View style={styles.backButtonContainer}>
                 <Button
-                type="icon-only"
-                icon="icon-arrow-back"
-                style={styles.backButton}
-                onPress={() => navigation.goBack()}
-                borderRadius={4}
+                    type="icon-only"
+                    icon="icon-arrow-back"
+                    style={styles.backButton}
+                    onPress={() => navigation.goBack()}
+                    borderRadius={4}
                 />
                 </View>
                 <View style={styles.titleTextContainer}>
@@ -140,10 +149,24 @@ const EditAddress = ({navigation, route}) => {
 
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={styles.contentWrapper}>
-                    {/* <Button title={"Map"}  onPress={() => navigation.navigate("Map")}/>
-                    <Text>Latitude: {coordinates.latitude}</Text>
-                    <Text>Longitude: {coordinates.longitude}</Text>
-                    <Text>Distance: {coordinates.distance} m</Text> */}
+                <Text style={styles.textInputTitle}>Lokasi Pickup</Text>
+                    <View style={styles.mapContainer}>
+                        <View style={styles.mapWrapper}>
+                            <Button
+                                buttonColor={colors.white}
+                                borderWidth={2}
+                                borderColor={colors.grey}
+                                textColor={colors.button.primary.backgroundColor}
+                                borderRadius={4} 
+                                title={"Pilih Lokasi"}  
+                                onPress={() => navigation.navigate('Map', initCoordinates)}
+                            />
+                            <Gap height={8} />
+                            <Text>Latitude: {coordinates.latitude}</Text>
+                            <Text>Longitude: {coordinates.longitude}</Text>
+                        </View>
+                    </View>
+                    <Gap height={12} />
                     <TextInput
                         label="Alamat"
                         value={form.detail_alamat}
@@ -216,6 +239,7 @@ const styles = StyleSheet.create({
     headerContainer: {
         backgroundColor: 'white',
         flexDirection: 'row',
+        paddingBottom: 32,
     },
     backButtonContainer: {
         backgroundColor: colors.button.primary.backgroundColor,
@@ -231,8 +255,24 @@ const styles = StyleSheet.create({
         position: 'absolute',
     },
     contentWrapper: {
-        marginVertical: 38,
+        marginBottom: 32,
         marginHorizontal: 24,
+    },
+    textInputTitle: {
+        // marginTop:-8,
+        fontFamily: fonts.nunito.bold,
+        fontSize: 16,
+        paddingBottom: 8,
+    },
+    mapContainer: {
+        borderWidth: 1,
+        borderRadius:10,
+        borderColor:colors.grey,
+    },
+    mapWrapper: {
+        paddingHorizontal: 10,
+        paddingVertical: 10,
+        borderRadius:10,
     },
     titleTextContainer: {
         flex: 1,
@@ -244,6 +284,10 @@ const styles = StyleSheet.create({
         fontFamily: fonts.nunito.semibold,
         fontSize: 22,
         opacity: 0.7,
-    }
+    },
+    textWarning: {
+        fontFamily: fonts.nunito.bold,
+        color: colors.status.cancelled
+    },
 })
 

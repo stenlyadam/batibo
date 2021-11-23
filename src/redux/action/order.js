@@ -1,6 +1,6 @@
 import axios from "axios"
 import { API_HOST } from "../../config"
-import { getData, showMessage } from "../../utils"
+import { getDistance } from 'geolib';
 
 export const getOrders = (token, successOrder, navigation) => (dispatch) => {
         console.log('saya get On Process');
@@ -126,6 +126,47 @@ export const getHistory = (token) => (dispatch) => {
 //     });
 // };
 
-export const setSelectedAddress = (item, navigation) => (dispatch) => {
+export const setSelectedAddress = (item) => (dispatch) => {
+    const sellerCoords = {
+        latitude: 1.4171754552237659, 
+        longitude: 124.98753217980266, 
+    }
+
+    const distance = getDistance(
+        {latitude: item.latitude, longitude: item.longitude},
+        {latitude: sellerCoords.latitude, longitude: sellerCoords.longitude}
+    ) 
+    
+    let ongkir;
+    //jika jarak pelanggan dibawah radius 2 km
+    if(distance < 2000){
+        ongkir = 8000;
+    }
+    //jika jarak pelanggan dibawah radius 5 km
+    else if(distance < 5000){
+        ongkir = 15000;
+    }
+    //jika jarak pelanggan dibawah radius 10 km
+    else if(distance < 10000){
+        ongkir = 25000;
+    }
+    //jika jarak pelanggan dibawah radius 20 km
+    else if(distance < 20000){
+        ongkir = 50000;
+    }
+    //jika jarak pelanggan dibawah radius 50 km
+    else if(distance < 50000){
+        ongkir = 100000;
+    }
+    //jika jarak pelanggan dibawah radius 70 km
+    else if(distance < 70000){
+        ongkir = 140000;
+    }
+    //jika jarak pelanggan diatas radius 70 km
+    else {
+        ongkir = 200000;
+    }
+
+    dispatch({type: 'SET_ONGKIR', value: ongkir});
     dispatch({type: 'SET_SELECTED_ADDRESS', value: item});
 };

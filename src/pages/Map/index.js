@@ -11,23 +11,22 @@ import { getDistance } from 'geolib';
 import {IMGMapPin} from '../../assets';
 import axios from 'axios';
 
-const initialState = {
-    latitude: 0,
-    longitude: 0,
-    latitudeDelta: 0.005,
-    longitudeDelta: 0.005,
-}
-
-const sellerCoords = {
-    latitude: 1.4171754552237659, 
-    longitude: 124.98753217980266, 
-}
-
 const Map = ({navigation, route}) => {
+
+    const initialState = {
+        latitude: 0,
+        longitude: 0,
+        latitudeDelta: 0.005,
+        longitudeDelta: 0.005,
+    }
+    
+    const sellerCoords = {
+        latitude: 1.4171754552237659, 
+        longitude: 124.98753217980266, 
+    }
 
     const dispatch = useDispatch();
     const {token} = useSelector(state => state.loginReducer);
-    
     const [currentPosition, setCurrentPosition] = useState(initialState);
     
     const onChangeRegion = (location) => {
@@ -41,30 +40,41 @@ const Map = ({navigation, route}) => {
     }
 
     const onButtonPress = () => {
-        dispatch({type: 'SET_COORDINATES', value: {latitude: currentPosition.latitude, longitude: currentPosition.longitude, distance: getDistance(
+        const distance = getDistance(
             { latitude: currentPosition.latitude, longitude: currentPosition.longitude},
             { latitude: sellerCoords.latitude, longitude: sellerCoords.longitude }
-        )}});
-        navigation.goBack();
+        )  
+        console.log('distance: ', distance)
+        if(distance >= 80000){
+            showMessage('Lokasi Anda terlalu jauh dari penjual');
+        }
+        else{
+            dispatch({type: 'SET_COORDINATES', value: {latitude: currentPosition.latitude, longitude: currentPosition.longitude, distance: getDistance(
+                { latitude: currentPosition.latitude, longitude: currentPosition.longitude},
+                { latitude: sellerCoords.latitude, longitude: sellerCoords.longitude }
+            )}});
+            showMessage('Berhasil menyimpan lokasi', 'success');
+            navigation.goBack();
+        }
     }
 
-    useEffect(() => {
-    Geolocation.getCurrentPosition((position) => {
-        console.log("Position: ", position)
-      const { longitude, latitude } = position.coords;
-      setCurrentPosition({
-        latitude: latitude,
-        longitude: longitude,
-        latitudeDelta: 0.005,
-        longitudeDelta: 0.005,
-      });
-    },
-    (error) => {
-      // See error code charts below.
-      console.log(error.code, error.message);
-    },
-    { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 });
-  }, [])
+        useEffect(() => {
+        Geolocation.getCurrentPosition((position) => {
+            console.log("Position: ", position)
+            const { longitude, latitude } = position.coords;
+            setCurrentPosition({
+                latitude: latitude,
+                longitude: longitude,
+                latitudeDelta: 0.005,
+                longitudeDelta: 0.005,
+            });
+        },
+        (error) => {
+            // See error code charts below.
+            console.log(error.code, error.message);
+        },
+        { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 });
+        }, [])
 
     return currentPosition.latitude ? (
         <View style={styles.container}>

@@ -35,7 +35,7 @@ const Cart = ({navigation}) => {
 
       dispatch({type: 'SET_CHECKOUT', value: listCart});
       dispatch({type: 'SET_ORDER_FROM_DETAIL', value: undefined});
-      dispatch(setSelectedAddress(null));
+      dispatch({type: 'SET_SELECTED_ADDRESS', value: null});
       navigation.navigate('Checkout');
     }
     else{

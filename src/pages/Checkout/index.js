@@ -17,6 +17,7 @@ const Checkout = ({navigation}) => {
   const {checkout} = useSelector(state => state.loginReducer);
   const {orderFromDetail} = useSelector(state => state.orderReducer);
   const {selectedAddress} = useSelector(state => state.orderReducer);
+  const {ongkir} = useSelector(state => state.orderReducer);
   const [deliveryCost] = useState(15000);
   const [listCheckout, setListCart] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
@@ -79,9 +80,15 @@ const Checkout = ({navigation}) => {
       uid : Date.now(),
       user_id : user.id,
       address_id: selectedAddress.id,
-      total : totalPrice + deliveryCost,
+      total : totalPrice + ongkir,
       status: 'PENDING',
-      isOrder : 'true'
+      isOrder : 'true',
+      nama_penerima : selectedAddress.nama_penerima,
+      nomor_handphone : selectedAddress.nomor_handphone,
+      email : selectedAddress.email,
+      alamat_penerima : `${selectedAddress.detail_alamat}, ${selectedAddress.kelurahan}, ${selectedAddress.kecamatan}, ${selectedAddress.kota_kabupaten}`,
+      latitude : selectedAddress.latitude,
+      longitude : selectedAddress.longitude,
     };
     axios.post(`${API_HOST.url}/checkout`, data, {
       headers: {
@@ -274,11 +281,11 @@ const Checkout = ({navigation}) => {
                 </View>
                 <View style={styles.paymentSummary}>
                   <Text style={styles.paymentSummaryCategory}>Ongkos Kirim</Text>
-                  <Text style={styles.priceSummary}>Rp. {deliveryCost.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ".")}</Text>
+                  <Text style={styles.priceSummary}>Rp. {ongkir.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ".")}</Text>
                 </View>
                 <View style={styles.totalPayment}>
                   <Text style={styles.totalPaymentText}>Total Pembayaran</Text>
-                  <Text style={styles.totalPrice}>Rp. {(totalPrice + deliveryCost).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ".")}</Text>
+                  <Text style={styles.totalPrice}>Rp. {(totalPrice + ongkir).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ".")}</Text>
                 </View>
               </View>
             </View>

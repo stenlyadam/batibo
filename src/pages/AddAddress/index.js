@@ -12,7 +12,18 @@ const AddAddress = ({navigation}) => {
     const dispatch = useDispatch();
     const {user} = useSelector(state => state.loginReducer);
     const {token} = useSelector(state => state.loginReducer);
-    console.log('user : ', user.id);
+    const {coordinates} = useSelector(state => state.orderReducer);
+
+    const [initCoordinates] = useState({
+        latitude: 0,
+        longitude: 0,
+        distance: 0,
+    })
+
+    useEffect(() => {
+        dispatch({type: 'SET_COORDINATES', value: initCoordinates});
+    }, [])
+
     const [form, setForm] = useState({
         address: [],
     }, [])
@@ -36,11 +47,17 @@ const AddAddress = ({navigation}) => {
             kelurahan: form.kelurahan,
             kota_kabupaten: form.kota_kabupaten,
             provinsi: 'Sulawesi Utara',
+            latitude: coordinates.latitude,
+            longitude: coordinates.longitude,
         }
 
         console.log('data: ',data);
+        //jika lokasi pickup belum ditentukan
+        if(coordinates.longitude == 0){
+            showMessage('Anda belum menentukan lokasi pickup');     
+        }
         //jika detail alamat belum diisi
-        if(data.detail_alamat == null || data.detail_alamat == ''){
+        else if(data.detail_alamat == null || data.detail_alamat == ''){
             showMessage('Anda belum mengisi detail alamat');
         }
          //jika nama penerima belum diisi
@@ -93,7 +110,7 @@ const AddAddress = ({navigation}) => {
                     //simpan data address user ke dalam data reducer
                     dispatch({type: 'SET_ADDRESS', value: resAddressUpdate.data.data.data});
                     navigation.goBack();
-                    
+                    showMessage('Alamat berhasil ditambahkan', 'success');
                 })
                 //tarik data address terbaru - jika tidak berhasil
                 .catch((errAddressUpdate) => {
@@ -128,7 +145,27 @@ const AddAddress = ({navigation}) => {
             </View> 
 
             <ScrollView showsVerticalScrollIndicator={false}>
-                <View style={styles.contentWrapper}>
+            <View style={styles.contentWrapper}>
+            <Text style={styles.textInputTitle}>Lokasi Pickup</Text>
+                    <View style={styles.mapContainer}>
+                        <View style={styles.mapWrapper}>
+                            <Button
+                                buttonColor={colors.white}
+                                borderWidth={2}
+                                borderColor={colors.grey}
+                                textColor={colors.button.primary.backgroundColor}
+                                borderRadius={4} 
+                                title={"Pilih Lokasi"}  
+                                onPress={() => navigation.navigate("Map")}
+                            />
+                            <Gap height={8} />
+                            <Text>Latitude: {coordinates.latitude}</Text>
+                            <Text>Longitude: {coordinates.longitude}</Text>
+                            <Text>Distance: {coordinates.distance} m</Text>
+                        </View>
+                    </View>
+                    <Gap height={12} />
+                
                     <TextInput
                         height={8}
                         label="Alamat"
@@ -195,7 +232,8 @@ const AddAddress = ({navigation}) => {
                     />
                     <Gap height={20} />
                     <Button title="Simpan Alamat" borderRadius={8}  onPress={addAddress}/>    
-                </View>
+                
+            </View>
             </ScrollView>
         </View>
     )
@@ -227,8 +265,23 @@ const styles = StyleSheet.create({
         position: 'absolute',
     },
     contentWrapper: {
-        marginVertical: 14,
+        marginBottom: 32,
         marginHorizontal: 24,
+    },
+    textInputTitle: {
+        fontFamily: fonts.nunito.bold,
+        fontSize: 16,
+        paddingBottom: 8,
+    },
+    mapContainer: {
+        borderWidth: 1,
+        borderRadius:10,
+        borderColor:colors.grey,
+    },
+    mapWrapper: {
+        paddingHorizontal: 10,
+        paddingVertical: 10,
+        borderRadius:10,
     },
     titleTextContainer: {
         flex: 1,
