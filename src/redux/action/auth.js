@@ -214,6 +214,11 @@ export const signUpAction = (dataRegister, addressRegister, navigation) => (disp
                     type: 'SET_HISTORY', 
                     value: [...cancelled, ...delivered]
                 })
+                //simpan data transaksi(history)
+                dispatch({
+                    type: 'SET_COORDINATES', 
+                    value: {latitude : 0, longitude : 0, distance: 0}
+                })
             }
         ))
         //request API untuk data address, cart, order dari pengguna - jika tidak berhasil

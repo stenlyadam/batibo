@@ -32,7 +32,7 @@ const Product = ({
           <Text style={styles.discountText}>{discount}%</Text>
         </View>
         <TouchableOpacity onPress={onDetail}>
-          <Image style={styles.imageStyle} source={image} />
+          <Image style={styles.imageStyle} source={image}/>
         </TouchableOpacity>
       </View>
       <View style={styles.productDetails}>

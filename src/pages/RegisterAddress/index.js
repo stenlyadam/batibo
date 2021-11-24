@@ -6,6 +6,7 @@ import {
     StyleSheet,
     Text,
     View,
+    PermissionsAndroid,
 } from 'react-native';
 import {Button, Gap, Link, TextInput} from '../../components';
 import {firebase} from '../../config';
@@ -18,7 +19,23 @@ import {Picker} from '@react-native-community/picker';
 
 const RegisterAddress = ({navigation, route}) => {
     const user = route.params;
-    console.log('user for address :', user);
+    const dispatch = useDispatch();
+    const registerReducer = useSelector((state) => state.registerReducer);
+    const {coordinates} = useSelector(state => state.orderReducer);
+
+    const requestLocationPermission = async () => {
+        try {
+        const granted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION);
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+            navigation.navigate("Map")
+        } else {
+            console.log("Camera permission denied");
+        }
+        } catch (err) {
+        console.warn(err);
+        }
+    };
 
     const [form, setForm] = useForm({
         user_id: "",
@@ -31,14 +48,13 @@ const RegisterAddress = ({navigation, route}) => {
         kecamatan : "",
         kota_kabupaten : "",
         provinsi : "Sulawesi Utara",
+        latitude : coordinates.latitude,
+        longitude : coordinates.longitude,
     });
-
-    const dispatch = useDispatch();
-    const registerReducer = useSelector((state) => state.registerReducer);
 
     const onSubmit = () => {
         dispatch(setLoading(true));
-        if(form.detail_alamat === "" || form.kecamatan === "" || form.kelurahan === "" || form.kota_kabupaten === ""){
+        if(form.latitude != 0 || form.detail_alamat === "" || form.kecamatan === "" || form.kelurahan === "" || form.kota_kabupaten === ""){
             dispatch(setLoading(false));
             showMessage('Data Anda belum lengkap');
         }
@@ -65,6 +81,29 @@ const RegisterAddress = ({navigation, route}) => {
         <View style={styles.formContainer}>
             <View>
             <ScrollView showsVerticalScrollIndicator={false}>
+            <Text style={styles.textInputTitle}>Lokasi Pickup</Text>
+                    <View style={styles.mapContainer}>
+                        <View style={styles.mapWrapper}>
+                            <Button
+                                buttonColor={colors.white}
+                                borderWidth={2}
+                                borderColor={colors.grey}
+                                textColor={colors.button.primary.backgroundColor}
+                                borderRadius={4} 
+                                title={"Pilih Lokasi"}  
+                                onPress={requestLocationPermission}
+                            />
+                            <Gap height={8} />
+                            {coordinates.distance == 0 
+                            ? <Text style={{ color: colors.status.cancelled, fontFamily: fonts.nunito.bold }}>Lokasi pickup belum ditentukan</Text>
+                            : <Text style={{ color: colors.status.on_delivery, fontFamily: fonts.nunito.bold }}>Lokasi telah diambil</Text>
+                            }
+                            {/* <Text>Latitude: {coordinates.latitude}</Text>
+                            <Text>Longitude: {coordinates.longitude}</Text>
+                            <Text>Distance: {coordinates.distance} m</Text> */}
+                        </View>
+                    </View>
+                    <Gap height={12} />
                 <TextInput
                     label="Alamat"
                     placeholder="Masukkan Alamat (Cth : Jln. Wolter Monginsidi 1)"
@@ -94,7 +133,7 @@ const RegisterAddress = ({navigation, route}) => {
                 />
                 <Gap height={32} />
                 <Button title="Sign Up" onPress={onSubmit} borderRadius={10}/>
-                <Gap height={4} />
+                <Gap height={12} />
                 </ScrollView>
             </View>
         </View>
@@ -127,6 +166,21 @@ const styles = StyleSheet.create({
         marginHorizontal: 24,
         justifyContent: 'space-between',
         flex: 1,
+    },
+    textInputTitle: {
+        fontFamily: fonts.nunito.bold,
+        fontSize: 16,
+        paddingBottom: 8,
+    },
+    mapContainer: {
+        borderWidth: 1,
+        borderRadius:10,
+        borderColor:colors.grey,
+    },
+    mapWrapper: {
+        paddingHorizontal: 10,
+        paddingVertical: 10,
+        borderRadius:10,
     },
     container: {
         width: '100%'

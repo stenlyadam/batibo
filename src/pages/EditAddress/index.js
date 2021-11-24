@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import { StyleSheet, Text, View, ScrollView } from 'react-native'
+import { StyleSheet, Text, View, ScrollView, PermissionsAndroid } from 'react-native'
 import {Button, TextInput, Gap} from '../../components';
 import {colors, fonts, getData, storeData, showMessage} from '../../utils';
 import { API_HOST, firebase } from '../../config';
@@ -42,6 +42,20 @@ const EditAddress = ({navigation, route}) => {
             [key]: value,
         });
     };
+
+    const requestLocationPermission = async () => {
+        try {
+          const granted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION);
+          if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+            navigation.navigate('Map', initCoordinates)
+          } else {
+            console.log("Camera permission denied");
+          }
+        } catch (err) {
+          console.warn(err);
+        }
+      };
 
     const updateAddressData = () => {
         const data = {
@@ -159,7 +173,7 @@ const EditAddress = ({navigation, route}) => {
                                 textColor={colors.button.primary.backgroundColor}
                                 borderRadius={4} 
                                 title={"Pilih Lokasi"}  
-                                onPress={() => navigation.navigate('Map', initCoordinates)}
+                                onPress={requestLocationPermission}
                             />
                             <Gap height={8} />
                             <Text>Latitude: {coordinates.latitude}</Text>
