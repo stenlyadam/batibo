@@ -7,6 +7,7 @@ const listColors = {
   green4: '#24AD65',
   green5: 'rgba(40, 190, 100, 0.7)',
   white: 'white',
+  white2: 'rgba(242, 244, 242, 0.90)',
   orange1: '#FF8C21',
   grey1: '#1C2024',
   grey2: '#303030',
@@ -16,7 +17,7 @@ const listColors = {
   grey6: '#F2F2F2',
   red1: '#FF3C21',
   black: 'black',
-  black2: 'rgba(0,0,0, 0.25)',
+  black2: 'rgba(0,0,0, 0.45)',
   blue: '#0045A3',
   blue2: 'rgba(28, 128, 255, 0.7)',
   red: '#ff1818',
@@ -66,6 +67,9 @@ export const colors = {
     cancelled: listColors.red2,
     delivered: listColors.blue2,
   },
+  loading: {
+    backgroundColor: listColors.black2,
+    containerColor: listColors.white2
+  },
   error: listColors.red1,
-  loadingBackground: listColors.black2,
 };

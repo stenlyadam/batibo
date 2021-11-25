@@ -219,7 +219,7 @@ const Checkout = ({navigation}) => {
                     <View>
                       <Text style={styles.addressTitle(selectedAddress)}>{selectedAddress.kategori}</Text>
                       <Text style={styles.addressDetail}>{selectedAddress.nama_penerima} ({selectedAddress.nomor_handphone})</Text>
-                      <Text style={styles.addressDetail}>{selectedAddress.detail_alamat} / {selectedAddress.provinsi} / {selectedAddress.kota_kabupaten} / {selectedAddress.kecamatan} / {selectedAddress.kelurahan}</Text>
+                      <Text style={styles.addressDetail}>{selectedAddress.detail_alamat}, {selectedAddress.kelurahan}, {selectedAddress.kecamatan}, {selectedAddress.kota_kabupaten}, {selectedAddress.provinsi}</Text>
                     </View>
                   :
                     <View>
