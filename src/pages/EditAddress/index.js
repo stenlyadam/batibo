@@ -11,7 +11,6 @@ import axios from 'axios';
 const EditAddress = ({navigation, route}) => {
 
     const item = route.params; 
-    console.log('item : ', item);
     const dispatch = useDispatch();
     const {token} = useSelector(state => state.loginReducer);
     const {coordinates} = useSelector(state => state.orderReducer);
@@ -45,19 +44,22 @@ const EditAddress = ({navigation, route}) => {
 
     const requestLocationPermission = async () => {
         try {
-          const granted = await PermissionsAndroid.request(
+            const granted = await PermissionsAndroid.request(
             PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION);
-          if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-            navigation.navigate('Map', initCoordinates)
-          } else {
+            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                navigation.navigate('Map', initCoordinates)
+            } 
+            else {
             console.log("Camera permission denied");
-          }
-        } catch (err) {
-          console.warn(err);
+            }
+        } 
+        catch (err) {
+            console.warn(err);
         }
-      };
+    };
 
     const updateAddressData = () => {
+        //data update untuk dikirim ke database
         const data = {
             id : item.id,
             detail_alamat: form.detail_alamat,
@@ -69,10 +71,9 @@ const EditAddress = ({navigation, route}) => {
             kelurahan : form.kelurahan,
             kota_kabupaten : form.kota_kabupaten,
             provinsi : item.provinsi,
+            latitude : coordinates.latitude,
+            longitude : coordinates.longitude
         };
-
-        
-        console.log('to update address: ', data);
 
         //jika detail alamat belum diisi
         if(data.detail_alamat == null || data.detail_alamat == ''){
@@ -129,6 +130,11 @@ const EditAddress = ({navigation, route}) => {
         .then(resUpdateAddress => {
             //simpan data ADDRESS user ke dalam data reducer
             dispatch({type: 'SET_ADDRESS', value: resUpdateAddress.data.data.data});
+            //mengembalikkan nilai koordinate map(reducer) ke nilai semula
+            dispatch({
+                type: 'SET_COORDINATES', 
+                value: {latitude : 0, longitude : 0, distance: 0}
+            })
             navigation.goBack();
             showMessage('Alamat Berhasil Di Update', 'success');
         })
@@ -164,20 +170,28 @@ const EditAddress = ({navigation, route}) => {
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={styles.contentWrapper}>
                 <Text style={styles.textInputTitle}>Lokasi Pickup</Text>
+                
                     <View style={styles.mapContainer}>
                         <View style={styles.mapWrapper}>
                             <Button
                                 buttonColor={colors.white}
                                 borderWidth={2}
-                                borderColor={colors.grey}
-                                textColor={colors.button.primary.backgroundColor}
+                                borderColor={colors.border}
+                                textColor={colors.text.grey}
                                 borderRadius={4} 
-                                title={"Pilih Lokasi"}  
+                                title={"Ubah Lokasi"}  
                                 onPress={requestLocationPermission}
                             />
                             <Gap height={8} />
-                            <Text>Latitude: {coordinates.latitude}</Text>
-                            <Text>Longitude: {coordinates.longitude}</Text>
+                            {coordinates.latitude == item.latitude
+                            ?
+                            <View>
+                                <Text>Latitude: {coordinates.latitude}</Text>
+                                <Text>Longitude: {coordinates.longitude}</Text>
+                            </View>
+                            :
+                            <Text style={{ color: colors.status.on_delivery, fontFamily: fonts.nunito.bold }}>Lokasi telah diubah</Text>
+                            }
                         </View>
                     </View>
                     <Gap height={12} />

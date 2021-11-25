@@ -53,8 +53,12 @@ const RegisterAddress = ({navigation, route}) => {
     });
 
     const onSubmit = () => {
+        //update nilai latitude dan longitude pada form
+        form.latitude = coordinates.latitude,
+        form.longitude = coordinates.longitude, 
+
         dispatch(setLoading(true));
-        if(form.latitude != 0 || form.detail_alamat === "" || form.kecamatan === "" || form.kelurahan === "" || form.kota_kabupaten === ""){
+        if(form.latitude == 0 || form.detail_alamat === "" || form.kecamatan === "" || form.kelurahan === "" || form.kota_kabupaten === ""){
             dispatch(setLoading(false));
             showMessage('Data Anda belum lengkap');
         }
@@ -82,6 +86,8 @@ const RegisterAddress = ({navigation, route}) => {
             <View>
             <ScrollView showsVerticalScrollIndicator={false}>
             <Text style={styles.textInputTitle}>Lokasi Pickup</Text>
+                    {coordinates.distance == 0 
+                    ?
                     <View style={styles.mapContainer}>
                         <View style={styles.mapWrapper}>
                             <Button
@@ -94,15 +100,26 @@ const RegisterAddress = ({navigation, route}) => {
                                 onPress={requestLocationPermission}
                             />
                             <Gap height={8} />
-                            {coordinates.distance == 0 
-                            ? <Text style={{ color: colors.status.cancelled, fontFamily: fonts.nunito.bold }}>Lokasi pickup belum ditentukan</Text>
-                            : <Text style={{ color: colors.status.on_delivery, fontFamily: fonts.nunito.bold }}>Lokasi telah diambil</Text>
-                            }
-                            {/* <Text>Latitude: {coordinates.latitude}</Text>
-                            <Text>Longitude: {coordinates.longitude}</Text>
-                            <Text>Distance: {coordinates.distance} m</Text> */}
+                            <Text style={{ color: colors.status.cancelled, fontFamily: fonts.nunito.bold }}>Lokasi pickup belum ditentukan</Text>
                         </View>
                     </View>
+                    :
+                    <View style={styles.mapContainer}>
+                        <View style={styles.mapWrapper}>
+                            <Button
+                                buttonColor={colors.white}
+                                borderWidth={2}
+                                borderColor={colors.grey}
+                                textColor={colors.text.grey}
+                                borderRadius={4} 
+                                title={"Ubah Lokasi"}  
+                                onPress={requestLocationPermission}
+                            />
+                            <Gap height={8} />
+                            <Text style={{ color: colors.status.on_delivery, fontFamily: fonts.nunito.bold }}>Lokasi telah diambil</Text>
+                        </View>
+                    </View>
+                    }
                     <Gap height={12} />
                 <TextInput
                     label="Alamat"
@@ -131,9 +148,9 @@ const RegisterAddress = ({navigation, route}) => {
                     value={form.kota_kabupaten}
                     onChangeText={(value) => setForm('kota_kabupaten', value)}
                 />
-                <Gap height={32} />
+                <Gap height={24} />
                 <Button title="Sign Up" onPress={onSubmit} borderRadius={10}/>
-                <Gap height={12} />
+                <Gap height={20} />
                 </ScrollView>
             </View>
         </View>

@@ -100,6 +100,7 @@ export const userAuthAction = (resToken, navigation) => (dispatch) => {
         })
         //pergi ke halaman utama aplikasi
         setTimeout(() => {
+            dispatch(setLoading(true));
             navigation.reset({index: 0, routes: [{name: 'MainApp'}]})
         }, 1000)
     })
@@ -131,7 +132,7 @@ export const signUpAction = (dataRegister, addressRegister, navigation) => (disp
         dispatch({type: 'SET_TOKEN', value: token});
 
         console.log('address data - user id: ', addressRegister);
-        dispatch(setLoading(false));
+        
         //add address for user
         axios.post(`${API_HOST.url}/address/add`, addressRegister, {
             headers: {
@@ -214,11 +215,6 @@ export const signUpAction = (dataRegister, addressRegister, navigation) => (disp
                     type: 'SET_HISTORY', 
                     value: [...cancelled, ...delivered]
                 })
-                //simpan data transaksi(history)
-                dispatch({
-                    type: 'SET_COORDINATES', 
-                    value: {latitude : 0, longitude : 0, distance: 0}
-                })
             }
         ))
         //request API untuk data address, cart, order dari pengguna - jika tidak berhasil
@@ -228,7 +224,21 @@ export const signUpAction = (dataRegister, addressRegister, navigation) => (disp
         })
         //pergi ke halaman utama aplikasi
         setTimeout(() => {
+            //mengembalikkan nilai koordinate map(reducer) ke nilai semula
+            dispatch({
+                type: 'SET_COORDINATES', 
+                value: {latitude : 0, longitude : 0, distance: 0}
+            })
+            //stop animasi loading
+            dispatch(setLoading(false));
+            //pesan success registrasi akun
+            showMessage('Register Success', 'success');
+            setTimeout(() => {
+            //mulai animasi loading
+            dispatch(setLoading(true));
+            //navigasi ke halaman utama aplikasi
             navigation.reset({index: 0, routes: [{name: 'MainApp'}]})
+            }, 1500);
         }, 2000)
         })
         //add address for user - jika tidak berhasil
@@ -349,7 +359,6 @@ export const signInAction = (form, navigation) => (dispatch) => {
         //pergi ke halaman utama aplikasi
         setTimeout(() => dispatch(setLoading(true)), 1000);
         setTimeout(() => navigation.reset({index: 0, routes: [{name: 'MainApp'}]}), 4000);
-        setTimeout(() => dispatch(setLoading(false)), 4000);
     })
     .catch(err => {
         console.log('error : ', err.response)

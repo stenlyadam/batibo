@@ -42,6 +42,11 @@ const Register = ({navigation}) => {
         if(form.phone_number.length >= 10){
           //bila password sesuai
           if(form.password.length >= 8){
+            //set nilai default koordinat(reducer)
+            dispatch({
+              type: 'SET_COORDINATES', 
+              value: {latitude : 0, longitude : 0, distance: 0}
+            })
             dispatch({type: 'SET_REGISTER', value: form});
             navigation.navigate('RegisterAddress', form);
           }

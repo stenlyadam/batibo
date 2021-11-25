@@ -123,6 +123,11 @@ const AddAddress = ({navigation}) => {
                 .then(resAddressUpdate => {
                     //simpan data address user ke dalam data reducer
                     dispatch({type: 'SET_ADDRESS', value: resAddressUpdate.data.data.data});
+                    //mengembalikkan nilai koordinate map(reducer) ke nilai semula
+                    dispatch({
+                        type: 'SET_COORDINATES', 
+                        value: {latitude : 0, longitude : 0, distance: 0}
+                    })
                     navigation.goBack();
                     showMessage('Alamat berhasil ditambahkan', 'success');
                 })
@@ -161,6 +166,8 @@ const AddAddress = ({navigation}) => {
             <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.contentWrapper}>
             <Text style={styles.textInputTitle}>Lokasi Pickup</Text>
+            {coordinates.distance == 0 
+                    ?
                     <View style={styles.mapContainer}>
                         <View style={styles.mapWrapper}>
                             <Button
@@ -173,11 +180,26 @@ const AddAddress = ({navigation}) => {
                                 onPress={requestLocationPermission}
                             />
                             <Gap height={8} />
-                            <Text>Latitude: {coordinates.latitude}</Text>
-                            <Text>Longitude: {coordinates.longitude}</Text>
-                            <Text>Distance: {coordinates.distance} m</Text>
+                            <Text style={{ color: colors.status.cancelled, fontFamily: fonts.nunito.bold }}>Lokasi pickup belum ditentukan</Text>
                         </View>
                     </View>
+                    :
+                    <View style={styles.mapContainer}>
+                        <View style={styles.mapWrapper}>
+                            <Button
+                                buttonColor={colors.white}
+                                borderWidth={2}
+                                borderColor={colors.grey}
+                                textColor={colors.text.grey}
+                                borderRadius={4} 
+                                title={"Ubah Lokasi"}  
+                                onPress={requestLocationPermission}
+                            />
+                            <Gap height={8} />
+                            <Text style={{ color: colors.status.on_delivery, fontFamily: fonts.nunito.bold }}>Lokasi telah diambil</Text>
+                        </View>
+                    </View>
+                    }
                     <Gap height={12} />
                 
                     <TextInput
