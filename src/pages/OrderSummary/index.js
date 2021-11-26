@@ -50,7 +50,12 @@ const OrderSummary = ({navigation, route}) => {
 
     useEffect(() => {
         dispatch({type: 'SET_CHECKOUT', value: listOrder})
-        dispatch({type: 'SET_SELECTED_ADDRESS', value: transaction.address})
+        dispatch({type: 'SET_SELECTED_ADDRESS', value: {
+            nama_penerima : transaction.nama_penerima,
+            nomor_handphone : transaction.nomor_handphone,
+            email : transaction.email,
+            alamat_penerima : transaction.alamat_penerima,
+        }})
     },[checkout])
 
     console.log('checkout kut', transaction);

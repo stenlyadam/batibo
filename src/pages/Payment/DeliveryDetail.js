@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 import {colors, fonts} from '../../utils';
 
 const DeliveryDetail = () => {
-  const {user} = useSelector(state => state.loginReducer);
   const {selectedAddress} = useSelector(state => state.orderReducer);
 
   return (
@@ -21,7 +20,7 @@ const DeliveryDetail = () => {
         </View>
         <View style={styles.deliveryRightContainer}>
           <Text style={styles.deliveryTitle}>Alamat</Text>
-          <Text style={styles.deliveryText}>{selectedAddress.detail_alamat}, {selectedAddress.kecamatan}, {selectedAddress.kelurahan}, {selectedAddress.kota_kabupaten}, {selectedAddress.provinsi}</Text>
+          <Text style={styles.deliveryText}>{selectedAddress.alamat_penerima}</Text>
         </View>
       </View>
     </View>

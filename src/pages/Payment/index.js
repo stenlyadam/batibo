@@ -1,8 +1,8 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Dimensions, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import { WebView } from 'react-native-webview';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Button, PageTitle } from '../../components';
 import { colors, fonts } from '../../utils';
 import DeliveryDetail from './DeliveryDetail';
@@ -10,10 +10,22 @@ import OrderDetail from './OrderDetail';
 
 const Tab = createMaterialTopTabNavigator();
 
-const Payment = ({navigation}) => {
+const Payment = ({navigation, route}) => {
 
+  const dispatch = useDispatch();
   const {orderTemp} = useSelector(state => state.orderReducer);
+  const {selectedAddress} = useSelector(state => state.orderReducer);
   const [isPaymentOpen, setIsPaymentOpen] = useState(false);
+  
+
+  useEffect(() => {
+    dispatch({type: 'SET_SELECTED_ADDRESS', value: {
+        nama_penerima : selectedAddress.nama_penerima,
+        nomor_handphone : selectedAddress.nomor_handphone,
+        email : selectedAddress.email,
+        alamat_penerima : `${selectedAddress.detail_alamat}, ${selectedAddress.kelurahan}, ${selectedAddress.kecamatan}, ${selectedAddress.kota_kabupaten}`,
+    }})
+  },[])
 
   const checkoutMidtrans = () => {
     setIsPaymentOpen(true);

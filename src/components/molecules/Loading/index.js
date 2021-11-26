@@ -7,7 +7,7 @@ const Loading = () => {
     <View style={styles.wrapper}>
         <View style={styles.container}>
             <ActivityIndicator size="large" color={colors.primary} />
-            <Text style={styles.text}>Loading....</Text>
+            <Text style={styles.text}>Loading.....</Text>
         </View>
     </View>
     );
@@ -29,18 +29,18 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: colors.grey,
         borderRadius: 2,
-        paddingHorizontal: 22,
-        paddingVertical: 16,
+        paddingHorizontal: 24,
+        paddingVertical: 14,
         flexDirection: 'row',
         alignItems: 'center',
-        width: 222,
+        width: 256,
         position: 'relative',
         backgroundColor: colors.loading.containerColor
     },
     text: {
         letterSpacing:0.4,
-        marginLeft: 18,
-        fontSize: 16,
+        marginLeft: 24,
+        fontSize: 15,
         color: colors.text.secondary,
         fontFamily: fonts.nunito.normal,
         

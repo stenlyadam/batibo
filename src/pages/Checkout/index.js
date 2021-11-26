@@ -130,7 +130,7 @@ const Checkout = ({navigation}) => {
               orderSuccess = true;
               dispatch(getOnProcess(token));
               dispatch(getOrders(token, orderSuccess, navigation)); 
-              await navigation.replace('Payment', orderSuccess);
+              await navigation.replace('Payment');
               showMessage('Checkout Success', 'success');
               })
               //tambah data product ke database (order) - jika tidak berhasil
