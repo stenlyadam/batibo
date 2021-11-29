@@ -77,7 +77,7 @@ const Checkout = ({navigation}) => {
   const checkoutMidtrans = () => {
     dispatch(setLoading(true));
     const data = {
-      uid : Date.now(),
+      uid : Date.now().toString().slice(1,5),
       user_id : user.id,
       address_id: selectedAddress.id,
       total : totalPrice + ongkir,
@@ -90,6 +90,7 @@ const Checkout = ({navigation}) => {
       latitude : selectedAddress.latitude,
       longitude : selectedAddress.longitude,
     };
+    
     axios.post(`${API_HOST.url}/checkout`, data, {
       headers: {
         'Authorization': token,

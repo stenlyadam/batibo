@@ -7,7 +7,7 @@ const listColors = {
   green4: '#24AD65',
   green5: 'rgba(40, 190, 100, 0.7)',
   white: 'white',
-  white2: 'rgba(242, 244, 242, 0.90)',
+  white2: 'rgba(242, 244, 242, 0.95)',
   orange1: '#FF8C21',
   grey1: '#1C2024',
   grey2: '#303030',

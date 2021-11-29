@@ -36,6 +36,7 @@ const Cart = ({navigation}) => {
       dispatch({type: 'SET_CHECKOUT', value: listCart});
       dispatch({type: 'SET_ORDER_FROM_DETAIL', value: undefined});
       dispatch({type: 'SET_SELECTED_ADDRESS', value: null});
+      dispatch({type: 'SET_ONGKIR', value: 0});
       navigation.navigate('Checkout');
     }
     else{
