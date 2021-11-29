@@ -17,7 +17,7 @@ const listColors = {
   grey6: '#F2F2F2',
   red1: '#FF3C21',
   black: 'black',
-  black2: 'rgba(0,0,0, 0.45)',
+  black2: 'rgba(0,0,0, 0.5)',
   blue: '#0045A3',
   blue2: 'rgba(28, 128, 255, 0.7)',
   red: '#ff1818',

@@ -77,7 +77,7 @@ const Checkout = ({navigation}) => {
   const checkoutMidtrans = () => {
     dispatch(setLoading(true));
     const data = {
-      uid : Date.now().toString().slice(1,5),
+      uid : Date.now().toString().slice(1,10),
       user_id : user.id,
       address_id: selectedAddress.id,
       total : totalPrice + ongkir,
