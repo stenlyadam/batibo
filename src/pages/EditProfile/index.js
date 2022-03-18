@@ -8,6 +8,7 @@ import {API_HOST, firebase} from '../../config';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from "react-redux";
 import axios from 'axios';
+import { setLoading } from '../../redux/action';
 
 const EditProfile = ({navigation}) => {
 
@@ -75,6 +76,7 @@ const EditProfile = ({navigation}) => {
       if(form.phone_number.length >= 10){
         
         if(photoReducer.isUploadPhoto){
+          dispatch(setLoading(true));
           const photoForUpload = new FormData();
           photoForUpload.append('file', photoReducer);
           
@@ -98,20 +100,24 @@ const EditProfile = ({navigation}) => {
               .then(res => {
                 user.profile_photo_url = `${API_HOST.storage}/${resUpload.data.data[0]}`
                 dispatch({type: 'SET_USER', value: res.data.data});
+                dispatch(setLoading(false));
                 showMessage('Update profile berhasil', 'success');               
                 navigation.goBack();
               })
               //simpan data user terbaru - jika tidak berhasil
               .catch((err) => {
+                dispatch(setLoading(false));
                 showMessage('Update belum berhasil. Silahkan coba lagi beberapa saat');
               })
 
             })
             .catch((errUpload) => {
+              dispatch(setLoading(false));
               console.log('upload berhasil : ', errUpload.response);
             });
         }
         else {
+          dispatch(setLoading(true));
           console.log('asdgasgdas');
           //simpan data user terbaru
           axios.post(`${API_HOST.url}/user`, dataUpdate, {
@@ -123,11 +129,13 @@ const EditProfile = ({navigation}) => {
           //simpan data user terbaru - jika berhasil
           .then(res => {
             dispatch({type: 'SET_USER', value: res.data.data});
+            dispatch(setLoading(false));
             showMessage('Update profile berhasil', 'success');               
             navigation.goBack();
           })
           //simpan data user terbaru - jika tidak berhasil
           .catch((err) => {
+            dispatch(setLoading(false));
             showMessage('Update belum berhasil. Silahkan coba lagi beberapa saat');
           })
         }

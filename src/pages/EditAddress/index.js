@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import { StyleSheet, Text, View, ScrollView, PermissionsAndroid } from 'react-native'
+import { StyleSheet, Text, View, ScrollView, PermissionsAndroid, Alert } from 'react-native'
 import {Button, TextInput, Gap} from '../../components';
 import {colors, fonts, getData, storeData, showMessage} from '../../utils';
 import { API_HOST, firebase } from '../../config';
@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import MapView from 'react-native-maps';
 import GetLocation from 'react-native-get-location';
 import axios from 'axios';
+import { setLoading } from '../../redux/action';
 
 const EditAddress = ({navigation, route}) => {
 
@@ -58,8 +59,7 @@ const EditAddress = ({navigation, route}) => {
         }
     };
 
-    const updateAddressData = () => {
-        //data update untuk dikirim ke database
+    const checkAddress = () => {
         const data = {
             id : item.id,
             detail_alamat: form.detail_alamat,
@@ -73,21 +73,26 @@ const EditAddress = ({navigation, route}) => {
             provinsi : item.provinsi,
             latitude : coordinates.latitude,
             longitude : coordinates.longitude
-        };
+        }
 
+        console.log('data: ',data);
+        //jika lokasi pickup belum ditentukan
+        if(coordinates.longitude == 0){
+            showMessage('Anda belum menentukan lokasi pickup');     
+        }
         //jika detail alamat belum diisi
-        if(data.detail_alamat == null || data.detail_alamat == ''){
+        else if(data.detail_alamat == null || data.detail_alamat == ''){
             showMessage('Anda belum mengisi detail alamat');
         }
-        //jika nama penerima belum diisi
+         //jika nama penerima belum diisi
         else if(data.nama_penerima == null || data.nama_penerima == ''){
             showMessage('Anda belum mengisi nama penerima');
         }
-            //jika nomor_handphone belum diisi
+         //jika nomor_handphone belum diisi
         else if(data.nomor_handphone == null || data.nomor_handphone == ''){
             showMessage('Anda belum mengisi nomor handphone');
         }
-            //jika email belum diisi
+         //jika email belum diisi
         else if(data.email == null || data.email == ''){
             showMessage('Anda belum mengisi email');
         }
@@ -109,7 +114,27 @@ const EditAddress = ({navigation, route}) => {
         }
         //jika semua data telah diisi
         else{
-        
+            onUpdate(data);
+        }
+    }
+
+    const onUpdate = (data) => {
+        Alert.alert(
+            "Konfirmasi",
+            "Apakah data alamat sudah sesuai untuk diperbaharui?.",
+        [
+            {
+                text: "Tidak",
+                onPress: () => console.log('hallo'),
+                style: "cancel"
+            },
+            { text: "Ya", onPress: () => updateAddressData(data) }
+        ]
+        );
+    }
+
+    const updateAddressData = (data) => {
+        dispatch(setLoading(true));
         //update address dalam database (addresses)
         axios.post(`${API_HOST.url}/address/${data.id}`, data, {
             headers: {
@@ -135,19 +160,21 @@ const EditAddress = ({navigation, route}) => {
                 type: 'SET_COORDINATES', 
                 value: {latitude : 0, longitude : 0, distance: 0}
             })
+            dispatch(setLoading(false));
             navigation.goBack();
             showMessage('Alamat Berhasil Di Update', 'success');
         })
         //ambil data address terbaru dari database - jika tidak berhasil
         .catch(errUpdateAddress => {
+            dispatch(setLoading(false));
             showMessage('Terjadi kesalahan pada penambahan data');
         })
         })
         //update data address ke database (addresses) - jika tidak berhasil
         .catch((errAddress) => {
+            dispatch(setLoading(false));
             showMessage('Terjadi kesalahan pada penghapusan data product pada API Address User');
         })
-        }
     };
 
     return (
@@ -250,7 +277,7 @@ const EditAddress = ({navigation, route}) => {
                         onChangeText={value => changeText('kota_kabupaten', value)}
                     />
                     <Gap height={22} />
-                    <Button title="Simpan Alamat" borderRadius={8}  onPress={updateAddressData}/>    
+                    <Button title="Simpan Alamat" borderRadius={8}  onPress={checkAddress}/>    
                 </View>
             </ScrollView>
         </View>

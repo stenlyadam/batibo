@@ -1,12 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import {StyleSheet, View, Text, ScrollView, Alert} from 'react-native';
 import {Button, Gap} from '../../components';
-import {colors, fonts, getData, storeData} from '../../utils';
+import {colors, fonts, getData, storeData, showMessage} from '../../utils';
 import AddressItem from './AddressItem';
 import { API_HOST, firebase } from '../../config';
 import {useDispatch , useSelector} from 'react-redux';
-import {showMessage} from 'react-native-flash-message';
 import axios from 'axios';
+import { setLoading } from '../../redux/action';
 
 const Address = ({navigation}) => {
 
@@ -41,6 +41,7 @@ const Address = ({navigation}) => {
   }
 
   const deleteAddress = (addressId) => {
+    dispatch(setLoading(true));
     //delete address dalam database (addresses)
     axios.delete(`${API_HOST.url}/address/${addressId}`, {
       headers: {
@@ -61,15 +62,19 @@ const Address = ({navigation}) => {
     .then(resUpdateAddress => {
         //simpan data ADDRESS user ke dalam data reducer
         dispatch({type: 'SET_ADDRESS', value: resUpdateAddress.data.data.data});
+        dispatch(setLoading(false));
+        showMessage('Alamat berhasil dihapus', 'success');
         
     })
     //ambil data address terbaru dari database - jika tidak berhasil
     .catch(errUpdateAddress => {
+        dispatch(setLoading(false));
         showMessage('Terjadi kesalahan pada penambahan data');
     })
     })
     //delete data address ke database (addresses) - jika tidak berhasil
     .catch((errAddress) => {
+        dispatch(setLoading(false));
         showMessage('Terjadi kesalahan pada penghapusan data product pada API Address User');
     })
   } 

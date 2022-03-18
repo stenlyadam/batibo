@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import { StyleSheet, Text, View, ScrollView, PermissionsAndroid } from 'react-native'
+import { StyleSheet, Text, View, ScrollView, PermissionsAndroid, Alert } from 'react-native'
 import {Button, TextInput, Gap} from '../../components';
 import {colors, fonts, getData, storeData, useForm, showMessage} from '../../utils';
 import { API_HOST, firebase } from '../../config';
@@ -37,19 +37,19 @@ const AddAddress = ({navigation}) => {
 
     const requestLocationPermission = async () => {
         try {
-          const granted = await PermissionsAndroid.request(
-            PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION);
-          if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+            const granted = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION);
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
             navigation.navigate("Map")
-          } else {
+        } else {
             console.log("Camera permission denied");
-          }
-        } catch (err) {
-          console.warn(err);
         }
-      };
+        } catch (err) {
+            console.warn(err);
+        }
+    };
 
-    const addAddress = () => {
+    const checkAddress = () => {
         const data = {
             user_id: user.id,
             nama_penerima: form.nama_penerima,
@@ -104,6 +104,27 @@ const AddAddress = ({navigation}) => {
         }
         //jika semua data telah diisi
         else{
+            onAdd(data);
+        }
+    }
+
+    const onAdd = (data) => {
+        Alert.alert(
+            "Konfirmasi",
+            "Apakah data alamat sudah sesuai untuk ditambahkan?.",
+        [
+            {
+                text: "Tidak",
+                onPress: () => console.log('hallo'),
+                style: "cancel"
+            },
+            { text: "Ya", onPress: () => addAddress(data) }
+        ]
+        );
+    }
+
+    const addAddress = (data) => {
+            dispatch(setLoading(true));
             axios.post(`${API_HOST.url}/address/add`, data, {
                 headers: {
                     'Accept' : 'application/json',
@@ -128,6 +149,7 @@ const AddAddress = ({navigation}) => {
                         type: 'SET_COORDINATES', 
                         value: {latitude : 0, longitude : 0, distance: 0}
                     })
+                    dispatch(setLoading(false));
                     navigation.goBack();
                     showMessage('Alamat berhasil ditambahkan', 'success');
                 })
@@ -140,10 +162,11 @@ const AddAddress = ({navigation}) => {
             })
             //add address for user - jika tidak berhasil
             .catch((errAddress) => {
+                dispatch(setLoading(false));
                 console.log('tambah alamat berhasil : ', errAddress.response);
                 showMessage('error : ', errAddress.response);
             })
-        }
+        
     }
 
     return (
@@ -267,7 +290,7 @@ const AddAddress = ({navigation}) => {
                         onChangeText={value => changeText('kota_kabupaten', value)}
                     />
                     <Gap height={20} />
-                    <Button title="Simpan Alamat" borderRadius={8}  onPress={addAddress}/>    
+                    <Button title="Simpan Alamat" borderRadius={8}  onPress={checkAddress}/>    
                 
             </View>
             </ScrollView>

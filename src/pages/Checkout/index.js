@@ -82,7 +82,7 @@ const Checkout = ({navigation}) => {
       address_id: selectedAddress.id,
       total : totalPrice + ongkir,
       status: 'PENDING',
-      isOrder : 'true',
+      isOrder : 'false',
       nama_penerima : selectedAddress.nama_penerima,
       nomor_handphone : selectedAddress.nomor_handphone,
       email : selectedAddress.email,
@@ -110,7 +110,6 @@ const Checkout = ({navigation}) => {
         setLimitTransaction(2);
         console.log('limit transactio update : ', limitTransaction);
           if(orderFromDetail){
-            
             // console.log('saya order dari detail loh');
             const orderSubmit = {
               user_id: user.id,
@@ -119,7 +118,7 @@ const Checkout = ({navigation}) => {
               quantity: checkout[0].quantity,
             }
             console.log('orderSubmit : ', orderSubmit);
-            Promise.all(
+            
             axios.post(`${API_HOST.url}/order/add`, orderSubmit, {
               headers: {
                   'Accept' : 'application/json',
@@ -127,18 +126,27 @@ const Checkout = ({navigation}) => {
               }
               })
               //tambah data product dalam database (order) - jika berhasil
-              .then(async (resOrder) => {
-              orderSuccess = true;
-              dispatch(getOnProcess(token));
-              dispatch(getOrders(token, orderSuccess, navigation)); 
-              await navigation.replace('Payment');
-              showMessage('Checkout Success', 'success');
+              .then((resOrder) => {
+                axios.post(`${API_HOST.url}/transaction/${orderSubmit.transaction_id}`, {isOrder : 'true'} , 
+                {
+                  headers: {
+                      'Accept' : 'application/json',
+                      'Authorization' : token,
+                  }
+                })
+                //update transaksi order berhasil - jika ya
+                .then((resTransactionUpdate) => {
+                  orderSuccess = true;
+                  dispatch(getOnProcess(token));
+                  dispatch(getOrders(token, orderSuccess, navigation)); 
+                  navigation.replace('Payment')
+                  showMessage('Checkout Success', 'success');
+                })
+                //update transaksi order berhasil - jika tidak
+                .catch(errTransactionUpdate => {
+                  console.log('Terjadi kesalahan pada update data transaksi : ', errTransactionUpdate);
+                }) 
               })
-              //tambah data product ke database (order) - jika tidak berhasil
-              .catch(errOrder => {
-                  console.log('Terjadi kesalahan pada penyimpanan data ke API Order : ',errOrder);
-              })
-            ) 
           }
           else{
             Promise.all(
@@ -166,15 +174,23 @@ const Checkout = ({navigation}) => {
                           }
                         })
                         //hapus data cart di database user - jika berhasil
-                        .then ((resCart) => {
-                            orderSuccess = true;
-                            dispatch(getOnProcess(token));
-                            dispatch(getOrders(token, orderSuccess, navigation));
-                            showMessage('Checkout Success', 'success');
-                        })
-                        //hapus data cart di database user - jika tidak berhasil
-                        .catch((errCart) => {
-                          console.log(`produk tidak berhasil dihapus : id ${item.id}`);
+                        .then (async (resCart) => {
+                          await axios.post(`${API_HOST.url}/transaction/${orderSubmit.transaction_id}`, {isOrder : 'true'}, {
+                            headers: {
+                                'Accept' : 'application/json',
+                                'Authorization' : token,
+                            }
+                            })
+                            //update transaksi order berhasil - jika ya
+                            .then((resTransactionUpdate) => {
+                              orderSuccess = true;
+                              dispatch(getOnProcess(token));
+                              dispatch(getOrders(token, orderSuccess, navigation));
+                            })
+                            //update transaksi order berhasil - jika tidak
+                            .catch(errTransactionUpdate => {
+                              console.log('Terjadi kesalahan pada update data transaksi : ', errTransactionUpdate);
+                            })
                         })
                   })
                   //tambah data product ke database (order) - jika tidak berhasil
@@ -184,6 +200,7 @@ const Checkout = ({navigation}) => {
               })
             )
             setTimeout(async () => {
+              showMessage('Checkout Success', 'success');
               await navigation.replace('Payment', orderSuccess);
             }, 1000);
           }
