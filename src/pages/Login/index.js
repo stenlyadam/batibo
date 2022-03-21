@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   ImageBackground,
   SafeAreaView,
@@ -22,8 +22,14 @@ const Login = ({navigation}) => {
     password: '',
   });
   const dispatch = useDispatch();
+  const [disableButton, setdisableButton] = useState(false);
+
+  const wait = (timeout) => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+  }
 
   const onContinue = () => {
+    setdisableButton(true);
     var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     
     //jika data belum diisi - email & password
@@ -48,7 +54,8 @@ const Login = ({navigation}) => {
       else{
         showMessage('Email Anda tidak sesuai');
       }
-    }  
+    }
+    wait(500).then(() => setdisableButton(false));  
   }
 
   return (
@@ -80,6 +87,7 @@ const Login = ({navigation}) => {
           <Button
             title="Sign In"
             onPress={onContinue}
+            disabledButton={disableButton}
             borderRadius={10}
           />
         </View>

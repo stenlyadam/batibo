@@ -15,9 +15,16 @@ const Detail = ({navigation, route}) => {
   const {user} = useSelector(state => state.loginReducer);
   const {token} = useSelector(state => state.loginReducer);
   const {cart} = useSelector(state => state.loginReducer);
+  const [disableButton, setdisableButton] = useState(false);
+
+  const wait = (timeout) => {
+      return new Promise(resolve => setTimeout(resolve, timeout)); 
+  }
 
   const pushCart = (toCart) => {
+    setdisableButton(true);
     dispatch(addCartAction(user, token, cart, toCart));
+    wait(1000).then(() => setdisableButton(false));
   }
   
   const onBuy = () => {
@@ -94,7 +101,7 @@ const Detail = ({navigation, route}) => {
         <View style={styles.footer}>
           <View style={styles.centerContainer}>
             <View style={styles.cartButtonContainer}>
-              <Button type="icon-only" icon="icon-cart" borderRadius={4} onPress={() => pushCart(item)}/>
+              <Button type="icon-only" icon="icon-cart" borderRadius={4} onPress={() => pushCart(item)} disabledButton={disableButton}/>
             </View>
             <TouchableOpacity style={styles.beliButtonContainer} onPress={onBuy}>
               <Text style={styles.textButton}>Beli Sekarang</Text>

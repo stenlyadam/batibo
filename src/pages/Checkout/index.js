@@ -22,6 +22,12 @@ const Checkout = ({navigation}) => {
   const [listCheckout, setListCart] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [limitTransaction, setLimitTransaction] = useState(1);
+  const [disableButton, setdisableButton] = useState(false);
+
+  const wait = (timeout) => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+  }
+
   console.log('selected ', selectedAddress);
   
   useEffect(() => {
@@ -48,6 +54,7 @@ const Checkout = ({navigation}) => {
   }, [checkout])
 
   const onCheckout = () => {
+    setdisableButton(true);
     if(selectedAddress){
          //jika order dari detail
     if(orderFromDetail){
@@ -72,9 +79,11 @@ const Checkout = ({navigation}) => {
     else{
       showMessage('Anda belum memilih alamat pengiriman');
     }
+    wait(1000).then(() => setdisableButton(false));
   }
 
   const checkoutMidtrans = () => {
+    setdisableButton(true);
     dispatch(setLoading(true));
     const data = {
       uid : Date.now().toString().slice(1,10),
@@ -211,6 +220,7 @@ const Checkout = ({navigation}) => {
       console.log('err response :', err)
       showMessage('Masalah Jaringan : Silahkan Coba Lagi Beberapa Saat');
     })
+    wait(1000).then(() => setdisableButton(false));
   }
 
     return (
@@ -313,6 +323,7 @@ const Checkout = ({navigation}) => {
             title="Lanjut ke Pembayaran"
             onPress={onCheckout}
             borderRadius={4}
+            disabledButton={disableButton}
           />
         </View>
         </ScrollView>

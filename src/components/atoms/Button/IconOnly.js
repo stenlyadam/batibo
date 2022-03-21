@@ -20,7 +20,7 @@ import {
 } from '../../../assets';
 import {colors} from '../../../utils';
 
-const IconOnly = ({icon, onPress, width, height, color = colors.grey}) => {
+const IconOnly = ({icon, onPress, disabledButton, width, height, color = colors.grey}) => {
   const Icon = () => {
     if (icon === 'icon-minus') {
       return (
@@ -138,7 +138,7 @@ const IconOnly = ({icon, onPress, width, height, color = colors.grey}) => {
   };
 
   return (
-    <TouchableOpacity style={styles.container} onPress={onPress}>
+    <TouchableOpacity style={styles.container} onPress={onPress} disabled={disabledButton}>
       <Icon />
     </TouchableOpacity>
   );

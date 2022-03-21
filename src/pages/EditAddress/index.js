@@ -15,6 +15,7 @@ const EditAddress = ({navigation, route}) => {
     const dispatch = useDispatch();
     const {token} = useSelector(state => state.loginReducer);
     const {coordinates} = useSelector(state => state.orderReducer);
+    const [disableButton, setdisableButton] = useState(false);
 
     const [form, setForm] = useState({
         detail_alamat: item.detail_alamat,
@@ -36,6 +37,16 @@ const EditAddress = ({navigation, route}) => {
         dispatch({type: 'SET_COORDINATES', value: initCoordinates});
     }, [])
 
+    const wait = (timeout) => {
+        return new Promise(resolve => setTimeout(resolve, timeout));
+    }
+
+    const onBack = () => {
+        setdisableButton(true);
+        navigation.goBack();
+        wait(1000).then(() => setdisableButton(false));
+    }
+
     const changeText = (key, value) => {
         setForm({
             ...form,
@@ -44,6 +55,7 @@ const EditAddress = ({navigation, route}) => {
     };
 
     const requestLocationPermission = async () => {
+        setdisableButton(true);
         try {
             const granted = await PermissionsAndroid.request(
             PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION);
@@ -57,9 +69,11 @@ const EditAddress = ({navigation, route}) => {
         catch (err) {
             console.warn(err);
         }
+        wait(1000).then(() => setdisableButton(false));
     };
 
     const checkAddress = () => {
+        setdisableButton(true);
         const data = {
             id : item.id,
             detail_alamat: form.detail_alamat,
@@ -116,21 +130,13 @@ const EditAddress = ({navigation, route}) => {
         else{
             onUpdate(data);
         }
+        wait(1000).then(() => setdisableButton(false));
     }
 
     const onUpdate = (data) => {
-        Alert.alert(
-            "Konfirmasi",
-            "Apakah data alamat sudah sesuai untuk diperbaharui?.",
-        [
-            {
-                text: "Tidak",
-                onPress: () => console.log('hallo'),
-                style: "cancel"
-            },
-            { text: "Ya", onPress: () => updateAddressData(data) }
-        ]
-        );
+        setdisableButton(true);
+        updateAddressData(data);
+        wait(1000).then(() => setdisableButton(false));
     }
 
     const updateAddressData = (data) => {
@@ -185,7 +191,8 @@ const EditAddress = ({navigation, route}) => {
                     type="icon-only"
                     icon="icon-arrow-back"
                     style={styles.backButton}
-                    onPress={() => navigation.goBack()}
+                    onPress={onBack}
+                    disabledButton={disableButton}
                     borderRadius={4}
                 />
                 </View>
@@ -208,6 +215,7 @@ const EditAddress = ({navigation, route}) => {
                                 borderRadius={4} 
                                 title={"Ubah Lokasi"}  
                                 onPress={requestLocationPermission}
+                                disabledButton={disableButton}
                             />
                             <Gap height={8} />
                             {coordinates.latitude == item.latitude
@@ -277,7 +285,7 @@ const EditAddress = ({navigation, route}) => {
                         onChangeText={value => changeText('kota_kabupaten', value)}
                     />
                     <Gap height={22} />
-                    <Button title="Simpan Alamat" borderRadius={8}  onPress={checkAddress}/>    
+                    <Button title="Simpan Alamat" borderRadius={8}  onPress={checkAddress} disabledButton={disableButton}/>    
                 </View>
             </ScrollView>
         </View>

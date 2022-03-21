@@ -14,9 +14,16 @@ const InCategory = ({navigation}) => {
     const {token} = useSelector(state => state.loginReducer);
     const {cart} = useSelector(state => state.loginReducer);
     const {inCategory} = useSelector(state => state.homeReducer);
+    const [disableButton, setdisableButton] = useState(false);
+
+    const wait = (timeout) => {
+        return new Promise(resolve => setTimeout(resolve, timeout)); 
+    }
 
     const pushCart = (toCart) => {
+        setdisableButton(true);
         dispatch(addCartAction(user, token, cart, toCart));
+        wait(1000).then(() => setdisableButton(false));
     }
 
     return (
@@ -40,6 +47,7 @@ const InCategory = ({navigation}) => {
                         PriceAfterDiscount={item.price_after_discount}
                         productUnit={item.product_unit}
                         discount={item.discount}
+                        disabledButton={disableButton}
                         onBuy={() => pushCart(item)}
                         onDetail={() => navigation.navigate('Detail', item)}
                         />  

@@ -13,6 +13,7 @@ const AddAddress = ({navigation}) => {
     const {user} = useSelector(state => state.loginReducer);
     const {token} = useSelector(state => state.loginReducer);
     const {coordinates} = useSelector(state => state.orderReducer);
+    const [disableButton, setdisableButton] = useState(false);
 
     const [initCoordinates] = useState({
         latitude: 0,
@@ -23,6 +24,16 @@ const AddAddress = ({navigation}) => {
     useEffect(() => {
         dispatch({type: 'SET_COORDINATES', value: initCoordinates});
     }, [])
+
+    const wait = (timeout) => {
+        return new Promise(resolve => setTimeout(resolve, timeout));
+    }
+
+    const onBack = () => {
+        setdisableButton(true);
+        navigation.goBack();
+        wait(1000).then(() => setdisableButton(false));
+    }
 
     const [form, setForm] = useState({
         address: [],
@@ -36,6 +47,7 @@ const AddAddress = ({navigation}) => {
     };
 
     const requestLocationPermission = async () => {
+        setdisableButton(true);
         try {
             const granted = await PermissionsAndroid.request(
                 PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION);
@@ -47,9 +59,11 @@ const AddAddress = ({navigation}) => {
         } catch (err) {
             console.warn(err);
         }
+        wait(1000).then(() => setdisableButton(false));
     };
 
     const checkAddress = () => {
+        setdisableButton(true);
         const data = {
             user_id: user.id,
             nama_penerima: form.nama_penerima,
@@ -106,21 +120,13 @@ const AddAddress = ({navigation}) => {
         else{
             onAdd(data);
         }
+        wait(1000).then(() => setdisableButton(false));
     }
 
     const onAdd = (data) => {
-        Alert.alert(
-            "Konfirmasi",
-            "Apakah data alamat sudah sesuai untuk ditambahkan?.",
-        [
-            {
-                text: "Tidak",
-                onPress: () => console.log('hallo'),
-                style: "cancel"
-            },
-            { text: "Ya", onPress: () => addAddress(data) }
-        ]
-        );
+        setdisableButton(true);
+        addAddress(data)
+        wait(1000).then(() => setdisableButton(false));
     }
 
     const addAddress = (data) => {
@@ -177,7 +183,8 @@ const AddAddress = ({navigation}) => {
                 type="icon-only"
                 icon="icon-arrow-back"
                 style={styles.backButton}
-                onPress={() => navigation.goBack()}
+                onPress={onBack}
+                disabledButton={disableButton}
                 borderRadius={4}
                 />
                 </View>
@@ -201,6 +208,7 @@ const AddAddress = ({navigation}) => {
                                 borderRadius={4} 
                                 title={"Pilih Lokasi"}  
                                 onPress={requestLocationPermission}
+                                disabledButton={disableButton}
                             />
                             <Gap height={8} />
                             <Text style={{ color: colors.status.cancelled, fontFamily: fonts.nunito.bold }}>Lokasi pickup belum ditentukan</Text>
@@ -217,6 +225,7 @@ const AddAddress = ({navigation}) => {
                                 borderRadius={4} 
                                 title={"Ubah Lokasi"}  
                                 onPress={requestLocationPermission}
+                                disabledButton={disableButton}
                             />
                             <Gap height={8} />
                             <Text style={{ color: colors.status.on_delivery, fontFamily: fonts.nunito.bold }}>Lokasi telah diambil</Text>
@@ -290,7 +299,7 @@ const AddAddress = ({navigation}) => {
                         onChangeText={value => changeText('kota_kabupaten', value)}
                     />
                     <Gap height={20} />
-                    <Button title="Simpan Alamat" borderRadius={8}  onPress={checkAddress}/>    
+                    <Button title="Simpan Alamat" borderRadius={8}  onPress={checkAddress} disabledButton={disableButton}/>    
                 
             </View>
             </ScrollView>

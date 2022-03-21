@@ -14,6 +14,7 @@ const Address = ({navigation}) => {
   const {address} = useSelector(state => state.loginReducer);
   const {token} = useSelector(state => state.loginReducer);
   const [listAddress, setListAddress] = useState([]);
+  const [disableButton, setdisableButton] = useState(false);
 
   useEffect(() => {
     setListAddress([]);
@@ -25,7 +26,18 @@ const Address = ({navigation}) => {
     })
   }, [address])
 
+  const wait = (timeout) => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+  }
+
+  const onBack = () => {
+    setdisableButton(true);
+    navigation.goBack();
+    wait(1000).then(() => setdisableButton(false));
+  }
+
   const onDelete = (addressId) => {
+    setdisableButton(true);
     Alert.alert(
       "Konfirmasi",
       "Apakah anda menghapus alamat ini?.",
@@ -38,6 +50,7 @@ const Address = ({navigation}) => {
         { text: "Ya", onPress: () => deleteAddress(addressId) }
       ]
     );
+    wait(1000).then(() => setdisableButton(false));
   }
 
   const deleteAddress = (addressId) => {
@@ -88,7 +101,8 @@ const Address = ({navigation}) => {
             type="icon-only"
             icon="icon-arrow-back"
             style={styles.backButton}
-            onPress={() => navigation.goBack('Profile')}
+            onPress={onBack}
+            disabledButton={disableButton}
             borderRadius={4}
           />
         </View>
@@ -107,6 +121,7 @@ const Address = ({navigation}) => {
             nama_penerima={item.nama_penerima}
             nomor_handphone={item.nomor_handphone}
             onDelete={() => onDelete(item.id)}
+            disabledButton={disableButton}
             detail={`${item.kelurahan}, ${item.detail_alamat}, ${item.kecamatan}, ${item.kota_kabupaten}, ${item.provinsi}`}
             onPress={() => navigation.navigate('EditAddress', {
               id : item.id,

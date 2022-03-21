@@ -20,9 +20,8 @@ const OrderSummary = ({navigation, route}) => {
     const [statusOrder, setStatusOrder] = useState(transaction.status);
     const [statusText, setStatusText] = useState(colors.text.secondary);
     const {orderFromDetail} = useSelector(state => state.orderReducer);
+    const [disableButton, setdisableButton] = useState(false);
 
-    console.log('checkout : ', checkout);
-    console.log('order from detail : ', orderFromDetail)
     useEffect(() => {
         if(status == 'PENDING'){
             setStatusText(colors.status.pending);
@@ -58,7 +57,16 @@ const OrderSummary = ({navigation, route}) => {
         }})
     },[checkout])
 
-    console.log('checkout kut', transaction);
+    const wait = (timeout) => {
+        return new Promise(resolve => setTimeout(resolve, timeout));
+    }
+
+    const onPay = () => {
+        setdisableButton(true);
+        navigation.navigate('Midtrans', transaction.payment_url);
+        wait(1000).then(() => setdisableButton(false));
+    }
+
     return (
         <SafeAreaView style={styles.container}>
         <PageTitle title="Ringkasan Pesanan" onBack={() => navigation.goBack()} />
@@ -120,7 +128,8 @@ const OrderSummary = ({navigation, route}) => {
                     <Button 
                         title="Lakukan Pembayaran" 
                         borderRadius={4} 
-                        onPress={() => navigation.navigate('Midtrans', transaction.payment_url)}
+                        disabledButton={disableButton}
+                        onPress={onPay}
                     /> 
                 </View>
             </View>

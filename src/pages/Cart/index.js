@@ -12,6 +12,11 @@ const Cart = ({navigation}) => {
   const [listCart, setListCart] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const {cart} = useSelector(state => state.loginReducer);
+  const [disableButton, setdisableButton] = useState(false);
+
+  const wait = (timeout) => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+  }
 
   useEffect(() => { 
     setListCart([]);
@@ -30,9 +35,9 @@ const Cart = ({navigation}) => {
   },[cart])
 
   const chooseCheckOut = () => {
+    setdisableButton(true);
     console.log('list cart : ', listCart);
     if(cart.length >= 1){
-
       dispatch({type: 'SET_CHECKOUT', value: listCart});
       dispatch({type: 'SET_ORDER_FROM_DETAIL', value: undefined});
       dispatch({type: 'SET_SELECTED_ADDRESS', value: null});
@@ -47,6 +52,7 @@ const Cart = ({navigation}) => {
         color: colors.white,
     });
     }
+    wait(500).then(() => setdisableButton(false));
   }
   
   return (
@@ -77,6 +83,7 @@ const Cart = ({navigation}) => {
         <CartSummary
           totalPrice={`Rp. ${totalPrice.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`}
           onPress={chooseCheckOut}
+          disabledButton={disableButton}
         />
       </View>
     </SafeAreaView>

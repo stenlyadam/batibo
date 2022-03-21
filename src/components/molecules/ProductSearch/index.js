@@ -15,6 +15,7 @@ const {width} = Dimensions.get('window');
 
 const ProductSearch = ({
   navigation,
+  disabledButton,
   name,
   image,
   category,
@@ -46,7 +47,7 @@ const ProductSearch = ({
         </View>
       </View>
       <View style={styles.buyButtonContainer}>
-        <Button title="Beli" size={14} height={15} space={50} onPress={onBuy} borderRadius={4} style={styles.buyButton}/>
+        <Button title="Beli" size={14} height={15} space={50} onPress={onBuy} borderRadius={4} style={styles.buyButton} disabledButton={disabledButton}/>
       </View>
     </View>
   );

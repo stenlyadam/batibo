@@ -15,6 +15,11 @@ const Profile = ({navigation}) => {
   const dispatch = useDispatch();
   const {user} = useSelector(state => state.loginReducer);
   const [photo, setPhoto] = useState(DummyUserPhoto);
+  const [disableButton, setdisableButton] = useState(false);
+
+  const wait = (timeout) => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+  }
 
   useEffect(() => {
     console.log('user photo ', user);
@@ -24,6 +29,7 @@ const Profile = ({navigation}) => {
 }, [user]);
 
   const signOut = () => {
+    setdisableButton(true);
     dispatch(setLoading(true));
     AsyncStorage.multiRemove(['userProfile', 'token'])
     .then(() => {
@@ -36,7 +42,8 @@ const Profile = ({navigation}) => {
       dispatch(setLoading(false));
       showMessage('Terjadi error pada proses logout user');
     })
-    setTimeout(() => dispatch(setLoading(false)), 1000);
+    wait(1000).then(() => dispatch(setLoading(false)));
+    wait(1000).then(() => setdisableButton(false));
   };
 
   return (
@@ -68,7 +75,7 @@ const Profile = ({navigation}) => {
         <ProfileMenu title="Privasi dan Kebijakan" icon="icon-protection" />
         <ProfileMenu title="Bantuan" icon="icon-help" />
         <View>
-          <TouchableOpacity style={styles.voucherButtonContainer} onPress={signOut}>
+          <TouchableOpacity style={styles.voucherButtonContainer} onPress={signOut} disabled={disableButton}>
             <Text style={styles.keluarText}>Keluar</Text>
             <View style={styles.arrowRightContainer}>
               <IconArrowRight />

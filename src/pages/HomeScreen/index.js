@@ -18,18 +18,15 @@ const HomeScreen = ({navigation}) => {
   const {token} = useSelector(state => state.loginReducer);
   const {cart} = useSelector(state => state.loginReducer);
   const {product} = useSelector(state => state.homeReducer);
+  const [disableButton, setdisableButton] = useState(false);
   
   useEffect(() => {
     getData('userProfile').then((res) => {
       setUserProfile(res);
     });
     dispatch(getProductData(4));
-    setTimeout(() => {dispatch(setLoading(false))}, 500);
+    wait(1000).then(() => dispatch(setLoading(false)));
   },[]);
-
-  const pushCart = (toCart) => {
-    dispatch(addCartAction(user, token, cart, toCart));
-  }
 
   const wait = (timeout) => {
     return new Promise(resolve => setTimeout(resolve, timeout));
@@ -43,6 +40,12 @@ const HomeScreen = ({navigation}) => {
     dispatch(getProductData(4)); 
     wait(1000).then(() => setRefreshing(false));
   }, []);
+
+  const pushCart = (toCart) => {
+    setdisableButton(true);
+    dispatch(addCartAction(user, token, cart, toCart));
+    wait(1000).then(() => setdisableButton(false));
+  }
 
   return (
     <SafeAreaView style={styles.page}>
@@ -83,6 +86,7 @@ const HomeScreen = ({navigation}) => {
                 PriceAfterDiscount={item.price_after_discount}
                 productUnit={item.product_unit}
                 discount={item.discount}
+                disabledButton={disableButton}
                 onBuy={() => pushCart(item)}
                 onDetail={() => navigation.navigate('Detail', item)}
               /> 

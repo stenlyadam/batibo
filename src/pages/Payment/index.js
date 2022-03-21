@@ -16,7 +16,11 @@ const Payment = ({navigation, route}) => {
   const {orderTemp} = useSelector(state => state.orderReducer);
   const {selectedAddress} = useSelector(state => state.orderReducer);
   const [isPaymentOpen, setIsPaymentOpen] = useState(false);
-  
+  const [disableButton, setdisableButton] = useState(false);
+
+  const wait = (timeout) => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+  }
 
   useEffect(() => {
     dispatch({type: 'SET_SELECTED_ADDRESS', value: {
@@ -28,7 +32,9 @@ const Payment = ({navigation, route}) => {
   },[])
 
   const checkoutMidtrans = () => {
+    setdisableButton(true);
     setIsPaymentOpen(true);
+    wait(1000).then(() => setdisableButton(false));
   }
 
   const onNavChange = (state) => {
@@ -101,7 +107,7 @@ const Payment = ({navigation, route}) => {
         <View style={styles.bottomWrapper}>
           <View style={styles.nextContainer}>
             <View style={styles.next}>
-              <Button title="Selanjutnya" borderRadius={4} onPress={checkoutMidtrans}/>
+              <Button title="Selanjutnya" borderRadius={4} onPress={checkoutMidtrans} disabledButton={disableButton}/>
             </View>
           </View>
         </View>

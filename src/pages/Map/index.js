@@ -28,6 +28,11 @@ const Map = ({navigation, route}) => {
     const dispatch = useDispatch();
     const {token} = useSelector(state => state.loginReducer);
     const [currentPosition, setCurrentPosition] = useState(initialState);
+    const [disableButton, setdisableButton] = useState(false);
+
+    const wait = (timeout) => {
+        return new Promise(resolve => setTimeout(resolve, timeout));
+    }
     
     const onChangeRegion = (location) => {
         setCurrentPosition({
@@ -40,6 +45,7 @@ const Map = ({navigation, route}) => {
     }
 
     const onButtonPress = () => {
+        setdisableButton(true);
         const distance = getDistance(
             { latitude: currentPosition.latitude, longitude: currentPosition.longitude},
             { latitude: sellerCoords.latitude, longitude: sellerCoords.longitude }
@@ -56,6 +62,7 @@ const Map = ({navigation, route}) => {
             showMessage('Berhasil menyimpan lokasi', 'success');
             navigation.goBack();
         }
+        wait(1000).then(() => setdisableButton(false));
     }
 
         useEffect(() => {
@@ -85,18 +92,19 @@ const Map = ({navigation, route}) => {
                 onRegionChangeComplete = {onChangeRegion}
             />
             <Marker
-            coordinate={{
-              latitude: currentPosition.latitude,
-              longitude: currentPosition.longitude,
+                coordinate={{
+                    latitude: currentPosition.latitude,
+                    longitude: currentPosition.longitude,
             }}
-            title={'Lat: ' + currentPosition.latitude + ', Long: ' + currentPosition.longitude}
-          />
+                title={'Lat: ' + currentPosition.latitude + ', Long: ' + currentPosition.longitude}
+            />
             <View style={styles.pinContainer}>
                 <Image style={styles.pinImage} source={IMGMapPin} />
             </View>
             <Button
-            title={"Set Location"}
-            onPress={() => onButtonPress()}
+                title={"Set Location"}
+                onPress={() => onButtonPress()}
+                disabledButton={disableButton}
             />
         </View>
     ) 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {IMGOnBoarding1, IMGOnBoarding2, IMGOnBoarding3} from '../../assets';
 import {colors, storeData} from '../../utils';
@@ -7,18 +7,27 @@ import Page from './Page';
 
 const OnBoarding = ({navigation}) => {
   const swiper = React.useRef(null);
+  const [disableButton, setdisableButton] = useState(false);
   
+  const wait = (timeout) => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+  }
+
   const handleNext = () => {
+    setdisableButton(true);
     if (swiper && swiper.current) {
       swiper.current.scrollBy(1);
     }
+    wait(500).then(() => setdisableButton(false));
   };
 
   const toLoginPage = () => {
+    setdisableButton(true);
     //simpan data oldApp ke localstorage
     storeData('oldApp', {value: true});
     //berpindah ke halaman Login
     navigation.replace('Login');
+    wait(1000).then(() => setdisableButton(false));
   }
 
   return (
@@ -49,8 +58,9 @@ const OnBoarding = ({navigation}) => {
           text="Bantu petani dengan membeli langsung hasil panen dari mereka, sehingga
           kamu dapat belanja dengan mudah, petani bahagia."
           image={IMGOnBoarding1}
-          press={() => handleNext()}
+          press={handleNext}
           lewati={toLoginPage}
+          disabledButton={disableButton}
         />
       </View>
 
@@ -61,8 +71,9 @@ const OnBoarding = ({navigation}) => {
           lainnya, jumlahnya bisa kamu sesuaikan dengan keterangan harga yang
           tersedia juga."
           image={IMGOnBoarding2}
-          press={() => handleNext()}
+          press={handleNext}
           lewati={toLoginPage}
+          disabledButton={disableButton}
         />
       </View>
 
@@ -75,6 +86,7 @@ const OnBoarding = ({navigation}) => {
           topButton=""
           bottomButton="Selesai"
           press={toLoginPage}
+          disabledButton={disableButton}
         />
       </View>
     </Swiper>

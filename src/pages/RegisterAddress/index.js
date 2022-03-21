@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
     ImageBackground,
     SafeAreaView,
@@ -22,8 +22,14 @@ const RegisterAddress = ({navigation, route}) => {
     const dispatch = useDispatch();
     const registerReducer = useSelector((state) => state.registerReducer);
     const {coordinates} = useSelector(state => state.orderReducer);
+    const [disableButton, setdisableButton] = useState(false);
+
+    const wait = (timeout) => {
+        return new Promise(resolve => setTimeout(resolve, timeout));
+    }
 
     const requestLocationPermission = async () => {
+        setdisableButton(true);
         try {
         const granted = await PermissionsAndroid.request(
             PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION);
@@ -35,6 +41,7 @@ const RegisterAddress = ({navigation, route}) => {
         } catch (err) {
         console.warn(err);
         }
+        wait(500).then(() => setdisableButton(false));
     };
 
     const [form, setForm] = useForm({
@@ -53,6 +60,7 @@ const RegisterAddress = ({navigation, route}) => {
     });
 
     const onSubmit = () => {
+        setdisableButton(true);
         //update nilai latitude dan longitude pada form
         form.latitude = coordinates.latitude,
         form.longitude = coordinates.longitude, 
@@ -75,6 +83,7 @@ const RegisterAddress = ({navigation, route}) => {
                 showMessage('Alamat harus 20 karakter atau lebih');
             }
         }
+        wait(1000).then(() => setdisableButton(false));
     };
 
     return (
@@ -98,6 +107,7 @@ const RegisterAddress = ({navigation, route}) => {
                                 borderRadius={4} 
                                 title={"Pilih Lokasi"}  
                                 onPress={requestLocationPermission}
+                                disabledButton={disableButton}
                             />
                             <Gap height={8} />
                             <Text style={{ color: colors.status.cancelled, fontFamily: fonts.nunito.bold }}>Lokasi pickup belum ditentukan</Text>
@@ -114,6 +124,7 @@ const RegisterAddress = ({navigation, route}) => {
                                 borderRadius={4} 
                                 title={"Ubah Lokasi"}  
                                 onPress={requestLocationPermission}
+                                disabledButton={disableButton}
                             />
                             <Gap height={8} />
                             <Text style={{ color: colors.status.on_delivery, fontFamily: fonts.nunito.bold }}>Lokasi telah diambil</Text>
@@ -149,7 +160,7 @@ const RegisterAddress = ({navigation, route}) => {
                     onChangeText={(value) => setForm('kota_kabupaten', value)}
                 />
                 <Gap height={24} />
-                <Button title="Sign Up" onPress={onSubmit} borderRadius={10}/>
+                <Button title="Sign Up" onPress={onSubmit} borderRadius={10} disabledButton={disableButton}/>
                 <Gap height={20} />
                 </ScrollView>
             </View>

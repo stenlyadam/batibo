@@ -13,9 +13,15 @@ const Counter = ({itemCount, itemId, productId, itemPrice, checkout, orderFromDe
   const {user} = useSelector(state => state.loginReducer);
   const {token} = useSelector(state => state.loginReducer);
   const [count, setCount] = useState(itemCount);
+  const [disableButton, setdisableButton] = useState(false);
+
+  const wait = (timeout) => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+  }
 
 
   const onPressMinus = () => {
+    setdisableButton(true);
     console.log('item id : ', itemId);
     if (count > 1) {
       let updateCount = -1;
@@ -40,12 +46,13 @@ const Counter = ({itemCount, itemId, productId, itemPrice, checkout, orderFromDe
         );
       }
     }
-
-
+    wait(1000).then(() => setdisableButton(false));
   };
   const onPressPlus = () => {
+    setdisableButton(true);
     let updateCount = 1;
     updateCartAction(updateCount);
+    wait(1000).then(() => setdisableButton(false));
   };
   
 
@@ -172,6 +179,7 @@ const Counter = ({itemCount, itemId, productId, itemPrice, checkout, orderFromDe
         height={24}
         onPress={onPressMinus}
         borderRadius={4}
+        disabledButton={disableButton}
       />
       <Text style={styles.number}>{count}</Text>
       <Button
@@ -181,6 +189,7 @@ const Counter = ({itemCount, itemId, productId, itemPrice, checkout, orderFromDe
         height={24}
         onPress={onPressPlus}
         borderRadius={4}
+        disabledButton={disableButton}
       />
     </View>
   );

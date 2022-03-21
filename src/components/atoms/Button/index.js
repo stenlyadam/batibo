@@ -8,6 +8,7 @@ const Button = ({
   title,
   type,
   onPress,
+  disabledButton,
   icon,
   width,
   height,
@@ -23,7 +24,7 @@ const Button = ({
 }) => {
   if (type === 'icon-only') {
     return (
-      <IconOnly icon={icon} onPress={onPress} width={width} height={height} />
+      <IconOnly icon={icon} onPress={onPress} width={width} height={height} disabledButton={disabledButton}/>
     );
   }
   else if(type === 'Third'){
@@ -33,7 +34,7 @@ const Button = ({
   }
   else{
     return (
-      <TouchableOpacity onPress={onPress}>
+      <TouchableOpacity onPress={onPress} disabled={disabledButton}>
         <View style={styles.container(space, height, borderColor, borderWidth, borderRadius, marginTop, buttonColor)}>
           <Text style={styles.text(size, textColor)}>{title}</Text>
         </View>

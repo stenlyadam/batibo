@@ -16,8 +16,13 @@ const EditProfile = ({navigation}) => {
   const {user} = useSelector(state => state.loginReducer);
   const {token} = useSelector(state => state.loginReducer);
   const {photoReducer} = useSelector((state) => state);
+  const [disableButton, setdisableButton] = useState(false);
   // const user = useSelector(state => state.user);
   // console.log("User Select(Profile): ", user.photo);
+
+  const wait = (timeout) => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+  }
 
   //form buat isi data sementara sebelum di update
   const [form, setForm] = useState({
@@ -42,7 +47,14 @@ const EditProfile = ({navigation}) => {
     }
 }, [user]);
 
+  const onBack = () => {
+    setdisableButton(true);
+    navigation.goBack();
+    wait(1000).then(() => setdisableButton(false));
+  }
+
   const getImage = () => {
+    setdisableButton(true);
     launchImageLibrary(
       {quality: 0.2, maxWidth: 200, maxHeight: 200, includeBase64: true},
       response => {
@@ -64,9 +76,11 @@ const EditProfile = ({navigation}) => {
         }
       },
     );
+    wait(1000).then(() => setdisableButton(false));
   };
 
   const updateProfileData = () => {
+    setdisableButton(true);
     // dispatch({type: 'SET_LOADING', value: true});
     const dataUpdate = form;
     console.log('form  : ', dataUpdate);
@@ -149,7 +163,7 @@ const EditProfile = ({navigation}) => {
     else{
       showMessage('nama harus minimal 5 karakter');
     }
-      
+    wait(1000).then(() => setdisableButton(false));
   };
 
   const changeText = (key, value) => {
@@ -168,7 +182,8 @@ const EditProfile = ({navigation}) => {
                   type="icon-only"
                   icon="icon-arrow-back"
                   style={styles.backButton}
-                  onPress={() => navigation.goBack()}
+                  onPress={onBack}
+                  disabledButton={disableButton}
                   borderRadius={4}
                 />
               </View>
@@ -178,7 +193,7 @@ const EditProfile = ({navigation}) => {
             </View>
             <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.profilePictureWrapper}>
-              <TouchableOpacity style={styles.profilePictureContainer} onPress={getImage}>
+              <TouchableOpacity style={styles.profilePictureContainer} onPress={getImage} disabled={disableButton}>
                 <Image source={photo} style={styles.profilePicture} />
               </TouchableOpacity>
               
@@ -217,7 +232,7 @@ const EditProfile = ({navigation}) => {
                     onChangeText={value => changeText('phone_number', value)}
                   />
                 <Gap height={22} />
-                <Button title="Save Profile" borderRadius={8} onPress={updateProfileData} />
+                <Button title="Save Profile" borderRadius={8} onPress={updateProfileData} disabledButton={disableButton}/>
             </View>
             </ScrollView>
           </View>

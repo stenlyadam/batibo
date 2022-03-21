@@ -15,6 +15,7 @@ const {width} = Dimensions.get('window');
 
 const Product = ({
   navigation,
+  disabledButton,
   name,
   image,
   category,
@@ -44,7 +45,7 @@ const Product = ({
           <Text style={styles.sellPrice}>Rp{PriceAfterDiscount.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</Text>
           <Text style={styles.productUnit}>/ {productUnit}</Text>
         </View>
-        <Button title="Beli" size={14} height={8} onPress={onBuy} borderRadius={4}/>
+        <Button title="Beli" size={14} height={8} onPress={onBuy} borderRadius={4} disabledButton={disabledButton}/>
         <Gap height={20} />
       </View>
     </View>

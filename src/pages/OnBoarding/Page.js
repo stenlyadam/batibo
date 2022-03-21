@@ -14,6 +14,7 @@ const Page = ({
   navigation,
   press,
   lewati,
+  disabledButton
 }) => {
   return (
     <View>
@@ -21,7 +22,7 @@ const Page = ({
         colors={['#D0F5B2', '#24AD65']}
         style={styles.linearGradient}>
         <View style={styles.lewatiContainer}>
-          <TouchableOpacity onPress={lewati}>
+          <TouchableOpacity onPress={lewati} disabled={disabledButton}>
             <Text style={styles.textLewati}>{topButton}</Text>
           </TouchableOpacity>
         </View>
@@ -33,7 +34,7 @@ const Page = ({
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.text}>{text}</Text>
         <View style={styles.buttonContainer}>
-          <Button marginTop={10} title={bottomButton} space={110} onPress={press} borderRadius={10}/>
+          <Button marginTop={10} title={bottomButton} space={110} onPress={press} borderRadius={10} disabledButton={disabledButton}/>
         </View>
       </View>
     </View>

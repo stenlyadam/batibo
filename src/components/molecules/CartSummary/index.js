@@ -3,7 +3,7 @@ import {StyleSheet, Text, View} from 'react-native';
 import {colors} from '../../../utils';
 import {Button} from '../../atoms';
 
-const CartSummary = ({totalPrice, onPress}) => {
+const CartSummary = ({totalPrice, onPress, disabledButton}) => {
   return (
     <View style={styles.container}>
       <View style={styles.cartIcon}>
@@ -16,7 +16,7 @@ const CartSummary = ({totalPrice, onPress}) => {
         </View>
       </View>
       <View style={styles.buttonContainer}>
-        <Button onPress={onPress} title="Check Out" borderRadius={4} />
+        <Button onPress={onPress} title="Check Out" borderRadius={4} disabledButton={disabledButton}/>
       </View>
       
     </View>
