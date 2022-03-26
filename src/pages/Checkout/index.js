@@ -90,6 +90,7 @@ const Checkout = ({navigation}) => {
       user_id : user.id,
       address_id: selectedAddress.id,
       total : totalPrice + ongkir,
+      ongkosKirim: ongkir,
       status: 'PENDING',
       isOrder : 'false',
       nama_penerima : selectedAddress.nama_penerima,

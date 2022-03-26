@@ -21,7 +21,10 @@ const OrderDetail = () => {
 
   const {orderFromDetail} = useSelector(state => state.orderReducer);
   const {checkout} = useSelector(state => state.loginReducer);
+  const {ongkir} = useSelector(state => state.orderReducer);
   const [selectedId, setSelectedId] = useState(null);
+
+  console.log('ongkir : ', ongkir)
   
   return (
     <View style={styles.tabContainer}>
@@ -48,7 +51,7 @@ const OrderDetail = () => {
           })}
           <View style={styles.ongkirContainer}>
             <Text style={styles.itemName}>Ongkos Kirim</Text>
-            <Text style={styles.itemPrice}>Rp 15.000</Text>
+            <Text style={styles.itemPrice}>{`Rp ${ongkir.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`}</Text>
           </View>
         </ScrollView>  
 

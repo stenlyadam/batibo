@@ -43,8 +43,10 @@ const OrderSummary = ({navigation, route}) => {
             if(transaction.id == item.transaction_id){
                 const data = item;
                 setListOrder(listOrder => [...listOrder, data])
+                
             }
-        })      
+        })
+        dispatch({type: 'SET_ONGKIR', value: transaction.ongkosKirim});      
     }, [order])
 
     useEffect(() => {

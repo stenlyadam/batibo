@@ -7,7 +7,7 @@ const initOrder = {
     // checkoutAddress: [],
     selectedAddress: [],
     coordinates: {latitude: 0, longitude: 0, distance: 0},
-    ongkir: 0
+    ongkir: 15000,
 };
 
 export const orderReducer = (state = initOrder, action) => {
